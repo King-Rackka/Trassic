@@ -61,7 +61,7 @@
                     <a href="{{ route('explore') }}" class="{{ request()->routeIs('explore') ? 'text-[#ccff00]' : '' }} hover:text-[#ccff00] transition whitespace-nowrap">Explore</a>
                     <a href="#" class="hover:text-[#ccff00] transition whitespace-nowrap">Waste &amp; Impact</a>
                     <a href="#" class="hover:text-[#ccff00] transition whitespace-nowrap">Creators</a>
-                    <a href="#" class="hover:text-[#ccff00] transition whitespace-nowrap">About</a>
+                    <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'text-[#ccff00]' : '' }} hover:text-[#ccff00] transition whitespace-nowrap">About</a>
                 </nav>
                 <div class="flex items-center gap-2 font-display shrink-0 ml-2">
                     <a href="{{ route('login') }}" class="bg-[#ccff00] text-[#2f3cff] px-3 py-1 uppercase text-xs xl:text-base hover:bg-opacity-90 transition">Login</a>
@@ -112,9 +112,34 @@
     </main>
 
     {{-- FOOTER --}}
-    {{ $footer ?? '' }}
+        <footer class="w-full bg-[#F3F1EA] border-t-4 border-[#254bfe] shrink-0">
+        <div class="max-w-7xl mx-auto px-6 lg:px-10 py-12 lg:py-16 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+ 
+            {{-- Logo + Copyright --}}
+            <div class="flex flex-col gap-2">
+                <img src="{{ asset('images/logo.png') }}" alt="Trassic" class="h-10 lg:h-12 object-contain w-fit" onerror="this.src='https://via.placeholder.com/120x35/254bfe/ffffff?text=Trassic'">
+                <p class="text-sm lg:text-base font-semibold text-[#254bfe]">©{{ date('Y') }}, by FENDI RAJA ELANG</p>
+            </div>
+ 
+            {{-- Nav --}}
+            <nav class="flex flex-wrap items-center gap-x-8 gap-y-3 text-[#254bfe] font-display text-base lg:text-xl uppercase tracking-wide">
+                <a href="{{ url('/') }}" class="hover:text-[#ff007a] transition whitespace-nowrap">Beranda</a>
+                <a href="{{ route('explore') }}" class="hover:text-[#ff007a] transition whitespace-nowrap">Explore</a>
+                <a href="{{ Route::has('waste-impact') ? route('waste-impact') : '#' }}" class="hover:text-[#ff007a] transition whitespace-nowrap">Waste &amp; Impact</a>
+                <a href="{{ Route::has('creators') ? route('creators') : '#' }}" class="hover:text-[#ff007a] transition whitespace-nowrap">Creators</a>
+                <a href="{{ route('about') }}" class="hover:text-[#ff007a] transition whitespace-nowrap">About</a>
+            </nav>
+ 
+            {{-- Login / Register --}}
+            <div class="flex items-center gap-3 font-display shrink-0">
+                <a href="{{ route('login') }}" class="bg-[#ccff00] text-[#254bfe] px-5 py-2.5 uppercase text-base lg:text-lg font-bold hover:bg-opacity-90 transition">Login</a>
+                <a href="{{ route('register') }}" class="bg-[#ff007a] text-[#ccff00] px-5 py-2.5 uppercase text-base lg:text-lg font-bold hover:bg-opacity-90 transition">Register</a>
+            </div>
+ 
+        </div>
+    </footer>
 
 </div>
-
+@stack('scripts')
 </body>
 </html>

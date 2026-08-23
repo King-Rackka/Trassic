@@ -9,7 +9,7 @@ Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
 
 Route::get('/explore', function () {
     return view('explore');
@@ -26,6 +26,11 @@ Route::get('/work/{work:slug}', function (\App\Models\Work $work) {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+// Route::view('/about', 'about')->name('about');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
