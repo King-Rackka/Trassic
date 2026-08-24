@@ -7,7 +7,7 @@
     <style>
         @keyframes trashFloat {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(2deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
         }
         .animate-trash-float {
             animation: trashFloat 3.5s ease-in-out infinite;
@@ -15,6 +15,18 @@
         .animation-delay-1 { animation-delay: 0.7s; }
         .animation-delay-2 { animation-delay: 1.4s; }
         .animation-delay-3 { animation-delay: 2.1s; }
+
+        /* Animasi Mental / Bounce Back Saat Salah Tempat */
+        @keyframes bounceBack {
+            0% { transform: scale(1.3) translate(0, 0); }
+            20% { transform: scale(0.8) translate(-20px, 15px) rotate(-15deg); }
+            40% { transform: scale(1.15) translate(15px, -10px) rotate(10deg); }
+            60% { transform: scale(0.9) translate(-8px, 5px); }
+            100% { transform: scale(1) translate(0, 0) rotate(0deg); }
+        }
+        .animate-bounce-back {
+            animation: bounceBack 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
     </style>
 
     <div class="w-full flex flex-col bg-white font-sans overflow-x-hidden selection:bg-[#ccff00] selection:text-black" x-data="landingGame()">
@@ -36,28 +48,24 @@
         {{-- ========================================== --}}
         {{-- SECTION 1: HERO SECTION --}}
         {{-- ========================================== --}}
-        <section class="w-full min-h-[calc(100vh-62px)] flex flex-col lg:flex-row border-b-2 border-[#254bfe] bg-grid-pattern relative overflow-hidden">
+        <section class="w-full min-h-[calc(100vh-62px)] flex flex-col lg:flex-row bg-grid-pattern relative overflow-hidden py-8 sm:py-16">
             
-            {{-- KIRI: Visual Kaleng + Lingkaran Muter + Aksen Petir --}}
-            <div class="w-full lg:w-[59.3%] flex items-center justify-center p-4 sm:p-7 relative border-b-2 lg:border-b-0 lg:border-r-2 border-[#254bfe]">
+            {{-- KIRI: Visual Kaleng --}}
+            <div class="w-full lg:w-[50%] flex items-center justify-center p-4 sm:p-7 relative">
                 <div class="relative w-[280px] xs:w-[320px] sm:w-[480px] h-[280px] xs:h-[320px] sm:h-[480px] flex items-center justify-center my-4">
                     
-                    {{-- Vector Petir 1 --}}
                     <img src="{{ asset('images/vector/vector_petir_1.png') }}" 
                          alt="Vector Petir 1" 
                          class="absolute w-[115%] h-[115%] object-contain z-0 pointer-events-none transform -rotate-12">
 
-                    {{-- Vector Petir 2 --}}
                     <img src="{{ asset('images/vector/vector_petir_2.png') }}" 
                          alt="Vector Petir 2" 
                          class="absolute w-[120%] h-[120%] object-contain z-0 pointer-events-none transform rotate-45">
 
-                    {{-- Vector Lingkaran Cat Biru Muter --}}
                     <img src="{{ asset('images/vector/Vector_Landingpage_1.png') }}" 
                          alt="Vector Circular" 
                          class="absolute inset-0 w-full h-full object-contain animate-[spin_16s_linear_infinite] z-10 pointer-events-none">
 
-                    {{-- Visual Kaleng Floating --}}
                     <img src="{{ asset('images/recycle-can.png') }}" 
                          alt="Recycle Can" 
                          class="w-[85%] sm:w-[90%] h-[85%] sm:h-[90%] object-contain drop-shadow-2xl z-20 animate-float -scale-x-100">
@@ -65,17 +73,17 @@
             </div>
 
             {{-- KANAN: Text Hero --}}
-            <div class="w-full lg:w-[58%] flex items-center justify-center p-6 sm:p-16 bg-white/80 backdrop-blur-sm">
-                <div class="max-w-xl space-y-4 sm:space-y-6 text-center lg:text-left">
-                    <h1 class="text-3xl sm:text-6xl font-display text-[#254bfe] uppercase leading-tight tracking-normal">
-                        Udah zaman gini masih buang sampah sembarangan?
+            <div class="w-full lg:w-[50%] flex items-center justify-center p-6 sm:p-12">
+                <div class="max-w-lg space-y-6 text-center lg:text-left">
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-display text-[#254bfe] uppercase tracking-wide" style="line-height: 1.35 !important;">
+                        Zaman gini masih buang sampah sembarangan?
                     </h1>
-                    <p class="text-gray-700 text-sm sm:text-lg font-medium leading-relaxed">
+                    <p class="text-gray-700 text-sm sm:text-base font-medium leading-relaxed">
                         Kelola dan daur ulang sampahmu bersama <strong class="text-black font-bold">Trassic</strong>. Ubah kebiasaan lama menjadi langkah nyata untuk lingkungan yang lebih bersih.
                     </p>
                     <div class="pt-2">
                         <a href="{{ route('register') }}" 
-                           class="inline-block bg-[#ccff00] text-[#2f3cff] font-display text-lg sm:text-2xl px-6 sm:px-8 py-3 sm:py-3.5 rounded-2xl border-2 border-black hover:bg-lime-300 transition uppercase shadow-[4px_4px_0px_rgba(0,0,0,1)]">
+                           class="inline-block bg-[#ccff00] text-[#2f3cff] font-display text-base sm:text-xl px-6 sm:px-8 py-3 sm:py-3.5 border-2 border-black hover:bg-lime-300 transition uppercase shadow-[4px_4px_0px_rgba(0,0,0,1)]">
                             Mulai Sekarang
                         </a>
                     </div>
@@ -84,84 +92,63 @@
         </section>
 
 
-        {{-- ========================================== --}}
+{{-- ========================================== --}}
         {{-- SECTION 2: GAME MEMBUANG SAMPAH --}}
         {{-- ========================================== --}}
-        <section class="w-full min-h-screen flex flex-col items-center justify-center py-8 sm:py-10 px-4 sm:px-8 border-b-2 border-[#254bfe] bg-grid-pattern relative overflow-hidden">
+        <section class="w-full flex flex-col items-center justify-center py-8 sm:py-20 px-2 sm:px-8 bg-grid-pattern relative overflow-hidden"
+                 @pointermove.window="onPointerMove($event)"
+                 @pointerup.window="onPointerUp($event)">
             
-            <h2 class="text-2xl sm:text-5xl font-display text-[#254bfe] uppercase tracking-normal text-center mb-4 sm:mb-8 z-20">
+            <h2 class="text-2xl sm:text-5xl font-display text-[#254bfe] uppercase tracking-normal text-center mb-4 sm:mb-10 z-20">
                 Latihan membuang sampah pada tempat yang sesuai
             </h2>
 
-            <div class="w-full max-w-5xl h-[480px] sm:h-[620px] relative flex items-center justify-center">
-                
-                {{-- SVG DASHED LINES --}}
-                <svg class="absolute inset-0 w-full h-full pointer-events-none z-10 hidden md:block" viewBox="0 0 1000 600" preserveAspectRatio="none">
-                    <path d="M 120 180 Q 180 200, 260 230" fill="none" stroke="#254bfe" stroke-width="2.5" stroke-dasharray="8,8"/>
-                    <path d="M 120 450 Q 180 430, 260 400" fill="none" stroke="#254bfe" stroke-width="2.5" stroke-dasharray="8,8"/>
-                    <path d="M 880 180 Q 820 200, 740 230" fill="none" stroke="#254bfe" stroke-width="2.5" stroke-dasharray="8,8"/>
-                    <path d="M 880 450 Q 820 430, 740 400" fill="none" stroke="#254bfe" stroke-width="2.5" stroke-dasharray="8,8"/>
-                </svg>
+            <div x-ref="gameArea" class="w-full max-w-5xl h-[380px] sm:h-[620px] relative flex items-center justify-center select-none">
 
                 {{-- BACKGROUND VECTOR GROUP 20 --}}
                 <img src="{{ asset('images/vector/Group 20.png') }}" 
                      alt="Background Vector Trash" 
-                     class="absolute w-[300px] sm:w-[580px] h-auto object-contain z-0 pointer-events-none drop-shadow-md">
+                     class="absolute w-[280px] sm:w-[580px] h-auto object-contain z-0 pointer-events-none drop-shadow-md">
 
-                {{-- 3 TEMPAT SAMPAH --}}
-                <div class="relative w-[300px] sm:w-[610px] h-[280px] sm:h-[420px] z-10 flex items-center justify-center">
+                {{-- 3 TEMPAT SAMPAH (PRESISI LINGKARAN & HOVER ANIMATION) --}}
+                <div class="relative w-[280px] sm:w-[610px] h-[260px] sm:h-[420px] z-10 flex items-center justify-center">
                     
-                    {{-- TONG B3 --}}
-                    <div @dragover.prevent 
-                         @drop="onDrop($event, 'b3')"
-                         class="absolute top-0 sm:top-2 left-1/2 -translate-x-1/2 w-40 sm:w-80 z-10 hover:scale-105 transition-transform cursor-pointer">
-                        <img src="{{ asset('images/tempat-sampah-red.png') }}" alt="Tong B3" class="w-full h-auto object-contain drop-shadow-xl">
+                    {{-- TONG B3 (RED) --}}
+                    <div data-bin="b3" 
+                         class="absolute top-2 sm:top-2 left-1/2 -translate-x-1/2 w-32 sm:w-80 z-10 transition-transform duration-200 hover:scale-110 active:scale-105 cursor-pointer">
+                        <img src="{{ asset('images/tempat-sampah-red.png') }}" alt="Tong B3" class="w-full h-auto object-contain drop-shadow-xl pointer-events-none">
                     </div>
 
-                    {{-- TONG ORGANIK --}}
-                    <div @dragover.prevent 
-                         @drop="onDrop($event, 'organik')"
-                         class="absolute bottom-0 sm:bottom-2 left-0 sm:left-6 w-40 sm:w-80 z-20 hover:scale-105 transition-transform cursor-pointer -rotate-6">
-                        <img src="{{ asset('images/tempat-sampah-green.png') }}" alt="Tong Organik" class="w-full h-auto object-contain drop-shadow-2xl">
+                    {{-- TONG ORGANIK (GREEN) --}}
+                    <div data-bin="organik" 
+                         class="absolute bottom-2 sm:bottom-2 left-2 sm:left-6 w-32 sm:w-80 z-20 -rotate-6 transition-transform duration-200 hover:scale-110 hover:-rotate-3 active:scale-105 cursor-pointer">
+                        <img src="{{ asset('images/tempat-sampah-green.png') }}" alt="Tong Organik" class="w-full h-auto object-contain drop-shadow-2xl pointer-events-none">
                     </div>
 
-                    {{-- TONG ANORGANIK --}}
-                    <div @dragover.prevent 
-                         @drop="onDrop($event, 'anorganik')"
-                         class="absolute bottom-0 sm:bottom-2 right-0 sm:right-6 w-40 sm:w-80 z-20 hover:scale-105 transition-transform cursor-pointer rotate-6">
-                        <img src="{{ asset('images/tempat-sampah-orange.png') }}" alt="Tong Anorganik" class="w-full h-auto object-contain drop-shadow-2xl">
+                    {{-- TONG ANORGANIK (ORANGE) --}}
+                    <div data-bin="anorganik" 
+                         class="absolute bottom-2 sm:bottom-2 right-2 sm:right-6 w-32 sm:w-80 z-20 rotate-6 transition-transform duration-200 hover:scale-110 hover:rotate-3 active:scale-105 cursor-pointer">
+                        <img src="{{ asset('images/tempat-sampah-orange.png') }}" alt="Tong Anorganik" class="w-full h-auto object-contain drop-shadow-2xl pointer-events-none">
                     </div>
 
                 </div>
 
-                {{-- 4 SAMPAH TANPA KOTAKAN --}}
-                <div x-show="!trashItems[0].completed"
-                     draggable="true" 
-                     @dragstart="onDragStart($event, 0)"
-                     class="absolute top-2 sm:top-10 left-1 sm:left-12 z-30 cursor-grab active:cursor-grabbing hover:scale-125 transition-transform animate-trash-float">
-                    <img src="{{ asset('images/sampah-botol.png') }}" alt="Botol Plastik" class="w-14 sm:w-28 h-auto object-contain drop-shadow-md pointer-events-none">
-                </div>
-
-                <div x-show="!trashItems[1].completed"
-                     draggable="true" 
-                     @dragstart="onDragStart($event, 1)"
-                     class="absolute top-2 sm:top-10 right-1 sm:right-12 z-30 cursor-grab active:cursor-grabbing hover:scale-125 transition-transform animate-trash-float animation-delay-1">
-                    <img src="{{ asset('images/sampah-jaring.png') }}" alt="Limbah Jaring" class="w-14 sm:w-28 h-auto object-contain drop-shadow-md pointer-events-none rounded-xl">
-                </div>
-
-                <div x-show="!trashItems[2].completed"
-                     draggable="true" 
-                     @dragstart="onDragStart($event, 2)"
-                     class="absolute bottom-2 sm:bottom-10 left-1 sm:left-12 z-30 cursor-grab active:cursor-grabbing hover:scale-125 transition-transform animate-trash-float animation-delay-2">
-                    <img src="{{ asset('images/sampah-kertas.png') }}" alt="Kertas Remuk" class="w-14 sm:w-28 h-auto object-contain drop-shadow-md pointer-events-none rounded-xl">
-                </div>
-
-                <div x-show="!trashItems[3].completed"
-                     draggable="true" 
-                     @dragstart="onDragStart($event, 3)"
-                     class="absolute bottom-2 sm:bottom-10 right-1 sm:right-12 z-30 cursor-grab active:cursor-grabbing hover:scale-125 transition-transform animate-trash-float animation-delay-3">
-                    <img src="{{ asset('images/sampah-organik.png') }}" alt="Sampah Organik" class="w-14 sm:w-28 h-auto object-contain drop-shadow-md pointer-events-none rounded-xl">
-                </div>
+                {{-- SAMPAH INTERAKTIF DI 4 SUDUT --}}
+                <template x-for="(item, index) in trashItems" :key="item.id">
+                    <div @pointerdown="startDrag($event, index)"
+                         :class="[
+                             item.dragging || item.inBin ? '' : item.defaultClass,
+                             !item.inBin && !item.dragging && !item.bouncing ? 'animate-trash-float' : '',
+                             item.bouncing ? 'animate-bounce-back' : '',
+                             item.dragging ? 'z-50 scale-125 cursor-grabbing' : '',
+                             !item.inBin && !item.dragging ? 'z-30 cursor-grab hover:scale-110' : '',
+                             item.inBin ? 'z-40 scale-75 opacity-90 transition-all duration-500' : ''
+                         ]"
+                         :style="getItemStyle(item)"
+                         class="absolute touch-none transition-transform">
+                        <img :src="item.image" :alt="item.name" class="w-10 sm:w-28 h-auto object-contain drop-shadow-md pointer-events-none">
+                    </div>
+                </template>
 
             </div>
 
@@ -174,29 +161,32 @@
 
 
         {{-- ========================================== --}}
-        {{-- SECTION 3: PHYSICS BADGES (TETAP PERSIS DESKTOP ASLI DENGAN OPTIMASI MOBILE) --}}
+        {{-- SECTION 3: PHYSICS BADGES (GARIS SEJAJAR VECTOR DI HP) --}}
         {{-- ========================================== --}}
-        <section class="w-full min-h-screen flex flex-col items-center justify-center py-8 sm:py-12 px-2 sm:px-6 bg-grid-pattern relative overflow-hidden border-b-2 border-[#254bfe]">
+        <section class="w-full flex flex-col items-center justify-center py-6 sm:py-12 px-0 bg-grid-pattern relative overflow-hidden border-b-2 border-[#254bfe]">
             
-            <h2 class="text-2xl sm:text-5xl font-display text-[#254bfe] uppercase tracking-normal text-center mb-6 sm:mb-8 z-20">
+            <h2 class="text-2xl sm:text-5xl font-display text-[#254bfe] uppercase tracking-normal text-center mb-4 sm:mb-8 z-20">
                 Kenapa harus menggunakan trassic?
             </h2>
 
-            {{-- VECTOR DESKTOP UTAMA (PERSIS ASLI) --}}
-            <img src="{{ asset('images/vector/Vector_Landingpage_2.png') }}"
-                 alt="Vector Left"
-                 class="absolute top-1/2 -left-0 -translate-y-1/2 w-[90px] sm:w-auto h-[100%] max-h-[1000px] object-contain pointer-events-none z-10 -scale-x-100">
+            {{-- Container Canvas Physics: h-[230px] di mobile agar garis biru sejajar pas dengan ujung vector --}}
+            <div class="w-full h-[230px] sm:h-[480px] relative flex items-center justify-center">
+                {{-- Vector Left & Right --}}
+                <img src="{{ asset('images/vector/Vector_Landingpage_2.png') }}"
+                     alt="Vector Left"
+                     class="absolute top-1/2 -left-0 -translate-y-1/2 w-[70px] sm:w-auto h-[100%] sm:h-[140%] object-contain pointer-events-none z-10 -scale-x-100">
 
-            <img src="{{ asset('images/vector/Vector_Landingpage_2.png') }}"
-                 alt="Vector Right"
-                 class="absolute top-1/2 -right-0 -translate-y-1/2 w-[90px] sm:w-auto h-[100%] max-h-[1000px] object-contain pointer-events-none z-10">
+                <img src="{{ asset('images/vector/Vector_Landingpage_2.png') }}"
+                     alt="Vector Right"
+                     class="absolute top-1/2 -right-0 -translate-y-1/2 w-[70px] sm:w-auto h-[100%] sm:h-[140%] object-contain pointer-events-none z-10">
 
-            {{-- CONTAINER CANVAS PHYSICS --}}
-            <div id="physics-container" class="w-full h-[380px] sm:h-full relative border-y-2 border-[#254bfe] overflow-hidden z-20" style="touch-action: pan-y;">
+                {{-- Container Canvas Physics --}}
+                <div id="physics-container" class="w-full h-full relative border-y-2 border-[#254bfe] overflow-hidden z-20" style="touch-action: pan-y;">
+                </div>
             </div>
 
-            <p class="text-[10px] sm:text-xs font-semibold text-gray-500 mt-4 uppercase tracking-wider text-center">
-                💡 Coba tarik, geser, atau lempar kapsul di atas!
+            <p class="text-xs sm:text-sm font-bold text-[#254bfe] mt-3 uppercase tracking-wider text-center">
+                Coba tarik, geser, atau lempar kapsul di atas!
             </p>
         </section>
 
@@ -207,50 +197,109 @@
     function landingGame() {
         return {
             toasts: [],
+            activeDragIndex: null,
+            
             trashItems: [
-                { id: 0, name: 'Botol Plastik', category: 'anorganik', completed: false },
-                { id: 1, name: 'Limbah Jaring', category: 'b3', completed: false },
-                { id: 2, name: 'Kertas Remuk', category: 'anorganik', completed: false },
-                { id: 3, name: 'Sampah Organik', category: 'organik', completed: false },
+                { id: 0, name: 'Botol Plastik', category: 'anorganik', image: "{{ asset('images/sampah-botol.png') }}", defaultClass: 'top-2 sm:top-10 left-1 sm:left-12', inBin: false, binCategory: null, dragging: false, bouncing: false, x: null, y: null },
+                { id: 1, name: 'Limbah Jaring', category: 'b3', image: "{{ asset('images/sampah-jaring.png') }}", defaultClass: 'top-2 sm:top-10 right-1 sm:right-12', inBin: false, binCategory: null, dragging: false, bouncing: false, x: null, y: null },
+                { id: 2, name: 'Kertas Remuk', category: 'anorganik', image: "{{ asset('images/sampah-kertas.png') }}", defaultClass: 'bottom-2 sm:bottom-10 left-1 sm:left-12', inBin: false, binCategory: null, dragging: false, bouncing: false, x: null, y: null },
+                { id: 3, name: 'Sampah Organik', category: 'organik', image: "{{ asset('images/sampah-organik.png') }}", defaultClass: 'bottom-2 sm:bottom-10 right-1 sm:right-12', inBin: false, binCategory: null, dragging: false, bouncing: false, x: null, y: null }
             ],
 
             get allCompleted() {
-                return this.trashItems.every(i => i.completed);
+                return this.trashItems.every(i => i.inBin && i.binCategory === i.category);
             },
 
             addToast(message, type = 'success') {
                 this.toasts.push({ message, type });
-                setTimeout(() => {
-                    this.toasts.shift();
-                }, 3000);
+                setTimeout(() => { this.toasts.shift(); }, 3000);
             },
 
-            onDragStart(event, itemIndex) {
-                event.dataTransfer.setData('text/plain', itemIndex);
+            getItemStyle(item) {
+                if (item.dragging || item.inBin) {
+                    return `left: ${item.x}px; top: ${item.y}px; position: absolute;`;
+                }
+                return '';
             },
 
-            onDrop(event, targetCategory) {
-                const itemIndex = event.dataTransfer.getData('text/plain');
-                if (itemIndex === '') return;
+            startDrag(event, index) {
+                this.activeDragIndex = index;
+                const item = this.trashItems[index];
+                item.dragging = true;
+                item.inBin = false;
+                item.bouncing = false;
 
-                const item = this.trashItems[itemIndex];
+                const rect = this.$refs.gameArea.getBoundingClientRect();
+                item.x = event.clientX - rect.left - 25;
+                item.y = event.clientY - rect.top - 25;
+            },
 
-                if (item.category === targetCategory) {
-                    item.completed = true;
-                    this.addToast(`Hebat! ${item.name} berhasil dibuang ke tempat ${targetCategory.toUpperCase()}`, 'success');
+            onPointerMove(event) {
+                if (this.activeDragIndex === null) return;
+                const item = this.trashItems[this.activeDragIndex];
+                const rect = this.$refs.gameArea.getBoundingClientRect();
 
-                    if (this.allCompleted) {
-                        setTimeout(() => {
-                            this.addToast('🎉 Luar biasa! Semua sampah berhasil dipilah dengan benar!', 'info');
-                        }, 500);
+                item.x = event.clientX - rect.left - 25;
+                item.y = event.clientY - rect.top - 25;
+            },
+
+            onPointerUp(event) {
+                if (this.activeDragIndex === null) return;
+                const index = this.activeDragIndex;
+                const item = this.trashItems[index];
+                item.dragging = false;
+                this.activeDragIndex = null;
+
+                const bins = this.$refs.gameArea.querySelectorAll('[data-bin]');
+                let droppedBin = null;
+
+                bins.forEach(bin => {
+                    const binRect = bin.getBoundingClientRect();
+                    if (
+                        event.clientX >= binRect.left &&
+                        event.clientX <= binRect.right &&
+                        event.clientY >= binRect.top &&
+                        event.clientY <= binRect.bottom
+                    ) {
+                        droppedBin = bin.getAttribute('data-bin');
+                    }
+                });
+
+                if (droppedBin) {
+                    if (item.category === droppedBin) {
+                        item.inBin = true;
+                        item.binCategory = droppedBin;
+                        this.addToast(`Hebat! ${item.name} berhasil dibuang ke tempat ${droppedBin.toUpperCase()}`, 'success');
+
+                        if (this.allCompleted) {
+                            setTimeout(() => {
+                                this.addToast('🎉 Luar biasa! Semua sampah berhasil dipilah dengan benar!', 'info');
+                            }, 500);
+                        }
+                    } else {
+                        item.bouncing = true;
+                        item.inBin = false;
+                        item.x = null;
+                        item.y = null;
+                        this.addToast(`Ups! ${item.name} kurang tepat jika dibuang ke tempat ${droppedBin.toUpperCase()}`, 'error');
+
+                        setTimeout(() => { item.bouncing = false; }, 650);
                     }
                 } else {
-                    this.addToast(`Ups! ${item.name} kurang tepat jika dibuang ke tempat ${targetCategory.toUpperCase()}`, 'error');
+                    item.x = null;
+                    item.y = null;
                 }
             },
 
             resetGame() {
-                this.trashItems.forEach(i => i.completed = false);
+                this.trashItems.forEach(i => {
+                    i.inBin = false;
+                    i.dragging = false;
+                    i.bouncing = false;
+                    i.binCategory = null;
+                    i.x = null;
+                    i.y = null;
+                });
                 this.addToast('Game direset! Silakan coba lagi.', 'info');
             }
         }
@@ -292,14 +341,13 @@
         const runner = Runner.create();
         Runner.run(runner, engine);
 
-        // Deteksi Layar HP vs Desktop
         const isMobile = window.innerWidth < 640;
-        const wallOffset = isMobile ? 70 : 160;
-        const badgeScale = isMobile ? 0.65 : 1.0;
+        const wallOffset = isMobile ? 65 : 160; 
+        const badgeScale = isMobile ? 0.35 : 1.0; 
         const wallThickness = 400;
         const invisibleStyle = { render: { visible: false } };
 
-        // Dinding Fisik
+        // Dinding Fisik Utama
         const ground = Bodies.rectangle(width / 2, height + (wallThickness / 2), width * 2, wallThickness, { isStatic: true, ...invisibleStyle });
         const ceiling = Bodies.rectangle(width / 2, -(wallThickness / 2), width * 2, wallThickness, { isStatic: true, ...invisibleStyle });
         const leftWall = Bodies.rectangle(wallOffset - (wallThickness / 2), height / 2, wallThickness, height * 2, { isStatic: true, ...invisibleStyle });
@@ -307,22 +355,22 @@
 
         Composite.add(engine.world, [ground, ceiling, leftWall, rightWall]);
 
-        // Kapsul Teks (Proporsional di Desktop & Mobile)
+        // TEKS KAPSUL TEMATIK TRASSIC
         const rawBadges = [
-            { text: 'Lorem ipsum dolor', bg: '#ccff00', color: '#254bfe', width: 200 * badgeScale },
-            { text: 'Lorem ipsum dolor sit amet', bg: '#ff007a', color: '#ccff00', width: 260 * badgeScale },
-            { text: 'Lorem ipsum dolor', bg: '#ccff00', color: '#254bfe', width: 190 * badgeScale },
-            { text: 'Lorem ipsum dolor sit amet', bg: '#ff007a', color: '#ccff00', width: 270 * badgeScale },
-            { text: 'Lorem ipsum dolor sit amet', bg: '#ccff00', color: '#254bfe', width: 260 * badgeScale },
-            { text: 'Lorem ipsum dolor', bg: '#ff007a', color: '#ccff00', width: 210 * badgeScale }
+            { text: 'DAUR ULANG MUDAH TOGETHER', bg: '#ccff00', color: '#254bfe', width: 480 * badgeScale },
+            { text: 'EKO-KREATIF DENGAN TRASSIC', bg: '#ff007a', color: '#ccff00', width: 490 * badgeScale },
+            { text: 'UBAH SAMPAH JADI KARYA', bg: '#ccff00', color: '#254bfe', width: 430 * badgeScale },
+            { text: 'DUKUNG LINGKUNGAN BERSIH', bg: '#ff007a', color: '#ccff00', width: 470 * badgeScale },
+            { text: 'KOMUNITAS TRASSIC AKTIF', bg: '#ccff00', color: '#254bfe', width: 440 * badgeScale },
+            { text: 'AKSI NYATA BUMI HIJAU', bg: '#ff007a', color: '#ccff00', width: 410 * badgeScale }
         ];
 
         const badgeBodies = [];
 
         rawBadges.forEach((data, index) => {
-            const startX = (width / 2) + ((Math.random() - 0.5) * 30);
-            const startY = 30 + (index * (40 * badgeScale));
-            const badgeHeight = 42 * badgeScale;
+            const startX = (width / 2) + ((Math.random() - 0.5) * 40);
+            const startY = 20 + (index * (35 * badgeScale));
+            const badgeHeight = 56 * badgeScale;
 
             const body = Bodies.rectangle(startX, startY, data.width, badgeHeight, {
                 chamfer: { radius: badgeHeight / 2 },
@@ -340,7 +388,7 @@
             Composite.add(engine.world, body);
         });
 
-        // Control Mouse & Touch + Scroll Fix
+        // Control Mouse & Touch
         const mouse = Mouse.create(render.canvas);
         render.canvas.removeEventListener("mousewheel", mouse.mousewheel);
         render.canvas.removeEventListener("DOMMouseScroll", mouse.mousewheel);
@@ -355,14 +403,14 @@
         });
         Composite.add(engine.world, mouseConstraint);
 
-        // Release Mouse Jika Ditarik Paksa Keluar Batas
+        // Release Mouse Jika Ditarik Paksa
         Events.on(engine, 'beforeUpdate', () => {
             if (mouseConstraint.body) {
                 const body = mouseConstraint.body;
-                const minX = wallOffset + 15;
-                const maxX = width - wallOffset - 15;
-                const minY = 10;
-                const maxY = height - 10;
+                const minX = wallOffset + 10;
+                const maxX = width - wallOffset - 10;
+                const minY = 5;
+                const maxY = height - 5;
 
                 if (body.position.x < minX || body.position.x > maxX || body.position.y < minY || body.position.y > maxY) {
                     mouseConstraint.constraint.bodyB = null;
@@ -371,13 +419,13 @@
             }
         });
 
-        // Render Teks Bolder
+        // RENDER TEKS: 28PX DESKTOP & 10PX MOBILE
         Events.on(render, 'afterRender', () => {
             const context = render.context;
             const bodies = Composite.allBodies(engine.world);
 
-            const fontSize = isMobile ? '10px' : '14px';
-            context.font = `700 ${fontSize} "Inter", sans-serif`;
+            const fontSize = isMobile ? '10px' : '28px';
+            context.font = `800 ${fontSize} "Inter", sans-serif`;
             context.textAlign = 'center';
             context.textBaseline = 'middle';
 

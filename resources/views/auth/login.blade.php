@@ -40,95 +40,109 @@
         </div>
 
         {{-- RIGHT: Form Login --}}
-        <div class="w-full lg:w-1/2 bg-[#2f3cff] px-6 sm:px-12 lg:px-16 py-6 flex flex-col justify-center h-full overflow-y-auto">
+<div class="w-full lg:w-1/2 bg-[#3143ff] px-6 sm:px-12 lg:px-16 py-8 flex flex-col justify-center items-center min-h-full overflow-y-auto">
 
-            <div class="max-w-md w-full mx-auto space-y-4 xl:space-y-5">
+    <div class="max-w-md w-full mx-auto space-y-4 xl:space-y-5 my-auto">
 
-                <h1 class="text-3xl sm:text-4xl font-display text-[#ccff00] uppercase tracking-normal text-center mb-4">
-                    Masuk
-                </h1>
+        <h1 class="text-4xl sm:text-5xl font-black text-[#ccff00] uppercase tracking-wider text-center mb-6">
+            Masuk
+        </h1>
 
-                @if (session('status'))
-                    <div class="bg-lime-300 text-indigo-900 text-xs font-semibold px-4 py-2.5 rounded-xl">
-                        {{ session('status') }}
-                    </div>
-                @endif
-
-                {{-- Google Login --}}
-                <a href="{{ route('auth.google') }}"
-                   class="w-full flex items-center justify-center gap-3 bg-[#f7f7f7] hover:bg-gray-100 transition text-[#254bfe] font-bold text-xs sm:text-sm py-3 rounded-xl">
-                    <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24">
-                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                    </svg>
-                    Lanjutkan dengan akun google
-                </a>
-
-                {{-- Divider --}}
-                <div class="flex items-center gap-4 py-1">
-                    <div class="flex-1 h-px bg-[#ccff00]"></div>
-                    <span class="text-[#ccff00] text-xs font-bold">OR</span>
-                    <div class="flex-1 h-px bg-[#ccff00]"></div>
-                </div>
-
-                <form method="POST" action="{{ route('login') }}" class="space-y-3.5 xl:space-y-4">
-                    @csrf
-
-                    <div class="space-y-1">
-                        <label class="text-white text-[10px] font-bold uppercase tracking-wider block">
-                            Email
-                        </label>
-                        <input type="email" name="email"
-                               placeholder="Masukkan Email"
-                               class="w-full rounded-xl border-0 px-4 py-2.5 sm:py-3 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#ccff00] bg-[#f7f7f7] text-xs sm:text-sm font-medium outline-none"
-                               required autofocus>
-                        @error('email') <p class="text-pink-300 text-xs mt-1">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div class="space-y-1">
-                        <label class="text-white text-[10px] font-bold uppercase tracking-wider block">
-                            Password
-                        </label>
-                        <div class="relative">
-                            <input :type="showPassword ? 'text' : 'password'" name="password"
-                                   placeholder="Masukkan Password"
-                                   class="w-full rounded-xl border-0 px-4 py-2.5 sm:py-3 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#ccff00] bg-[#f7f7f7] text-xs sm:text-sm font-medium pr-10 outline-none"
-                                   required>
-                            <button type="button" x-on:click="showPassword = !showPassword"
-                                    class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition">
-                                <svg x-show="!showPassword" class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                </svg>
-                                <svg x-show="showPassword" class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" x-cloak>
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a8.962 8.962 0 012.122-.163c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m-2.122 2.122A3 3 0 0112 15a3 3 0 01-3-3"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 3l18 18"/>
-                                </svg>
-                            </button>
-                        </div>
-                        @error('password') <p class="text-pink-300 text-xs mt-1">{{ $message }}</p> @enderror
-                    </div>
-
-                    <div class="text-right pt-0.5">
-                        <a href="{{ route('password.request') }}" class="text-white text-xs hover:underline font-normal">
-                            Lupa password?
-                        </a>
-                    </div>
-
-                    <button type="submit"
-                            class="w-full bg-[#ccff00] text-[#2f3cff] font-display text-xl sm:text-2xl py-2.5 sm:py-3 rounded-2xl hover:bg-lime-300 transition uppercase tracking-wide mt-2 shadow-sm">
-                        Masuk
-                    </button>
-
-                    <p class="text-center text-white pt-1 font-normal text-xs sm:text-sm">
-                        Belum punya akun?
-                        <a href="{{ route('register') }}" class="font-bold underline text-[#ccff00]">Daftar</a>
-                    </p>
-                </form>
+        @if (session('status'))
+            <div class="bg-[#ccff00] text-[#3143ff] text-xs font-bold px-4 py-2.5 rounded-xl text-center">
+                {{ session('status') }}
             </div>
+        @endif
+
+        {{-- Google Login Button (Ikon & Teks Warna Biru) --}}
+        <a href="{{ route('auth.google') }}"
+           class="w-full flex items-center justify-center gap-3 bg-[#f7f7f7] hover:bg-white transition text-[#3143ff] font-bold text-xs sm:text-sm py-3 px-4 rounded-xl shadow-sm border border-transparent">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 shrink-0 fill-[#3143ff]" viewBox="0 0 24 24">
+                <path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"/>
+            </svg>
+            <span>Lanjutkan dengan akun google</span>
+        </a>
+
+        {{-- Guest Login Button --}}
+        <a href="{{ url('/') }}"
+           class="w-full flex items-center justify-center gap-3 bg-[#f7f7f7] hover:bg-white transition text-[#3143ff] font-bold text-xs sm:text-sm py-3 px-4 rounded-xl shadow-sm border border-transparent">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 shrink-0 fill-[#3143ff]" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+            </svg>
+            <span>Lanjutkan sebagai guest</span>
+        </a>
+
+        {{-- Divider --}}
+        <div class="flex items-center gap-4 py-2">
+            <div class="flex-1 h-[2px] bg-[#ccff00]"></div>
+            <span class="text-[#ccff00] text-xs font-black tracking-widest">OR</span>
+            <div class="flex-1 h-[2px] bg-[#ccff00]"></div>
         </div>
+
+        <form method="POST" action="{{ route('login') }}" class="space-y-4">
+            @csrf
+
+            <div class="space-y-1.5">
+                <label class="text-white text-xs sm:text-sm font-extrabold uppercase tracking-wide block">
+                    Email
+                </label>
+                <input type="email" name="email"
+                       placeholder="Masukkan Email"
+                       class="w-full rounded-tl-2xl rounded-br-2xl border-2 border-[#ff007a] px-4 py-3 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#ccff00] bg-[#f7f7f7] text-xs sm:text-sm font-medium outline-none transition-all"
+                       required autofocus>
+                @error('email') <p class="text-pink-300 text-xs mt-1 font-semibold">{{ $message }}</p> @enderror
+            </div>
+
+            {{-- Input Password --}}
+            <div class="space-y-1.5">
+                <label class="text-white text-xs sm:text-sm font-extrabold uppercase tracking-wide block">
+                    PASSWORD
+                </label>
+                <div class="relative">
+                    <input :type="showPassword ? 'text' : 'password'" name="password"
+                           placeholder="Masukkan Password"
+                           class="w-full rounded-tl-2xl rounded-br-2xl border-2 border-[#ff007a] px-4 py-3 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#ccff00] bg-[#f7f7f7] text-xs sm:text-sm font-medium pr-11 outline-none transition-all"
+                           required>
+                    
+                    {{-- Ikon Mata (Logika sudah diperbaiki) --}}
+                    <button type="button" x-on:click="showPassword = !showPassword"
+                            class="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition focus:outline-none">
+                        {{-- Saat Password Tersembunyi -> Tampilkan Mata Dicoret --}}
+                        <svg x-show="!showPassword" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a8.962 8.962 0 012.122-.163c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m-2.122 2.122A3 3 0 0112 15a3 3 0 01-3-3"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3l18 18"/>
+                        </svg>
+                        {{-- Saat Password Terbuka -> Tampilkan Mata Terbuka --}}
+                        <svg x-show="showPassword" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" x-cloak>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        </svg>
+                    </button>
+                </div>
+                @error('password') <p class="text-pink-300 text-xs mt-1 font-semibold">{{ $message }}</p> @enderror
+            </div>
+
+            {{-- Lupa Password --}}
+            <div class="text-right pt-1">
+                <a href="{{ route('password.request') }}" class="text-white text-xs hover:underline font-semibold">
+                    Lupa password?
+                </a>
+            </div>
+
+            {{-- Submit Button --}}
+            <button type="submit"
+                    class="w-full bg-[#ccff00] text-[#3143ff] font-extrabold text-lg sm:text-xl py-3 hover:bg-[#b8e600] transition uppercase tracking-wider mt-3 shadow-md">
+                Masuk
+            </button>
+
+            {{-- Register Link --}}
+            <p class="text-center text-white pt-2 font-medium text-xs sm:text-sm">
+                Belum punya akun?
+                <a href="{{ route('register') }}" class="font-bold underline text-[#ccff00]">Daftar</a>
+            </p>
+        </form>
+    </div>
+</div>
     </div>
 </div>
 

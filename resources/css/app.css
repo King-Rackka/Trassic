@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: 'Helvetica Compressed';
+    src: url('/fonts/HelveticaCompressed.woff2') format('woff2'); /* Sesuaikan path file font kamu */
+    font-weight: normal;
+    font-style: normal;
+}
+
+@layer utilities {
+    .font-display {
+        font-family: 'Helvetica Compressed', 'Arial Narrow', sans-serif;
+    }
+    .font-sans {
+        font-family: 'Helvetica', 'Arial', sans-serif;
+    }
+}

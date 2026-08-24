@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-
         html {
             overflow-y: scroll;
             scrollbar-gutter: stable;
@@ -26,6 +25,26 @@
                 linear-gradient(to right, #254bfe20 1px, transparent 1px),
                 linear-gradient(to bottom, #254bfe20 1px, transparent 1px);
             background-size: 28px 28px;
+        }
+
+        @media (max-width: 638px) {
+            .explore-banner-bg {
+                border-style: solid;
+                border-width: 170px 0px 60px 0px;
+                border-image-source: url('/images/background-explore.png');
+                border-image-slice: 480 100 120 100 fill;
+                border-image-repeat: stretch;
+            }
+        }
+
+        @media (min-width: 639px) {
+            .explore-banner-bg {
+                border-style: solid;
+                border-width: 170px 0px 90px 0px;
+                border-image-source: url('/images/background-explore.png');
+                border-image-slice: 440 20 120 20 fill;
+                border-image-repeat: stretch;
+            }
         }
 
         @keyframes float-can {
@@ -82,7 +101,7 @@
             </div>
         </div>
 
-        {{-- Dropdown Mobile --}}
+        {{-- Dropdown Mobile (Menu & Tombol Rata Tengah / Atas-Bawah) --}}
         <div x-show="mobileMenuOpen"
              x-transition:enter="transition ease-out duration-200"
              x-transition:enter-start="opacity-0 -translate-y-2"
@@ -91,17 +110,21 @@
              x-transition:leave-start="opacity-100 translate-y-0"
              x-transition:leave-end="opacity-0 -translate-y-2"
              @click.away="mobileMenuOpen = false"
-             class="absolute top-full left-0 w-full bg-[#254bfe] border-b-4 border-indigo-950 p-6 flex flex-col gap-4 xl:hidden z-50 shadow-xl" x-cloak>
-            <nav class="flex flex-col gap-3 text-white font-display text-lg uppercase tracking-wide">
-                <a href="{{ url('/') }}" class="{{ request()->is('/') ? 'text-[#ccff00]' : '' }}">Beranda</a>
-                <a href="#" class="hover:text-[#ccff00]">Explore</a>
-                <a href="#" class="hover:text-[#ccff00]">Waste &amp; Impact</a>
-                <a href="#" class="hover:text-[#ccff00]">Creators</a>
-                <a href="#" class="hover:text-[#ccff00]">About</a>
+             class="absolute top-full left-0 w-full bg-[#254bfe] border-b-4 border-indigo-950 p-6 flex flex-col gap-6 xl:hidden z-50 shadow-xl text-center" x-cloak>
+            
+            {{-- Navigasi Mobile Rata Tengah --}}
+            <nav class="flex flex-col gap-4 text-white font-display text-xl uppercase tracking-wider items-center justify-center">
+                <a href="{{ url('/') }}" class="{{ request()->is('/') ? 'text-[#ccff00]' : '' }} hover:text-[#ccff00] transition">Beranda</a>
+                <a href="{{ route('explore') }}" class="{{ request()->routeIs('explore') ? 'text-[#ccff00]' : '' }} hover:text-[#ccff00] transition">Explore</a>
+                <a href="#" class="hover:text-[#ccff00] transition">Waste &amp; Impact</a>
+                <a href="#" class="hover:text-[#ccff00] transition">Creators</a>
+                <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'text-[#ccff00]' : '' }} hover:text-[#ccff00] transition">About</a>
             </nav>
-            <div class="flex items-center gap-3 font-display pt-2 border-t border-blue-400">
-                <a href="{{ route('login') }}" class="w-1/2 text-center bg-[#ccff00] text-[#2f3cff] py-2 uppercase text-base font-bold">Login</a>
-                <a href="{{ route('register') }}" class="w-1/2 text-center bg-[#ff007a] text-[#ccff00] py-2 uppercase text-base font-bold">Register</a>
+
+            {{-- Tombol Login & Register Bertumpuk Atas-Bawah Rata Tengah --}}
+            <div class="flex flex-col gap-3 font-display pt-4 border-t border-blue-400/50 w-full max-w-xs mx-auto">
+                <a href="{{ route('login') }}" class="w-full text-center bg-[#ccff00] text-[#254bfe] py-2.5 uppercase text-lg font-bold hover:bg-opacity-90 transition">Login</a>
+                <a href="{{ route('register') }}" class="w-full text-center bg-[#ff007a] text-[#ccff00] py-2.5 uppercase text-lg font-bold hover:bg-opacity-90 transition">Register</a>
             </div>
         </div>
     </header>
@@ -112,15 +135,15 @@
     </main>
 
     {{-- FOOTER --}}
-        <footer class="w-full bg-[#F3F1EA] border-t-4 border-[#254bfe] shrink-0">
+    <footer class="w-full bg-[#F3F1EA] border-t-4 border-[#254bfe] shrink-0">
         <div class="max-w-7xl mx-auto px-6 lg:px-10 py-12 lg:py-16 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
- 
+
             {{-- Logo + Copyright --}}
             <div class="flex flex-col gap-2">
                 <img src="{{ asset('images/logo.png') }}" alt="Trassic" class="h-10 lg:h-12 object-contain w-fit" onerror="this.src='https://via.placeholder.com/120x35/254bfe/ffffff?text=Trassic'">
                 <p class="text-sm lg:text-base font-semibold text-[#254bfe]">©{{ date('Y') }}, by FENDI RAJA ELANG</p>
             </div>
- 
+
             {{-- Nav --}}
             <nav class="flex flex-wrap items-center gap-x-8 gap-y-3 text-[#254bfe] font-display text-base lg:text-xl uppercase tracking-wide">
                 <a href="{{ url('/') }}" class="hover:text-[#ff007a] transition whitespace-nowrap">Beranda</a>
@@ -129,13 +152,13 @@
                 <a href="{{ Route::has('creators') ? route('creators') : '#' }}" class="hover:text-[#ff007a] transition whitespace-nowrap">Creators</a>
                 <a href="{{ route('about') }}" class="hover:text-[#ff007a] transition whitespace-nowrap">About</a>
             </nav>
- 
+
             {{-- Login / Register --}}
             <div class="flex items-center gap-3 font-display shrink-0">
                 <a href="{{ route('login') }}" class="bg-[#ccff00] text-[#254bfe] px-5 py-2.5 uppercase text-base lg:text-lg font-bold hover:bg-opacity-90 transition">Login</a>
                 <a href="{{ route('register') }}" class="bg-[#ff007a] text-[#ccff00] px-5 py-2.5 uppercase text-base lg:text-lg font-bold hover:bg-opacity-90 transition">Register</a>
             </div>
- 
+
         </div>
     </footer>
 
