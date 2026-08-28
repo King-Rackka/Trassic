@@ -190,6 +190,38 @@
             </p>
         </section>
 
+        {{-- ========================================== --}}
+        {{-- SECTION: BANNER BIASAKAN RAJIN BUANG SAMPAH (PIXELSWAP) --}}
+        {{-- ========================================== --}}
+        <section class="w-full flex flex-col items-center justify-center bg-grid-pattern relative overflow-hidden py-6 sm:py-12">
+            
+            {{-- VECTOR PETIR ATAS --}}
+            <div class="w-full flex justify-center -mb-[60px] sm:-mb-[120px] lg:-mb-[180px] z-10 pointer-events-none select-none">
+                <img src="{{ asset('images/vector/Vector.png') }}" 
+                     alt="Vector Top" 
+                     class="w-full h-auto object-contain scale-[1.03] translate-y-[50px]"> 
+                     {{-- ^ Kalau kurang turun, ganti translate-y-[0px] jadi misal: translate-y-[30px] --}}
+            </div>
+
+           {{-- BANNER TENGAH --}}
+            <div class="w-full relative flex items-center justify-center border-y-4 sm:border-y-8 border-[#ccff00] z-20 overflow-hidden bg-[#254bfe]">
+                <div id="pixelswap-banner-root"
+                     data-trash-img="{{ asset('images/image_27.png') }}"
+                     data-tape-img="{{ asset('images/Group 24.png') }}"
+                     class="w-full h-[280px] sm:h-[450px] lg:h-[600px] relative cursor-pointer">
+                </div>
+            </div>
+
+            {{-- VECTOR PETIR BAWAH --}}
+            <div class="w-full flex justify-center -mt-[60px] sm:-mt-[120px] lg:-mt-[180px] z-10 pointer-events-none select-none">
+                <img src="{{ asset('images/vector/Vector (1).png') }}" 
+                     alt="Vector Bottom" 
+                     class="w-full h-auto object-contain scale-[1.03] -translate-y-[50px]">
+                     {{-- ^ Kalau kurang naik ke atas, ganti -translate-y-[0px] jadi misal: -translate-y-[30px] --}}
+            </div>
+
+        </section>
+
     </div>
 
     {{-- SCRIPT GAME & MATTER.JS PHYSICS --}}
