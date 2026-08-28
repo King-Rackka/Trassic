@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import Lanyard from './Lanyard';
 import { generateTrassicCardTexture } from './cardTextureGenerator';
@@ -7,7 +7,6 @@ function LanyardWrapper() {
     const [name, setName] = useState('');
     const [acceptedTerms, setAcceptedTerms] = useState(false);
     const [cardTexUrl, setCardTexUrl] = useState('/images/lanyard.png');
-    const debounceRef = useRef(null);
 
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
@@ -26,18 +25,10 @@ function LanyardWrapper() {
     }, []);
 
     useEffect(() => {
-        // Debounce: batalin timer sebelumnya tiap ada perubahan baru,
-        // texture cuma di-generate ulang 350ms SETELAH user berhenti ngetik.
-        if (debounceRef.current) clearTimeout(debounceRef.current);
-
-        debounceRef.current = setTimeout(() => {
-            generateTrassicCardTexture(name, joinDate, acceptedTerms, '/images/lanyard.png')
-                .then(url => {
-                    if (url) setCardTexUrl(url);
-                });
-        }, 350);
-
-        return () => clearTimeout(debounceRef.current);
+        generateTrassicCardTexture(name, joinDate, acceptedTerms, '/images/lanyard.png')
+            .then(url => {
+                if (url) setCardTexUrl(url);
+            });
     }, [name, acceptedTerms]);
 
     const handleCardClick = () => {

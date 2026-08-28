@@ -9,15 +9,14 @@ export function generateTrassicCardTexture(knownAsText, joinDateText, isChecked,
 
         const drawContent = (img) => {
             try {
-               
-                const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-                gradient.addColorStop(0, '#254bfe');
-                gradient.addColorStop(0.5, '#7c3aed');
-                gradient.addColorStop(1, '#ff007a');
-                
-                ctx.fillStyle = gradient;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                // 🔴 DIHAPUS: gradient background yang sebelumnya ngefill seluruh canvas
+                // duluan sebelum lanyard.png ditumpuk — ini yang bikin sudut-sudut
+                // transparan badge (notch, corner membulat) keliatan ada "lahan" warna
+                // gradient di baliknya. Sekarang canvas dibiarkan transparan dulu,
+                // baru badge-nya digambar di atas — jadi area di luar badge tetap
+                // transparan (nggak ada warna lain yang nembus).
 
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
                 ctx.fillStyle = '#254bfe';
@@ -25,7 +24,7 @@ export function generateTrassicCardTexture(knownAsText, joinDateText, isChecked,
                 ctx.textAlign = 'left';
                 let rawName = (knownAsText && knownAsText.trim()) ? knownAsText.trim() : 'MAPLESTAR';
                 if (rawName.length > 15) {
-                    rawName = rawName.substring(0, 15); 
+                    rawName = rawName.substring(0, 15);
                 }
                 ctx.fillText(rawName.toUpperCase(), 215, 665);
 
@@ -36,7 +35,7 @@ export function generateTrassicCardTexture(knownAsText, joinDateText, isChecked,
                 ctx.lineWidth = 3;
                 ctx.strokeStyle = '#ffffff';
                 ctx.fillStyle = isChecked ? '#ccff00' : 'rgba(0,0,0,0)';
-                
+
                 ctx.fillRect(175, 800, 26, 26);
                 ctx.strokeRect(175, 800, 26, 26);
 

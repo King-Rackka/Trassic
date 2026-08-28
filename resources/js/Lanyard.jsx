@@ -94,7 +94,10 @@ function Band({
     canvas.height = H;
     const ctx = canvas.getContext('2d');
     if (!ctx) return baseMap;
-    ctx.drawImage(baseImg, 0, 0, W, H);
+    // Transparan penuh (bukan solid putih lagi). Supaya nggak glitch item kayak
+    // percobaan sebelumnya, transparansi-nya di-handle via `alphaTest` di material
+    // (lihat bagian <meshPhysicalMaterial> di bawah) — bukan `transparent` blending biasa.
+    ctx.clearRect(0, 0, W, H);
 
     const drawFitted = (img, rect) => {
       const rx = rect.x * W, ry = rect.y * H, rw = rect.w * W, rh = rect.h * H;
@@ -199,6 +202,7 @@ function Band({
                 clearcoatRoughness={0.15}
                 roughness={0.9}
                 metalness={0.8}
+                alphaTest={0.5}
               />
             </mesh>
             <mesh geometry={nodes.clip.geometry} material={materials.metal} material-roughness={0.3} />
