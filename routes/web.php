@@ -23,6 +23,18 @@ Route::get('/work/{work:slug}', function (\App\Models\Work $work) {
     return "Detail karya: " . $work->title; 
 })->name('work.show');
 
+Route::get('/creators', function () {
+    return view('creators');
+})->name('creators');
+
+Route::get('/creators/lainnya', function () {
+    return view('creators-more');
+})->name('creators.more');
+
+Route::get('/creator/{creator:slug}', function (\App\Models\CreatorProfile $creator) {
+    return "Profil kreator: " . $creator->name; // placeholder sementara
+})->name('creator.show');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

@@ -42,22 +42,16 @@
         </div>
     </section>
 
-    {{-- ========================================== --}}
-    {{-- SECTION 2: HASIL KARYA DAUR ULANG --}}
-    {{-- ========================================== --}}
     <section class="w-full relative mt-8 sm:mt-20 mb-16 z-0">
 
-        {{-- WRAPPER BANNER EXPLORE FULL STRETCH --}}
         <div class="w-full explore-banner-bg relative pt-[22%] sm:pt-[180px] pb-16 px-4 sm:px-12">
 
-            {{-- 1. JUDUL TEKS PUTIH (TURUN PAS DI DALAM AREA BANNER BIRU) --}}
             <div class="w-full text-center mb-6 sm:mb-8 relative z-10">
                 <h2 class="font-display text-2xl sm:text-5xl text-white uppercase tracking-normal drop-shadow-md leading-tight">
                     Hasil karya daur ulang
                 </h2>
             </div>
 
-            {{-- 2. FILTER CATEGORIES CHIPS (RAPI DI MOBILE & DESKTOP) --}}
             <div class="flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-8 sm:mb-10 no-scrollbar px-2 max-w-6xl mx-auto relative z-10">
                 <button wire:click="setCategory('')"
                         class="px-3.5 py-1.5 sm:px-5 sm:py-2 border-2 text-xs sm:text-sm font-display uppercase whitespace-nowrap transition-all duration-200
@@ -73,40 +67,45 @@
                 @endforeach
             </div>
 
-            {{-- 3. WORKS GRID (2 KOLOM DI MOBILE, 5 KOLOM DI DESKTOP) --}}
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-6 max-w-7xl mx-auto px-1 sm:px-6 relative z-10" wire:loading.class="opacity-60">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 max-w-7xl mx-auto px-1 sm:px-6 relative z-10" wire:loading.class="opacity-60">
                 @forelse ($works as $work)
                     @php
                         $displayQuantity = $category ? $work->quantityForMaterial($category) : $work->quantityForMaterial();
                     @endphp
-                    <a href="{{ route('work.show', $work->slug) }}"
-                       class="group relative flex flex-col justify-between transition-transform duration-200 hover:-translate-y-2 p-1">
+                    <div class="group relative flex flex-col justify-between transition-transform duration-200 hover:-translate-y-2 p-1 w-full">
+                        
+                        <a href="{{ route('work.show', $work->slug) }}" class="block w-full">
+                            {{-- BINGKAI FOTO DENGAN RATING 1:1 SERAGAM --}}
+                            <div class="relative w-full aspect-square bg-gray-900 border-2 border-[#ff007a] shadow-[3px_3px_0px_rgba(0,0,0,1)]">
+                                
+                                {{-- 4 KOTAK KUNING PRESISI DI 4 POJOK SUDUT LUAR --}}
+                                <div class="absolute -top-1.5 -left-1.5 w-3 h-3 bg-[#ccff00] border border-black z-30 pointer-events-none"></div>
+                                <div class="absolute -top-1.5 -right-1.5 w-3 h-3 bg-[#ccff00] border border-black z-30 pointer-events-none"></div>
+                                <div class="absolute -bottom-1.5 -left-1.5 w-3 h-3 bg-[#ccff00] border border-black z-30 pointer-events-none"></div>
+                                <div class="absolute -bottom-1.5 -right-1.5 w-3 h-3 bg-[#ccff00] border border-black z-30 pointer-events-none"></div>
 
-                        {{-- FRAME OUTLINE PINK & AKSEN KOTAK LIME DI 4 CORNER --}}
-                        <div class="relative w-full aspect-square bg-gray-900 overflow-hidden border-2 border-[#ff007a]">
-                            <div class="absolute -top-1 -left-1 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-[#ccff00] z-20"></div>
-                            <div class="absolute -top-1 -right-1 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-[#ccff00] z-20"></div>
-                            <div class="absolute -bottom-1 -left-1 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-[#ccff00] z-20"></div>
-                            <div class="absolute -bottom-1 -right-1 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-[#ccff00] z-20"></div>
+                                {{-- BADGE SAMPAH TERPAKAI --}}
+                                @if ($displayQuantity > 0)
+                                    <div class="absolute top-2 left-2 z-30 bg-[#ccff00] text-[#254bfe] border border-black font-sans text-[7px] sm:text-[10px] font-extrabold px-1.5 sm:px-2 py-0.5 uppercase tracking-tight shadow-[1px_1px_0px_rgba(0,0,0,1)]">
+                                        {{ $displayQuantity }}kg sampah terpakai
+                                    </div>
+                                @endif
 
-                            {{-- BADGE SAMPAH TERPAKAI --}}
-                            @if ($displayQuantity > 0)
-                                <div class="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 z-30 bg-[#ccff00] text-[#254bfe] font-sans text-[7px] sm:text-[10px] font-extrabold px-1.5 sm:px-2 py-0.5 uppercase tracking-tight">
-                                    {{ $displayQuantity }}kg sampah terpakai
+                                {{-- GAMBAR TER-CROP SEHINGGA TINGGI DAN LEBAR 100% PERSIS --}}
+                                <div class="w-full h-full overflow-hidden flex items-center justify-center">
+                                    @if ($work->cover_image)
+                                        <img src="{{ asset('storage/' . $work->cover_image) }}"
+                                             alt="{{ $work->title }}"
+                                             class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                    @else
+                                        <div class="w-full h-full flex items-center justify-center text-gray-400 text-xs font-bold font-sans">No Image</div>
+                                    @endif
                                 </div>
-                            @endif
+                            </div>
+                        </a>
 
-                            @if ($work->cover_image)
-                                <img src="{{ asset('storage/' . $work->cover_image) }}"
-                                     alt="{{ $work->title }}"
-                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            @else
-                                <div class="w-full h-full flex items-center justify-center text-gray-400 text-xs font-bold font-sans">No Image</div>
-                            @endif
-                        </div>
-
-                        {{-- DETAIL KARYA TEKS PUTIH --}}
-                        <div class="mt-2.5 sm:mt-3 text-center">
+                        {{-- DETAIL TEKS DI BAWAH BINGKAI --}}
+                        <div class="mt-2.5 sm:mt-3 text-center w-full">
                             <h4 class="font-display text-xs sm:text-base text-white truncate uppercase leading-tight tracking-wide">
                                 {{ $work->title }}
                             </h4>
@@ -117,10 +116,10 @@
                                 <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-white" viewBox="0 0 24 24">
                                     <path d="M2 20h2V8H2v12zm20-9c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L13.17 2 7.58 7.59C7.22 7.95 7 8.45 7 9v9c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
                                 </svg>
-                                <span>{{ $work->appreciations_count ?? 0 }} likes</span>
+                                <span>{{ number_format($work->appreciations_count ?? 0) }} likes</span>
                             </p>
                         </div>
-                    </a>
+                    </div>
                 @empty
                     <div class="col-span-full text-center py-16 text-white">
                         <p class="font-display text-lg sm:text-xl uppercase tracking-wider">Belum ada karya untuk kategori ini.</p>
@@ -138,6 +137,7 @@
 
         </div>
     </section>
+    
 
     {{-- ========================================== --}}
     {{-- SECTION 3: CALL TO ACTION --}}

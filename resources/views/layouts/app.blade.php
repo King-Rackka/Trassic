@@ -91,7 +91,7 @@
                     <a href="{{ url('/') }}" class="{{ request()->is('/') ? 'text-[#ccff00]' : '' }} hover:text-[#ccff00] transition whitespace-nowrap">Beranda</a>
                     <a href="{{ route('explore') }}" class="{{ request()->routeIs('explore') ? 'text-[#ccff00]' : '' }} hover:text-[#ccff00] transition whitespace-nowrap">Explore</a>
                     <a href="#" class="hover:text-[#ccff00] transition whitespace-nowrap">Waste &amp; Impact</a>
-                    <a href="#" class="hover:text-[#ccff00] transition whitespace-nowrap">Creators</a>
+                    <a href="{{ route('creators') }}" class="{{ request()->routeIs('creators') ? 'text-[#ccff00]' : '' }} hover:text-[#ccff00] transition whitespace-nowrap">Creators</a>
                     <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'text-[#ccff00]' : '' }} hover:text-[#ccff00] transition whitespace-nowrap">About</a>
                 </nav>
                 <div class="flex items-center gap-2 font-display shrink-0 ml-2">

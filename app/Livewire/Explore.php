@@ -22,12 +22,12 @@ class Explore extends Component
             ->withCount(['appreciations as weekly_likes' => function ($q) {
                 $q->where('created_at', '>=', now()->subDays(7));
             }])
-            ->with('wasteDna')
-            ->orderByDesc('weekly_likes')
+            ->with(['creator', 'wasteDna'])
+            ->orderByDesc('weekly_likes')   
+            ->orderByDesc('published_at') 
             ->take(3)
             ->get();
 
-        // Ambil daftar waste_type unik dari WasteDNA (bukan category dari Work)
         $categories = WasteDna::distinct()->pluck('waste_type');
 
         $works = Work::query()
@@ -47,7 +47,7 @@ class Explore extends Component
             'topWorks' => $topWorks,
             'categories' => $categories,
             'works' => $works,
-            'category' => $this->wasteType, // biar variabel $category di view tetap kepake tanpa ganti semua nama di blade
+            'category' => $this->wasteType,
         ]);
     }
 }
