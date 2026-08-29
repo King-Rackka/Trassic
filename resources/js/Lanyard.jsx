@@ -15,6 +15,31 @@ const BLANK_PIXEL =
 const FRONT_UV_RECT = { x: 0, y: 0, w: 0.5, h: 0.75 };
 const BACK_UV_RECT = { x: 0.5, y: 0, w: 0.5, h: 0.75 };
 
+/**
+ * Loader tekstur TANPA Suspense — beda dari useTexture() milik drei.
+ * useTexture() drei bikin komponen unmount sementara tiap URL berubah (Suspense),
+ * makanya kartu "ke-refresh" tiap teksturnya update. Ini versi manual: tekstur lama
+ * tetap tampil sampai yang baru selesai di-load, baru di-swap diam-diam.
+ */
+function useLiveTexture(url) {
+  const [tex, setTex] = useState(null);
+  useEffect(() => {
+    if (!url) return;
+    let cancelled = false;
+    const loader = new THREE.TextureLoader();
+    loader.load(url, (loaded) => {
+      if (cancelled) return;
+      loaded.colorSpace = THREE.SRGBColorSpace;
+      setTex((prev) => {
+        prev?.dispose?.(); // buang tekstur lama dari memori GPU biar ga bocor
+        return loaded;
+      });
+    });
+    return () => { cancelled = true; };
+  }, [url]);
+  return tex;
+}
+
 export default function Lanyard({
   position = [0, 0, 30],
   gravity = [0, -40, 0],
@@ -78,13 +103,14 @@ function Band({
   const vec = new THREE.Vector3(), ang = new THREE.Vector3(), rot = new THREE.Vector3(), dir = new THREE.Vector3();
   const segmentProps = { type: 'dynamic', canSleep: true, colliders: false, angularDamping: 4, linearDamping: 4 };
   const { nodes, materials } = useGLTF('/assets/card.glb');
-  const texture = useTexture(lanyardImage || lanyard);
-  const frontTex = useTexture(frontImage || BLANK_PIXEL);
-  const backTex = useTexture(backImage || BLANK_PIXEL);
+  const texture = useTexture(lanyardImage || lanyard); // statis, jarang berubah — aman pakai Suspense
+  const frontTex = useLiveTexture(frontImage || BLANK_PIXEL);
+  const backTex = useLiveTexture(backImage || BLANK_PIXEL);
 
   const cardMap = useMemo(() => {
     const baseMap = materials.base.map;
     if (!frontImage && !backImage) return baseMap;
+    if (!frontTex && !backTex) return baseMap; // belum kelar loading pertama kali, pakai base dulu
 
     const baseImg = baseMap.image;
     const W = baseImg.width;
@@ -113,8 +139,8 @@ function Band({
       ctx.restore();
     };
 
-    if (frontImage && frontTex.image) drawFitted(frontTex.image, FRONT_UV_RECT);
-    if (backImage && backTex.image) drawFitted(backTex.image, BACK_UV_RECT);
+    if (frontImage && frontTex?.image) drawFitted(frontTex.image, FRONT_UV_RECT);
+    if (backImage && backTex?.image) drawFitted(backTex.image, BACK_UV_RECT);
 
     const composite = new THREE.CanvasTexture(canvas);
     composite.colorSpace = THREE.SRGBColorSpace;
@@ -128,7 +154,7 @@ function Band({
   const [dragged, drag] = useState(false);
   const [hovered, hover] = useState(false);
 
-  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 0.9]);
+  useRopeJoint(fixed, j1, [[0, 0, 0], [0, 0, 0], 1.0]);
   useRopeJoint(j1, j2, [[0, 0, 0], [0, 0, 0], 0.8]);
   useRopeJoint(j2, j3, [[0, 0, 0], [0, 0, 0], 0.8]);
   useSphericalJoint(j3, card, [[0, 0, 0], [0, 1.5, 0]]);
@@ -170,7 +196,7 @@ function Band({
 
   return (
     <>
-      <group position={[0, 4, 0]}>
+      <group position={[0, 4.05, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type="fixed" />
         <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps}>
           <BallCollider args={[0.1]} />
@@ -205,8 +231,8 @@ function Band({
                 alphaTest={0.5}
               />
             </mesh>
-            <mesh geometry={nodes.clip.geometry} material={materials.metal} material-roughness={0.3} />
-            <mesh geometry={nodes.clamp.geometry} material={materials.metal} />
+            <mesh geometry={nodes.clip.geometry} material={materials.metal} material-roughness={0.3} position={[0, -0.025, 0]} />
+            <mesh geometry={nodes.clamp.geometry} material={materials.metal} position={[0, -0.025, 0]} />
           </group>
         </RigidBody>
       </group>
