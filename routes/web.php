@@ -32,8 +32,12 @@ Route::get('/creators/lainnya', function () {
 })->name('creators.more');
 
 Route::get('/creator/{creator:slug}', function (\App\Models\CreatorProfile $creator) {
-    return "Profil kreator: " . $creator->name; // placeholder sementara
+    return view('creator-show', ['creator' => $creator]);
 })->name('creator.show');
+
+Route::get('/creator/{creator:slug}/karya', function (\App\Models\CreatorProfile $creator) {
+    return "Semua karya dari " . $creator->name;
+})->name('creator.works.more');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

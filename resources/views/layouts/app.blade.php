@@ -188,5 +188,8 @@
 
 </div>
 @stack('scripts')
+
+<x-login-prompt-modal />
+
 </body>
 </html>

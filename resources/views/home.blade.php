@@ -159,19 +159,13 @@
             </button>
         </section>
 
-
-        {{-- ========================================== --}}
-        {{-- SECTION 3: PHYSICS BADGES (GARIS SEJAJAR VECTOR DI HP) --}}
-        {{-- ========================================== --}}
-        <section class="w-full flex flex-col items-center justify-center py-6 sm:py-12 px-0 bg-grid-pattern relative overflow-hidden border-b-2 border-[#254bfe]">
+        <section class="w-full flex flex-col items-center justify-center py-6 sm:py-12 px-0 bg-grid-pattern relative overflow-hidden">
             
             <h2 class="text-2xl sm:text-5xl font-display text-[#254bfe] uppercase tracking-normal text-center mb-4 sm:mb-8 z-20">
                 Kenapa harus menggunakan trassic?
             </h2>
 
-            {{-- Container Canvas Physics: h-[230px] di mobile agar garis biru sejajar pas dengan ujung vector --}}
             <div class="w-full h-[230px] sm:h-[480px] relative flex items-center justify-center">
-                {{-- Vector Left & Right --}}
                 <img src="{{ asset('images/vector/Vector_Landingpage_2.png') }}"
                      alt="Vector Left"
                      class="absolute top-1/2 -left-0 -translate-y-1/2 w-[70px] sm:w-auto h-[100%] sm:h-[140%] object-contain pointer-events-none z-10 -scale-x-100">

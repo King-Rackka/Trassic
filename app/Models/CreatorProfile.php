@@ -55,4 +55,9 @@ public function isFollowedBy($userId)
         ->exists();
 }
 
+public function followingCount()
+{
+    return \App\Models\Follow::where('user_id', $this->user_id)->count();
+}
+
 }

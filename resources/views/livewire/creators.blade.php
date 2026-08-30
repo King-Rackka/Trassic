@@ -66,7 +66,7 @@
                                     </div>
 
                                     <button wire:click="toggleFollow({{ $creator->id }})" 
-                                            class="px-3.5 py-1 sm:px-4 sm:py-1.5 bg-[#ccff00] hover:bg-[#ff007a] text-[#254bfe] hover:text-white font-display text-[11px] sm:text-xs uppercase border-2 border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] active:translate-y-0.5 transition">
+                                            class="px-3.5 py-1 sm:px-4 sm:py-1.5 bg-[#ccff00] hover:bg-[#ff007a] text-[#254bfe] hover:text-[#ccff00] font-display text-[11px] sm:text-xs uppercase border-2 border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] active:translate-y-0.5 transition">
                                         {{ $creator->isFollowedBy(auth()->id()) ? 'Mengikuti' : 'Ikuti' }}
                                     </button>
                                 </div>
@@ -120,15 +120,16 @@
                             
                             {{-- KIRI: PROFIL KREATOR --}}
                             <div class="w-full md:w-[320px] lg:w-[350px] flex items-center gap-3.5 sm:gap-4 shrink-0">
-                                <div class="w-20 h-20 sm:w-28 sm:h-28 aspect-square bg-gray-900 border-2 border-black shrink-0 overflow-hidden shadow-[3px_3px_0px_rgba(0,0,0,1)]">
-                                    @if ($creator->profile_image)
+                                
+                            <a href="{{ route('creator.show', $creator->slug) }}" class="w-20 h-20 sm:w-28 sm:h-28 aspect-square bg-gray-900 border-2 border-black shrink-0 overflow-hidden shadow-[3px_3px_0px_rgba(0,0,0,1)]">
+                                 @if ($creator->profile_image)
                                         <img src="{{ asset('storage/' . $creator->profile_image) }}" alt="{{ $creator->name }}" class="w-full h-full object-cover">
                                     @else
                                         <div class="w-full h-full bg-[#254bfe] text-[#ccff00] font-display flex items-center justify-center text-xl sm:text-2xl">
                                             {{ substr($creator->name, 0, 2) }}
                                         </div>
-                                    @endif
-                                </div>
+                                    @endif    
+                            </a>
 
                                 <div class="flex-1 min-w-0">
                                     <h3 class="font-display text-xl sm:text-2xl text-[#254bfe] uppercase truncate leading-tight">
@@ -144,7 +145,7 @@
                                     </p>
 
                                     <button wire:click="toggleFollow({{ $creator->id }})" 
-                                            class="mt-2.5 px-4 py-1.5 bg-[#ccff00] hover:bg-[#ff007a] text-[#254bfe] hover:text-white font-display text-xs uppercase border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] active:translate-y-0.5 transition">
+                                            class="mt-2.5 px-4 py-1.5 bg-[#ccff00] hover:bg-[#ff007a] text-[#254bfe] hover:text-[#ccff00] font-display text-xs uppercase border border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] active:translate-y-0.5 transition">
                                         {{ $creator->isFollowedBy(auth()->id()) ? 'Mengikuti' : 'Ikuti' }}
                                     </button>
                                 </div>
