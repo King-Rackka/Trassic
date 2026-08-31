@@ -11,6 +11,7 @@ export default defineConfig({
                 'resources/js/app.js',
                 'resources/js/react-entries/about-hero.jsx',
                 'resources/js/lanyard-entry.jsx',
+                'resources/js/creator-lanyard-entry.jsx',
             ],
             refresh: true,
         }),

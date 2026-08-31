@@ -21,6 +21,9 @@ class TrassicDemoSeeder extends Seeder
                 'creator_type' => 'umkm',
                 'bio' => 'Menekuni teknik origami multilayer dari plastik sachet sejak 2020. Mengubah limbah "rosok" yang tak laku dijual jadi kerajinan bernilai tinggi.',
                 'location' => 'Semarang, Jawa Tengah',
+                'phone' => '+62 812-3456-7890',
+                'website' => 'https://ranicraft.id',
+                'instagram' => '@rani.origami',
             ],
             [
                 'name' => 'Amanda Prita',
@@ -28,6 +31,9 @@ class TrassicDemoSeeder extends Seeder
                 'creator_type' => 'studio',
                 'bio' => 'Bersama dua rekannya membangun studio furnitur dari tutup botol dan galon plastik HDPE bekas sejak Juni 2023, melibatkan warga sekitar sebagai perajin.',
                 'location' => 'Sawangan, Depok',
+                'phone' => '+62 813-8899-7711',
+                'website' => 'https://amandastudio.co',
+                'instagram' => '@amanda.upcycle',
             ],
             [
                 'name' => 'Bank Sampah Melati',
@@ -35,6 +41,9 @@ class TrassicDemoSeeder extends Seeder
                 'creator_type' => 'community',
                 'bio' => 'Komunitas warga yang mengolah sampah kemasan kopi, jas hujan plastik, dan botol kaca jadi produk kerajinan rumah tangga.',
                 'location' => 'Duren Sawit, Jakarta Timur',
+                'phone' => '+62 821-2233-4455',
+                'website' => 'https://banksampahmelati.org',
+                'instagram' => '@bs.melati_durensawit',
             ],
             [
                 'name' => 'Wati Prihatinia Dewi',
@@ -42,6 +51,9 @@ class TrassicDemoSeeder extends Seeder
                 'creator_type' => 'umkm',
                 'bio' => 'Pemilik Kizie Craft, mengubah sampah kantong plastik jadi kerajinan bunga hias bernilai jual tinggi.',
                 'location' => 'Cibodas, Kota Tangerang',
+                'phone' => '+62 857-1122-3344',
+                'website' => 'https://kiziecraft.com',
+                'instagram' => '@kizie_craft',
             ],
             [
                 'name' => 'Ernik Yustiana',
@@ -49,6 +61,9 @@ class TrassicDemoSeeder extends Seeder
                 'creator_type' => 'umkm',
                 'bio' => 'Pemilik Yust Collection, mengolah aneka sampah nonlogam (kertas, plastik, gelas, kain perca, kulit) jadi barang estetik. Beralih usaha dari pembatik tulis sejak 2017, produknya sudah dipesan hingga luar pulau.',
                 'location' => 'Malang, Jawa Timur',
+                'phone' => '+62 878-9900-1122',
+                'website' => 'https://yustcollection.id',
+                'instagram' => '@yust_collection',
             ],
             [
                 'name' => 'Denok Marty Astuti',
@@ -56,6 +71,9 @@ class TrassicDemoSeeder extends Seeder
                 'creator_type' => 'individual',
                 'bio' => 'Pengrajin miniatur dari kardus bekas dan kain perca. Karyanya sempat jadi perhatian pengunjung dalam pameran Java Expo di Solo.',
                 'location' => 'Laweyan, Solo',
+                'phone' => '+62 815-4455-6677',
+                'website' => 'https://denokart.com',
+                'instagram' => '@denok.miniatur',
             ],
             [
                 'name' => 'CV. Bina Usaha Mandiri',
@@ -63,6 +81,9 @@ class TrassicDemoSeeder extends Seeder
                 'creator_type' => 'umkm',
                 'bio' => 'Perusahaan yang bergerak di industri kreatif kerajinan daur ulang kertas koran.',
                 'location' => 'Jawa Tengah',
+                'phone' => '+62 24-7654321',
+                'website' => 'https://binausahamandiri.co.id',
+                'instagram' => '@binausaha_mandiri',
             ],
         ];
 
@@ -82,7 +103,11 @@ class TrassicDemoSeeder extends Seeder
                 'bio' => $data['bio'],
                 'creator_type' => $data['creator_type'],
                 'location' => $data['location'],
-                'social_links' => json_encode([]),
+                'phone' => $data['phone'] ?? null,
+                'social_links' => [
+                    'website' => $data['website'] ?? null,
+                    'instagram' => $data['instagram'] ?? null,
+                ],
             ]);
         }
 
