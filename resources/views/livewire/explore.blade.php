@@ -1,8 +1,5 @@
 <div class="w-full bg-grid-pattern min-h-screen py-8 sm:py-12">
 
-    {{-- ========================================== --}}
-    {{-- SECTION 1: TOP 3 LIKES MINGGU INI --}}
-    {{-- ========================================== --}}
     <section class="w-full py-6 sm:py-10 px-4 sm:px-8 max-w-7xl mx-auto text-center relative z-10">
         <h1 class="font-display text-3xl sm:text-5xl text-[#254bfe] uppercase mb-10 sm:mb-14 tracking-normal">
             Karya dengan like terbanyak minggu ini
@@ -138,12 +135,8 @@
         </div>
     </section>
     
-
-    {{-- ========================================== --}}
-    {{-- SECTION 3: CALL TO ACTION --}}
-    {{-- ========================================== --}}
     <section class="w-full py-12 px-4 sm:px-8 max-w-7xl mx-auto">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-8 bg-white border-2 border-black p-6 sm:p-12 shadow-[6px_6px_0px_rgba(0,0,0,1)]">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-8 p-6 sm:p-12 ">
             <div class="space-y-4 text-center md:text-left">
                 <h2 class="font-display text-3xl sm:text-5xl text-[#254bfe] uppercase leading-tight">
                     Ingin karyamu ada disini?

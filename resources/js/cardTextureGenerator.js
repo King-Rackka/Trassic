@@ -9,12 +9,6 @@ export function generateTrassicCardTexture(knownAsText, joinDateText, isChecked,
 
         const drawContent = (img) => {
             try {
-                // 🔴 DIHAPUS: gradient background yang sebelumnya ngefill seluruh canvas
-                // duluan sebelum lanyard.png ditumpuk — ini yang bikin sudut-sudut
-                // transparan badge (notch, corner membulat) keliatan ada "lahan" warna
-                // gradient di baliknya. Sekarang canvas dibiarkan transparan dulu,
-                // baru badge-nya digambar di atas — jadi area di luar badge tetap
-                // transparan (nggak ada warna lain yang nembus).
 
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
@@ -22,7 +16,7 @@ export function generateTrassicCardTexture(knownAsText, joinDateText, isChecked,
                 ctx.fillStyle = '#254bfe';
                 ctx.font = '900 40px "Anton", sans-serif';
                 ctx.textAlign = 'left';
-                let rawName = (knownAsText && knownAsText.trim()) ? knownAsText.trim() : 'MAPLESTAR';
+                let rawName = (knownAsText && knownAsText.trim()) ? knownAsText.trim() : 'YOUR NAME';
                 if (rawName.length > 15) {
                     rawName = rawName.substring(0, 15);
                 }

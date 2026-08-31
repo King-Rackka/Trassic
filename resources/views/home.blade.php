@@ -12,9 +12,6 @@
         .animate-trash-float {
             animation: trashFloat 3.5s ease-in-out infinite;
         }
-        .animation-delay-1 { animation-delay: 0.7s; }
-        .animation-delay-2 { animation-delay: 1.4s; }
-        .animation-delay-3 { animation-delay: 2.1s; }
 
         /* Animasi Mental / Bounce Back Saat Salah Tempat */
         @keyframes bounceBack {
@@ -26,6 +23,28 @@
         }
         .animate-bounce-back {
             animation: bounceBack 0.65s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+
+        /* ANIMASI MARQUEE BERJALAN */
+        @keyframes marqueeLeftToRight {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0%); }
+        }
+        @keyframes marqueeRightToLeft {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .animate-marquee-l2r {
+            display: flex;
+            width: max-content;
+            animation: marqueeLeftToRight 10s linear infinite;
+        }
+
+        .animate-marquee-r2l {
+            display: flex;
+            width: max-content;
+            animation: marqueeRightToLeft 10s linear infinite;
         }
     </style>
 
@@ -91,8 +110,7 @@
             </div>
         </section>
 
-
-{{-- ========================================== --}}
+        {{-- ========================================== --}}
         {{-- SECTION 2: GAME MEMBUANG SAMPAH --}}
         {{-- ========================================== --}}
         <section class="w-full flex flex-col items-center justify-center py-8 sm:py-20 px-2 sm:px-8 bg-grid-pattern relative overflow-hidden"
@@ -110,7 +128,7 @@
                      alt="Background Vector Trash" 
                      class="absolute w-[280px] sm:w-[580px] h-auto object-contain z-0 pointer-events-none drop-shadow-md">
 
-                {{-- 3 TEMPAT SAMPAH (PRESISI LINGKARAN & HOVER ANIMATION) --}}
+                {{-- 3 TEMPAT SAMPAH --}}
                 <div class="relative w-[280px] sm:w-[610px] h-[260px] sm:h-[420px] z-10 flex items-center justify-center">
                     
                     {{-- TONG B3 (RED) --}}
@@ -133,16 +151,16 @@
 
                 </div>
 
-                {{-- SAMPAH INTERAKTIF DI 4 SUDUT --}}
+                {{-- SAMPAH INTERAKTIF DI 4 SUDUT (LANGSUNG HILANG SAAT BENAR) --}}
                 <template x-for="(item, index) in trashItems" :key="item.id">
-                    <div @pointerdown="startDrag($event, index)"
+                    <div x-show="!item.inBin"
+                         @pointerdown="startDrag($event, index)"
                          :class="[
-                             item.dragging || item.inBin ? '' : item.defaultClass,
+                             item.dragging ? '' : item.defaultClass,
                              !item.inBin && !item.dragging && !item.bouncing ? 'animate-trash-float' : '',
                              item.bouncing ? 'animate-bounce-back' : '',
                              item.dragging ? 'z-50 scale-125 cursor-grabbing' : '',
-                             !item.inBin && !item.dragging ? 'z-30 cursor-grab hover:scale-110' : '',
-                             item.inBin ? 'z-40 scale-75 opacity-90 transition-all duration-500' : ''
+                             !item.inBin && !item.dragging ? 'z-30 cursor-grab hover:scale-110' : ''
                          ]"
                          :style="getItemStyle(item)"
                          class="absolute touch-none transition-transform">
@@ -154,11 +172,14 @@
 
             <button x-show="allCompleted" 
                     @click="resetGame()"
-                    class="mt-4 bg-[#ccff00] text-[#2f3cff] font-display text-lg sm:text-xl px-6 py-2.5 rounded-2xl border-2 border-black hover:bg-lime-300 transition uppercase shadow-[4px_4px_0px_rgba(0,0,0,1)] z-20">
+                    class="mt-4 bg-[#ccff00] text-[#2f3cff] font-display text-lg sm:text-xl px-6 py-2.5 border-2 border-black hover:bg-lime-300 transition uppercase shadow-[4px_4px_0px_rgba(0,0,0,1)] z-20 cursor-pointer">
                 Ulangi Latihan 🔄
             </button>
         </section>
 
+        {{-- ========================================== --}}
+        {{-- SECTION 3: MATTER.JS PHYSICS (DENGAN GARIS BIRU ATAS-BAWAH) --}}
+        {{-- ========================================== --}}
         <section class="w-full flex flex-col items-center justify-center py-6 sm:py-12 px-0 bg-grid-pattern relative overflow-hidden">
             
             <h2 class="text-2xl sm:text-5xl font-display text-[#254bfe] uppercase tracking-normal text-center mb-4 sm:mb-8 z-20">
@@ -174,7 +195,7 @@
                      alt="Vector Right"
                      class="absolute top-1/2 -right-0 -translate-y-1/2 w-[70px] sm:w-auto h-[100%] sm:h-[140%] object-contain pointer-events-none z-10">
 
-                {{-- Container Canvas Physics --}}
+                {{-- CONTAINER CANVAS PHYSICS DENGAN GARIS BIRU BORDER-Y --}}
                 <div id="physics-container" class="w-full h-full relative border-y-2 border-[#254bfe] overflow-hidden z-20" style="touch-action: pan-y;">
                 </div>
             </div>
@@ -184,37 +205,54 @@
             </p>
         </section>
 
-        {{-- ========================================== --}}
-        {{-- SECTION: BANNER BIASAKAN RAJIN BUANG SAMPAH (PIXELSWAP) --}}
-        {{-- ========================================== --}}
-        <section class="w-full flex flex-col items-center justify-center bg-grid-pattern relative overflow-hidden py-6 sm:py-12">
-            
-            {{-- VECTOR PETIR ATAS --}}
-            <div class="w-full flex justify-center -mb-[60px] sm:-mb-[120px] lg:-mb-[180px] z-10 pointer-events-none select-none">
-                <img src="{{ asset('images/vector/Vector.png') }}" 
-                     alt="Vector Top" 
-                     class="w-full h-auto object-contain scale-[1.03] translate-y-[50px]"> 
-                     {{-- ^ Kalau kurang turun, ganti translate-y-[0px] jadi misal: translate-y-[30px] --}}
-            </div>
+    <section class="w-full flex flex-col items-center justify-center bg-grid-pattern relative overflow-hidden py-6 sm:py-16">
+        
+        <div class="w-full flex justify-center -mb-[50px] sm:-mb-[110px] lg:-mb-[160px] z-10 pointer-events-none select-none">
+            <img src="{{ asset('images/vector/Vector.png') }}" 
+                alt="Vector Top" 
+                class="w-full h-auto object-contain scale-[1.03] translate-y-[30px] sm:translate-y-[50px]"> 
+        </div>
 
-           {{-- BANNER TENGAH --}}
-            <div class="w-full relative flex items-center justify-center border-y-4 sm:border-y-8 border-[#ccff00] z-20 overflow-hidden bg-[#254bfe]">
-                <div id="pixelswap-banner-root"
-                     data-trash-img="{{ asset('images/image_27.png') }}"
-                     data-tape-img="{{ asset('images/Group 24.png') }}"
-                     class="w-full h-[280px] sm:h-[450px] lg:h-[600px] relative cursor-pointer">
+        <div class="w-full relative flex items-center justify-center border-y-4 sm:border-y-8 border-[#ccff00] z-20 overflow-hidden bg-white h-[260px] sm:h-[480px] lg:h-[600px]">
+            
+            <img src="{{ asset('images/image_27.png') }}" 
+                alt="Sampah Daur Ulang" 
+                class="w-full h-full object-cover">
+
+            <div class="group absolute w-[140%] sm:w-[130%] h-16 sm:h-28 lg:h-32 transform -rotate-[8deg] bg-[#ff007a] flex items-center overflow-hidden shadow-2xl origin-center cursor-pointer bg-[url('{{ asset('images/garis-pink.png') }}')] bg-cover bg-center">                
+                <div class="animate-marquee-l2r group-hover:[animation-play-state:paused] whitespace-nowrap flex items-center">
+                    @for ($i = 0; $i < 3; $i++)
+                        <div class="flex items-center font-display text-2xl sm:text-5xl lg:text-7xl uppercase tracking-wider mx-3 sm:mx-6">
+                            <span class="text-[#254bfe] font-extrabold mr-2">!</span>
+                            <span class="text-[#ccff00]">BIASAKAN RAJIN BUANG SAMPAH</span>
+                            <span class="text-[#254bfe] font-extrabold ml-2 mr-4">!</span>
+                        </div>
+                    @endfor
                 </div>
             </div>
 
-            {{-- VECTOR PETIR BAWAH --}}
-            <div class="w-full flex justify-center -mt-[60px] sm:-mt-[120px] lg:-mt-[180px] z-10 pointer-events-none select-none">
-                <img src="{{ asset('images/vector/Vector (1).png') }}" 
-                     alt="Vector Bottom" 
-                     class="w-full h-auto object-contain scale-[1.03] -translate-y-[50px]">
-                     {{-- ^ Kalau kurang naik ke atas, ganti -translate-y-[0px] jadi misal: -translate-y-[30px] --}}
+            <div class="group absolute w-[140%] sm:w-[130%] h-16 sm:h-28 lg:h-32 transform rotate-[6deg] bg-[#ccff00] flex items-center overflow-hidden shadow-2xl origin-center cursor-pointer bg-[url('{{ asset('images/garis-kuning.png') }}')] bg-cover bg-center">
+                <div class="animate-marquee-r2l group-hover:[animation-play-state:paused] whitespace-nowrap flex items-center">
+                    @for ($i = 0; $i < 3; $i++)
+                        <div class="flex items-center font-display text-2xl sm:text-5xl lg:text-7xl uppercase tracking-wider mx-3 sm:mx-6">
+                            <span class="text-[#ff007a] font-extrabold mr-2">!</span>
+                            <span class="text-[#254bfe]">BIASAKAN RAJIN BUANG SAMPAH</span>
+                            <span class="text-[#ff007a] font-extrabold ml-2 mr-4">!</span>
+                        </div>
+                    @endfor
+                </div>
             </div>
 
-        </section>
+        </div>
+
+        {{-- VECTOR PETIR BAWAH --}}
+        <div class="w-full flex justify-center -mt-[50px] sm:-mt-[110px] lg:-mt-[160px] z-10 pointer-events-none select-none">
+            <img src="{{ asset('images/vector/Vector (1).png') }}" 
+                alt="Vector Bottom" 
+                class="w-full h-auto object-contain scale-[1.03] -translate-y-[30px] sm:-translate-y-[50px]">
+        </div>
+
+    </section>  
 
     </div>
 
@@ -242,7 +280,7 @@
             },
 
             getItemStyle(item) {
-                if (item.dragging || item.inBin) {
+                if (item.dragging) {
                     return `left: ${item.x}px; top: ${item.y}px; position: absolute;`;
                 }
                 return '';
@@ -445,7 +483,7 @@
             }
         });
 
-        // RENDER TEKS: 28PX DESKTOP & 10PX MOBILE
+        // RENDER TEKS KAPSUL
         Events.on(render, 'afterRender', () => {
             const context = render.context;
             const bodies = Composite.allBodies(engine.world);
