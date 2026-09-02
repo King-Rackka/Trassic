@@ -14,16 +14,16 @@ export function generateTrassicCardTexture(knownAsText, joinDateText, isChecked,
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
                 ctx.fillStyle = '#254bfe';
-                ctx.font = '900 40px "Anton", sans-serif';
+                ctx.font = '1000 32px "Anton", sans-serif';
                 ctx.textAlign = 'left';
                 let rawName = (knownAsText && knownAsText.trim()) ? knownAsText.trim() : 'YOUR NAME';
-                if (rawName.length > 15) {
-                    rawName = rawName.substring(0, 15);
+                if (rawName.length > 12) {
+                    rawName = rawName.substring(0, 14);
                 }
                 ctx.fillText(rawName.toUpperCase(), 215, 665);
 
                 ctx.fillStyle = '#254bfe';
-                ctx.font = '900 40px "Anton", sans-serif';
+                ctx.font = '900 32px "Anton", sans-serif';
                 ctx.fillText(joinDateText || '25/08/2026', 215, 725);
 
                 ctx.lineWidth = 3;

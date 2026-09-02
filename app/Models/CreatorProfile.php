@@ -60,19 +60,28 @@ class CreatorProfile extends Model
         return \App\Models\Follow::where('user_id', $this->user_id)->count();
     }
 
-    // 🟢 BARU — ambil website & instagram dari kolom social_links (json), tanpa perlu kolom baru
    public function website()
     {
-        // Cek kolom database langsung 'website' ATAU di dalam json 'social_links'
         return $this->attributes['website'] 
             ?? ($this->social_links['website'] ?? null);
     }
 
     public function instagramHandle()
     {
-        // Cek kolom 'instagram', 'instagram_handle', ATAU di dalam json 'social_links'
         return $this->attributes['instagram']
             ?? $this->attributes['instagram_handle']
             ?? ($this->social_links['instagram'] ?? $this->social_links['ig'] ?? null);
     }
+
+    public function scopeSearch($query, $keyword)
+    {
+        return $query->where('name', 'like', "%{$keyword}%")
+            ->orWhere('bio', 'like', "%{$keyword}%");
+    }
+
+    public function totalInteractions()
+    {
+        return \App\Models\Appreciation::whereIn('work_id', $this->works()->pluck('id'))->count();
+    }
+
 }

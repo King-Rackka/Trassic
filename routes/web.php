@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfileShowController;
 use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Profile\Show as ProfileShow;
 
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('auth.google');
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
@@ -19,8 +21,16 @@ Route::get('/explore/karya-lainnya', function () {
     return view('explore-more');
 })->name('explore.more');
 
+Route::get('/search', function () {
+    return view('search');
+})->name('search');
+
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
 Route::get('/work/{work:slug}', function (\App\Models\Work $work) {
-    return "Detail karya: " . $work->title; 
+    return "Detail karya: " . $work->title;
 })->name('work.show');
 
 Route::get('/creators', function () {
@@ -39,17 +49,41 @@ Route::get('/creator/{creator:slug}/karya', function (\App\Models\CreatorProfile
     return "Semua karya dari " . $creator->name;
 })->name('creator.works.more');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/waste-explorer', function () {
+    return "Halaman Waste Explorer (belum dibangun)";
+})->name('waste-explorer');
 
-Route::get('/about', function () {
-    return view('about');
-})->name('about');
-// Route::view('/about', 'about')->name('about');
+Route::get('/waste-explorer/{material}', function ($material) {
+    return "Detail material: " . $material . " (belum dibangun)";
+})->name('waste-explorer.show');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/submit', function () {
+        return "Halaman Submit Work (belum dibangun)";
+    })->name('works.create');
+});
+
+Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () {
+    Route::get('/', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    Route::get('/works', function () {
+        return "My Works (belum dibangun)";
+    })->name('dashboard.works');
+
+    Route::get('/works/{work}/edit', function (\App\Models\Work $work) {
+        return "Edit karya: " . $work->title . " (belum dibangun)";
+    })->name('dashboard.works.edit');
+
+    Route::get('/saved', function () {
+        return "Saved Works (belum dibangun)";
+    })->name('dashboard.saved');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', ProfileShowController::class)->name('profile.show');
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });

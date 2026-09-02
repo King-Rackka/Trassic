@@ -6,6 +6,8 @@ use App\Models\Work;
 use App\Models\WasteDna;
 use Livewire\Component;
 use Livewire\WithPagination;
+use App\Models\Appreciation;
+use Illuminate\Support\Facades\Auth;
 
 class ExploreMore extends Component
 {
@@ -45,5 +47,25 @@ class ExploreMore extends Component
             'categories' => $categories,
             'category' => $this->wasteType,
         ]);
+    }
+    public function toggleLike($workId)
+    {
+        if (!Auth::check()) {
+            $this->dispatch('show-login-prompt');
+            return;
+        }
+
+        $existing = Appreciation::where('user_id', Auth::id())
+            ->where('work_id', $workId)
+            ->first();
+
+        if ($existing) {
+            $existing->delete();
+        } else {
+            Appreciation::create([
+                'user_id' => Auth::id(),
+                'work_id' => $workId,
+            ]);
+        }
     }
 }

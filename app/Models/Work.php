@@ -52,12 +52,31 @@ public function reports()
     return $this->hasMany(Report::class);
 }
 
+public function isAppreciatedBy($userId)
+{
+    if (!$userId) return false;
+    return $this->appreciations()->where('user_id', $userId)->exists();
+}
+
 public function quantityForMaterial($wasteType = null)
 {
     if ($wasteType) {
         return $this->wasteDna->where('waste_type', $wasteType)->sum('quantity');
     }
     return $this->wasteDna->first()->quantity ?? 0;
+}
+
+
+public function scopeSearch($query, $keyword)
+{
+    return $query->where('status', 'published')
+        ->where(function ($q) use ($keyword) {
+            $q->where('title', 'like', "%{$keyword}%")
+              ->orWhere('description', 'like', "%{$keyword}%")
+              ->orWhereHas('creator', function ($q2) use ($keyword) {
+                  $q2->where('name', 'like', "%{$keyword}%");
+              });
+        });
 }
 
 }
