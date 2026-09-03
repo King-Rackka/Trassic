@@ -1,8 +1,7 @@
-
-// import Alpine from 'alpinejs';
+import Alpine from 'alpinejs';
 import collapse from '@alpinejs/collapse'
 import './react-entries/pixelswap-entry';
 
-//window.Alpine = Alpine;
+window.Alpine = Alpine;
 Alpine.plugin(collapse) 
-//Alpine.start();
+Alpine.start();

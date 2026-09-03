@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileShowController;
 use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Profile\Show as ProfileShow;
+use App\Http\Controllers\WorkController;
 
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('auth.google');
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
@@ -34,6 +35,7 @@ Route::get('/work/{work:slug}', function (\App\Models\Work $work) {
     return "Detail karya: " . $work->title;
 })->name('work.show');
 
+Route::get('/works/{id}', [\App\Http\Controllers\WorkController::class, 'show'])->name('works.show');
 
 Route::get('/creators', function () {
     return view('creators');
