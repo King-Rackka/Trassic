@@ -7,9 +7,9 @@ function mount(id, extraClassName) {
 
     createRoot(el).render(
         <TextType
-            texts={["WASTE\nISN'T THE\nEND OF\nTHE STORY"]}
+            texts={["Nice\nRecycle\nGallery\nArt\nHere"]}
             typingSpeed={55}
-            pauseDuration={99999999} // teks statis setelah selesai diketik, tidak dihapus lagi
+            pauseDuration={99999999} 
             loop={false}
             showCursor
             cursorCharacter="_"

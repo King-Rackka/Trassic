@@ -168,7 +168,6 @@
                 @foreach ($exploreCreators as $creator)
                     <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 lg:gap-8">
                         
-                        {{-- Kiri: Profil & Teks --}}
                         <div class="w-full lg:w-[420px] flex items-center gap-4 shrink-0">
                             <a href="{{ route('creator.show', $creator->slug ?? $creator->id) }}" class="w-24 h-24 sm:w-28 sm:h-28 aspect-square bg-gray-900 border-2 border-[#2F3AFF] shrink-0 overflow-hidden">
                                 @if ($creator->profile_image)
@@ -192,24 +191,32 @@
                                 <p class="font-sans text-xs sm:text-sm text-[#2F3AFF]">
                                     <span class="font-extrabold">{{ number_format($creator->total_likes_count ?? $creator->totalInteractions()) }} likes</span>
                                     <span class="mx-1 opacity-50">|</span> 
-                                    Bergabung sejak {{ $creator->created_at ? $creator->created_at->format('d F Y') : '17 Agustus 2026' }}
+                                    Bergabung sejak {{ $creator->created_at ? $creator->created_at->format('d F Y') : '-' }}
                                 </p>
 
                                 <div class="pt-1">
-                                    <button wire:click="toggleFollow({{ $creator->id }})" 
-                                            class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm uppercase active:translate-y-0.5 transition">
-                                        {{ $creator->isFollowedBy(auth()->id()) ? 'Mengikuti' : 'Ikuti' }}
-                                    </button>
+                                    @auth
+                                        @if (auth()->id() === $creator->user_id)
+                                            <a href="{{ route('profile.show') }}" class="inline-block px-4 py-1 bg-[#2F3AFF] text-white font-display text-xs sm:text-sm uppercase hover:bg-[#FC00BB] transition">
+                                                Profil Saya
+                                            </a>
+                                        @else
+                                            <button wire:click="toggleFollow({{ $creator->id }})" class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm uppercase active:translate-y-0.5 transition">
+                                                {{ $creator->isFollowedBy(auth()->id()) ? 'Mengikuti' : 'Ikuti' }}
+                                            </button>
+                                        @endif
+                                    @else
+                                        <button wire:click="toggleFollow({{ $creator->id }})" class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm uppercase active:translate-y-0.5 transition">
+                                            Ikuti
+                                        </button>
+                                    @endauth
                                 </div>
                             </div>
                         </div>
 
-                        {{-- Kanan: Grid 3 Karya --}}
                         <div class="w-full lg:flex-1 grid grid-cols-3 gap-3 sm:gap-4">
-                            @forelse ($creator->preview_works as $work)
+                            @foreach ($creator->preview_works as $work)
                                 <a href="{{ route('work.show', $work->slug ?? $work->id) }}" class="group relative aspect-[4/3] bg-gray-900 border-2 border-[#FC00BB] block">
-                                    
-                                    {{-- 4 Kotak Kuning Lime --}}
                                     <div class="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 bg-[#D9FC28] border border-[#2F3AFF] z-30 pointer-events-none"></div>
                                     <div class="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 bg-[#D9FC28] border border-[#2F3AFF] z-30 pointer-events-none"></div>
                                     <div class="absolute -bottom-1.5 -left-1.5 w-2.5 h-2.5 bg-[#D9FC28] border border-[#2F3AFF] z-30 pointer-events-none"></div>
@@ -223,11 +230,7 @@
                                         @endif
                                     </div>
                                 </a>
-                            @empty
-                                @for ($i = 0; $i < 3; $i++)
-                                    <div class="aspect-[4/3] bg-gray-100 border border-[#2F3AFF]"></div>
-                                @endfor
-                            @endforelse
+                            @endforeach
                         </div>
 
                     </div>

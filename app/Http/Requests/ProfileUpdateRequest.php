@@ -26,6 +26,16 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+
+            'bio' => ['nullable', 'string', 'max:1000'],
+            'creator_type' => ['nullable', Rule::in(['individual', 'artist', 'community', 'umkm', 'studio', 'organization'])],
+            'location' => ['nullable', 'string', 'max:255'],
+            'phone' => ['nullable', 'string', 'max:30'],
+            'website' => ['nullable', 'string', 'max:255'],
+            'instagram' => ['nullable', 'string', 'max:255'],
+            'profile_image' => ['nullable', 'image', 'max:2048'],
+            'cover_image' => ['nullable', 'image', 'max:4096'],
+
         ];
     }
 }

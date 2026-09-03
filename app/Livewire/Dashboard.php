@@ -83,13 +83,16 @@ class Dashboard extends Component
             ->get();
 
         $exploreCreators = CreatorProfile::query()
-            ->latest()
-            ->take(5)
-            ->get()
-            ->map(function ($creator) {
-                $creator->preview_works = $creator->recentWorks(3);
-                return $creator;
-            });
+        ->withCount(['works as published_works_count' => function ($q) {
+            $q->where('status', 'published');
+        }])
+        ->orderByDesc('published_works_count')
+        ->take(5)
+        ->get()
+        ->map(function ($creator) {
+            $creator->preview_works = $creator->recentWorks(3);
+            return $creator;
+        });
 
         $topCreators = CreatorProfile::query()
             ->withCount(['works as published_works_count' => function ($q) {

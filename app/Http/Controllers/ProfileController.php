@@ -18,6 +18,7 @@ class ProfileController extends Controller
     {
         return view('profile.edit', [
             'user' => $request->user(),
+            'creator' => $request->user()->creatorProfile,
         ]);
     }
 
@@ -25,28 +26,47 @@ class ProfileController extends Controller
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $user = $request->user();
-        $user->fill($request->validated());
+{
+    $user = $request->user();
+    
+    // 1. Update data User (Nama & Email)
+    $user->fill($request->validated());
 
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
-        }
-
-        $user->save();
-
-        if ($user->creatorProfile) {
-            $data = $request->only(['bio', 'creator_type', 'phone', 'address', 'website']);
-
-            if ($request->hasFile('profile_image')) {
-                $data['profile_image'] = $request->file('profile_image')->store('creators', 'public');
-            }
-
-            $user->creatorProfile->update($data);
-        }
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    if ($user->isDirty('email')) {
+        $user->email_verified_at = null;
     }
+
+    $user->save();
+
+    // 2. Ambil atau buatkan profil kreator jika belum ada
+    $creator = $user->creatorProfile()->firstOrCreate(
+        ['user_id' => $user->id],
+        ['name' => $user->name]
+    );
+
+    $data = $request->only(['bio', 'creator_type', 'phone', 'location']);
+
+    // Handle social links
+    $existingLinks = json_decode($creator->social_links, true) ?? [];
+    $data['social_links'] = json_encode([
+        'website'   => $request->input('website', $existingLinks['website'] ?? null),
+        'instagram' => $request->input('instagram', $existingLinks['instagram'] ?? null),
+    ]);
+
+    // Handle Upload Profile Image
+    if ($request->hasFile('profile_image')) {
+        $data['profile_image'] = $request->file('profile_image')->store('creators', 'public');
+    }
+
+    // Handle Upload Cover Image
+    if ($request->hasFile('cover_image')) {
+        $data['cover_image'] = $request->file('cover_image')->store('creators', 'public');
+    }
+
+    $creator->update($data);
+
+    return Redirect::route('profile.edit')->with('status', 'profile-updated');
+}
 
     /**
      * Delete the user's account.

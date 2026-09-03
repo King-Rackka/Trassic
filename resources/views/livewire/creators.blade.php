@@ -2,6 +2,7 @@
     <div class="w-full bg-grid-pattern min-h-screen py-8 sm:py-12">
         <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
+            {{-- KREATOR DENGAN KONTRIBUSI TERTINGGI --}}
             <div class="mb-16 sm:mb-24">
                 <h1 class="font-display text-3xl sm:text-5xl text-[#2F3AFF] uppercase tracking-normal text-center mb-10 sm:mb-16">
                     Kreator dengan kontribusi tertinggi
@@ -18,15 +19,12 @@
                         <div class="flex flex-col {{ $isEven ? 'lg:flex-row-reverse' : 'lg:flex-row' }} items-center justify-between gap-8 lg:gap-14">
                             
                             <div class="w-full lg:w-1/2 relative flex justify-center">
-                                
                                 <div class="group relative w-full max-w-md aspect-[4/3] bg-gray-900 border-8 border-[#FC00BB] 
                                             {{ $tiltAnimationClass }} hover:[animation-play-state:paused] transition-all duration-300 hover:scale-105 hover:z-30 cursor-pointer">
                                     
                                     <a href="{{ route('creator.show', $creator->slug) }}">
                                         @if ($creator->profile_image)
-                                            <img src="{{ asset('storage/' . $creator->profile_image) }}" 
-                                                 alt="{{ $creator->name }}" 
-                                                 class="w-full h-full object-cover">
+                                            <img src="{{ asset('storage/' . $creator->profile_image) }}" alt="{{ $creator->name }}" class="w-full h-full object-cover">
                                         @else
                                             <div class="w-full h-full bg-[#2F3AFF] flex items-center justify-center text-[#D9FC28] font-display text-2xl uppercase">
                                                 {{ $creator->name }}
@@ -34,12 +32,10 @@
                                         @endif   
                                     </a>
 
-                                    {{-- BADGE RANKING (#1, #2, DSN) --}}
                                     <div class="absolute -top-6 {{ $isEven ? '-right-6' : '-left-6' }} z-30 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#D9FC28] border-4 border-[#FC00BB] flex items-center justify-center transform {{ $isEven ? 'rotate-[6deg]' : '-rotate-[6deg]' }}">
                                         <span class="font-display text-2xl sm:text-3xl text-[#2F3AFF]">#{{ $rank }}</span>
                                     </div>
 
-                                    {{-- BADGE NAMA KREATOR --}}
                                     <div class="absolute -bottom-4 {{ $isEven ? '-left-3 sm:-left-5' : '-right-3 sm:-right-5' }} z-30 
                                                 w-max max-w-full inline-flex items-center justify-center 
                                                 bg-[#D9FC28] bg-[url('{{ asset('images/garis-kuning.png') }}')] bg-cover bg-center 
@@ -49,7 +45,6 @@
                                             {{ $creator->name }}
                                         </span>
                                     </div>
-
                                 </div>
                             </div>
 
@@ -61,24 +56,34 @@
                                         </p>
                                         <p class="font-sans text-xs sm:text-sm font-semibold text-[#2F3AFF]">
                                             <span class="font-extrabold text-sm sm:text-lg">{{ number_format($creator->published_works_count) }}</span> karya 
-<span class="mx-1 opacity-50">|</span> 
-<span class="font-extrabold text-sm sm:text-lg">{{ number_format($creator->totalInteractions()) }}</span> likes
+                                            <span class="mx-1 opacity-50">|</span> 
+                                            <span class="font-extrabold text-sm sm:text-lg">{{ number_format($creator->totalInteractions()) }}</span> likes
                                             <span class="mx-1 opacity-50">|</span> 
                                             Bergabung sejak {{ $creator->created_at->translatedFormat('d F Y') }}
                                         </p>
                                     </div>
 
-                                    <button wire:click="toggleFollow({{ $creator->id }})" 
-                                            class="px-3.5 py-1 sm:px-4 sm:py-1.5 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-[11px] sm:text-xs uppercase active:translate-y-0.5 transition">
-                                        {{ $creator->isFollowedBy(auth()->id()) ? 'Mengikuti' : 'Ikuti' }}
-                                    </button>
+                                    @auth
+                                        @if (auth()->id() === $creator->user_id)
+                                            <a href="{{ route('profile.show') }}" class="px-3.5 py-1 sm:px-4 sm:py-1.5 bg-[#2F3AFF] text-white font-display text-[11px] sm:text-xs uppercase hover:bg-[#FC00BB] transition">
+                                                Profil Saya
+                                            </a>
+                                        @else
+                                            <button wire:click="toggleFollow({{ $creator->id }})" class="px-3.5 py-1 sm:px-4 sm:py-1.5 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-[11px] sm:text-xs uppercase active:translate-y-0.5 transition">
+                                                {{ $creator->isFollowedBy(auth()->id()) ? '✓ Mengikuti' : 'Ikuti' }}
+                                            </button>
+                                        @endif
+                                    @else
+                                        <button wire:click="toggleFollow({{ $creator->id }})" class="px-3.5 py-1 sm:px-4 sm:py-1.5 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-[11px] sm:text-xs uppercase active:translate-y-0.5 transition">
+                                            Ikuti
+                                        </button>
+                                    @endauth
                                 </div>
 
+                                {{-- GRID PREVIEW KARYA (BILA 0 KARYA, AREA INI KOSONG BERSIH) --}}
                                 <div class="grid grid-cols-2 gap-3 sm:gap-4 pt-1">
-                                    @forelse ($creator->preview_works as $work)
-                                        <a href="{{ route('work.show', $work->slug) }}" 
-                                           class="group relative aspect-[4/3] bg-gray-900 border-2 border-[#FC00BB] block">
-                                            
+                                    @foreach ($creator->preview_works as $work)
+                                        <a href="{{ route('work.show', $work->slug) }}" class="group relative aspect-[4/3] bg-gray-900 border-2 border-[#FC00BB] block">
                                             <div class="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 bg-[#D9FC28] border border-[#2F3AFF] z-30"></div>
                                             <div class="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 bg-[#D9FC28] border border-[#2F3AFF] z-30"></div>
                                             <div class="absolute -bottom-1.5 -left-1.5 w-2.5 h-2.5 bg-[#D9FC28] border border-[#2F3AFF] z-30"></div>
@@ -86,19 +91,13 @@
 
                                             <div class="w-full h-full overflow-hidden flex items-center justify-center">
                                                 @if ($work->cover_image)
-                                                    <img src="{{ asset('storage/' . $work->cover_image) }}" 
-                                                         alt="{{ $work->title }}" 
-                                                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                                                    <img src="{{ asset('storage/' . $work->cover_image) }}" alt="{{ $work->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                                                 @else
                                                     <div class="w-full h-full bg-gray-800 flex items-center justify-center text-[10px] text-gray-400 font-sans">No Cover</div>
                                                 @endif
                                             </div>
                                         </a>
-                                    @empty
-                                        @for ($i = 0; $i < 4; $i++)
-                                            <div class="aspect-[4/3] bg-gray-100 border-2 border-[#2F3AFF] flex items-center justify-center text-[10px] text-gray-400 font-sans">No Karya</div>
-                                        @endfor
-                                    @endforelse
+                                    @endforeach
                                 </div>
                             </div>
 
@@ -107,6 +106,7 @@
                 </div>
             </div>
 
+            {{-- JELAJAHI KREATOR LAINNYA --}}
             <div class="pt-10 sm:pt-16 max-w-7xl mx-auto">
                 <h2 class="font-display text-3xl sm:text-5xl text-[#2F3AFF] uppercase tracking-normal text-center mb-10 sm:mb-16">
                     Jelajahi kreator lainnya
@@ -135,54 +135,48 @@
                                         {{ $creator->creator_type ?? 'Riset Mengabdi Desa' }}
                                     </p>
                                     <p class="font-sans text-xs sm:text-sm text-[#2F3AFF]">
-                                        <p class="font-sans text-xs sm:text-sm text-[#2F3AFF]">
-                                            <span class="font-extrabold">{{ number_format($creator->totalInteractions()) }} likes</span> 
-                                            <span class="mx-1">|</span> 
-                                            Bergabung sejak {{ $creator->created_at->translatedFormat('d F Y') }}
-                                        </p>
+                                        <span class="font-extrabold">{{ number_format($creator->totalInteractions()) }} likes</span> 
+                                        <span class="mx-1">|</span> 
+                                        Bergabung sejak {{ $creator->created_at->translatedFormat('d F Y') }}
                                     </p>
 
                                     <div class="pt-1">
-                                        <button wire:click="toggleFollow({{ $creator->id }})" 
-                                                class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm uppercase active:translate-y-0.5 transition">
-                                            {{ $creator->isFollowedBy(auth()->id()) ? 'Mengikuti' : 'Ikuti' }}
-                                        </button>
+                                        @auth
+                                            @if (auth()->id() === $creator->user_id)
+                                                <a href="{{ route('profile.show') }}" class="inline-block px-4 py-1 bg-[#2F3AFF] text-white font-display text-xs sm:text-sm uppercase hover:bg-[#FC00BB] transition">
+                                                    Profil Saya
+                                                </a>
+                                            @else
+                                                <button wire:click="toggleFollow({{ $creator->id }})" class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm uppercase active:translate-y-0.5 transition">
+                                                    {{ $creator->isFollowedBy(auth()->id()) ? '✓ Mengikuti' : 'Ikuti' }}
+                                                </button>
+                                            @endif
+                                        @else
+                                            <button wire:click="toggleFollow({{ $creator->id }})" class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm uppercase active:translate-y-0.5 transition">
+                                                Ikuti
+                                            </button>
+                                        @endauth
                                     </div>
                                 </div>
                             </div>
 
                             <div class="w-full lg:flex-1 grid grid-cols-3 gap-3 sm:gap-4">
-                                @forelse ($creator->preview_works as $work)
-                                    <a href="{{ route('work.show', $work->slug) }}" 
-                                       class="group relative aspect-[4/3] bg-gray-900 border-2 border-[#FC00BB] block">
-                                        
-                                        {{-- 4 KOTAK KUNING LIME PADA UJUNG FRAME --}}
+                                @foreach ($creator->preview_works as $work)
+                                    <a href="{{ route('work.show', $work->slug) }}" class="group relative aspect-[4/3] bg-gray-900 border-2 border-[#FC00BB] block">
                                         <div class="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 bg-[#D9FC28] border border-[#2F3AFF] z-30"></div>
                                         <div class="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 bg-[#D9FC28] border border-[#2F3AFF] z-30"></div>
                                         <div class="absolute -bottom-1.5 -left-1.5 w-2.5 h-2.5 bg-[#D9FC28] border border-[#2F3AFF] z-30"></div>
                                         <div class="absolute -bottom-1.5 -right-1.5 w-2.5 h-2.5 bg-[#D9FC28] border border-[#2F3AFF] z-30"></div>
 
-                                        @if (isset($work->waste_weight) || isset($work->waste_usage_label))
-                                            <div class="absolute top-2 left-2 z-20 bg-[#D9FC28] border border-[#2F3AFF] px-2 py-0.5 text-[10px] font-bold text-[#2F3AFF] font-sans">
-                                                {{ $work->waste_usage_label ?? ($work->waste_weight . 'kg sampah terpakai') }}
-                                            </div>
-                                        @endif
-
                                         <div class="w-full h-full overflow-hidden flex items-center justify-center bg-gray-900">
                                             @if ($work->cover_image)
-                                                <img src="{{ asset('storage/' . $work->cover_image) }}" 
-                                                     alt="{{ $work->title }}" 
-                                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                                                <img src="{{ asset('storage/' . $work->cover_image) }}" alt="{{ $work->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                                             @else
                                                 <div class="w-full h-full bg-gray-800 flex items-center justify-center text-xs text-gray-400 font-sans">No Image</div>
                                             @endif
                                         </div>
                                     </a>
-                                @empty
-                                    @for ($i = 0; $i < 3; $i++)
-                                        <div class="aspect-[4/3] bg-gray-100 border border-[#2F3AFF]"></div>
-                                    @endfor
-                                @endforelse
+                                @endforeach
                             </div>
 
                         </div>

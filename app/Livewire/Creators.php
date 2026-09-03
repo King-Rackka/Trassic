@@ -10,7 +10,6 @@ use Livewire\Component;
 
 class Creators extends Component
 {
-
     use HasInteractions;
 
     public function render()
@@ -31,7 +30,7 @@ class Creators extends Component
             ->withCount(['works as published_works_count' => function ($q) {
                 $q->where('status', 'published');
             }])
-            ->orderByDesc('created_at')
+            ->orderByDesc('published_works_count')
             ->take(5)
             ->get()
             ->map(function ($creator) {
@@ -44,6 +43,4 @@ class Creators extends Component
             'creators' => $creators,
         ]);
     }
-
-    
 }

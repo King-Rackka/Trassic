@@ -197,7 +197,7 @@
                                     <div class="pt-1">
                                         <button wire:click="toggleFollow({{ $creator->id }})" 
                                                 class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm uppercase active:translate-y-0.5 transition">
-                                            {{ $creator->isFollowedBy(auth()->id()) ? 'Mengikuti' : 'Ikuti' }}
+                                            {{ $creator->isFollowedBy(auth()->id()) ? '✓ Mengikuti' : 'Ikuti' }}
                                         </button>
                                     </div>
                                 </div>
