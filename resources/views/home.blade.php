@@ -37,7 +37,7 @@
                 <div class="pointer-events-auto px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl border-2 border-black font-display uppercase tracking-wider text-xs sm:text-sm shadow-[4px_4px_0px_rgba(0,0,0,1)] transition-all transform duration-300"
                      :class="{
                          'bg-[#ccff00] text-black': toast.type === 'success',
-                         'bg-[#ff007a] text-white': toast.type === 'error',
+                         'bg-[#FC00BB] text-white': toast.type === 'error',
                          'bg-[#254bfe] text-white': toast.type === 'info'
                      }"
                      x-text="toast.message">
@@ -384,11 +384,11 @@
         // TEKS KAPSUL TEMATIK TRASSIC
         const rawBadges = [
             { text: 'DAUR ULANG MUDAH TOGETHER', bg: '#ccff00', color: '#254bfe', width: 480 * badgeScale },
-            { text: 'EKO-KREATIF DENGAN TRASSIC', bg: '#ff007a', color: '#ccff00', width: 490 * badgeScale },
+            { text: 'EKO-KREATIF DENGAN TRASSIC', bg: '#FC00BB', color: '#ccff00', width: 490 * badgeScale },
             { text: 'UBAH SAMPAH JADI KARYA', bg: '#ccff00', color: '#254bfe', width: 430 * badgeScale },
-            { text: 'DUKUNG LINGKUNGAN BERSIH', bg: '#ff007a', color: '#ccff00', width: 470 * badgeScale },
+            { text: 'DUKUNG LINGKUNGAN BERSIH', bg: '#FC00BB', color: '#ccff00', width: 470 * badgeScale },
             { text: 'KOMUNITAS TRASSIC AKTIF', bg: '#ccff00', color: '#254bfe', width: 440 * badgeScale },
-            { text: 'AKSI NYATA BUMI HIJAU', bg: '#ff007a', color: '#ccff00', width: 410 * badgeScale }
+            { text: 'AKSI NYATA BUMI HIJAU', bg: '#FC00BB', color: '#ccff00', width: 410 * badgeScale }
         ];
 
         const badgeBodies = [];

@@ -28,6 +28,7 @@ return new class extends Migration
             'approved', 'published', 'rejected', 'archived'
         ])->default('draft');
         $table->string('cover_image')->nullable();
+        $table->decimal('target_quantity', 8, 2)->nullable();
         $table->boolean('is_featured')->default(false);
         $table->timestamp('published_at')->nullable();
         $table->timestamps();

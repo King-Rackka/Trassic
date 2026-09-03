@@ -19,9 +19,7 @@ Route::get('/explore/karya-lainnya', function () {
     return view('explore-more');
 })->name('explore.more');
 
-Route::get('/work/{work:slug}', function (\App\Models\Work $work) {
-    return "Detail karya: " . $work->title; 
-})->name('work.show');
+Route::get('/work/{work:slug}', [\App\Http\Controllers\WorkController::class, 'show'])->name('work.show');
 
 Route::get('/creators', function () {
     return view('creators');
