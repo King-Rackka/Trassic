@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfileShowController;
+use App\Http\Controllers\WorkController;
 use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Profile\Show as ProfileShow;
@@ -30,9 +31,7 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
-Route::get('/work/{work:slug}', function (\App\Models\Work $work) {
-    return "Detail karya: " . $work->title;
-})->name('work.show');
+Route::get('/work/{work:slug}', [WorkController::class, 'show'])->name('work.show');
 
 
 Route::get('/creators', function () {
