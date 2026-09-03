@@ -58,7 +58,6 @@ class Work extends Model
         return $this->hasMany(Report::class);
     }
 
-    // Comment top-level aja (parent_id null) — reply-nya diakses lewat $comment->replies
     public function comments()
     {
         return $this->hasMany(Comment::class)
@@ -66,6 +65,18 @@ class Work extends Model
             ->with('user', 'likes', 'replies')
             ->withCount('likes')
             ->orderByDesc('created_at');
+    }
+
+    public function isAppreciatedBy($userId)
+    {
+        if (!$userId) return false;
+        return $this->appreciations()->where('user_id', $userId)->exists();
+    }
+
+    public function isBookmarkedBy($userId)
+    {
+        if (!$userId) return false;
+        return $this->bookmarks()->where('user_id', $userId)->exists();
     }
 
     public function quantityForMaterial($wasteType = null)
@@ -81,13 +92,6 @@ class Work extends Model
         return $this->wasteDna->sum('quantity');
     }
 
-    public function isBookmarkedBy($userId)
-    {
-        if (!$userId) return false;
-        return $this->bookmarks()->where('user_id', $userId)->exists();
-    }
-
-    // Karya lain yang mirip: kategori sama ATAU material sama, kecuali diri sendiri
     public function similarWorks($limit = 4)
     {
         $materials = $this->wasteDna->pluck('material');
@@ -102,5 +106,17 @@ class Work extends Model
             ->withCount('appreciations')
             ->take($limit)
             ->get();
+    }
+
+    public function scopeSearch($query, $keyword)
+    {
+        return $query->where('status', 'published')
+            ->where(function ($q) use ($keyword) {
+                $q->where('title', 'like', "%{$keyword}%")
+                  ->orWhere('description', 'like', "%{$keyword}%")
+                  ->orWhereHas('creator', function ($q2) use ($keyword) {
+                      $q2->where('name', 'like', "%{$keyword}%");
+                  });
+            });
     }
 }

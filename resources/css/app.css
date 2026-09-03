@@ -18,7 +18,6 @@
     }
 }
 
-/* ANIMASI MELAYANG KALAU MIRING KANAN (#1 & #3) */
 @keyframes floatRight {
     0%, 100% {
         transform: rotate(3deg) translateY(0px);
