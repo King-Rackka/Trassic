@@ -1,10 +1,10 @@
 <div class="py-8 sm:py-12">
     <div class="w-full bg-grid-pattern min-h-screen py-8 sm:py-12">
-        <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="w-full max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-[80px]">
 
             {{-- KREATOR DENGAN KONTRIBUSI TERTINGGI --}}
             <div class="mb-16 sm:mb-24">
-                <h1 class="font-display text-3xl sm:text-5xl text-[#2F3AFF] uppercase tracking-normal text-center mb-10 sm:mb-16">
+                <h1 class="font-display text-3xl sm:text-5xl text-[#2F3AFF] tracking-normal text-center mb-10 sm:mb-16" style="text-transform: none !important;">
                     Kreator dengan kontribusi tertinggi
                 </h1>
 
@@ -26,7 +26,7 @@
                                         @if ($creator->profile_image)
                                             <img src="{{ asset('storage/' . $creator->profile_image) }}" alt="{{ $creator->name }}" class="w-full h-full object-cover">
                                         @else
-                                            <div class="w-full h-full bg-[#2F3AFF] flex items-center justify-center text-[#D9FC28] font-display text-2xl uppercase">
+                                            <div class="w-full h-full bg-[#2F3AFF] flex items-center justify-center text-[#D9FC28] font-display text-2xl" style="text-transform: none !important;">
                                                 {{ $creator->name }}
                                             </div>
                                         @endif   
@@ -41,7 +41,7 @@
                                                 bg-[#D9FC28] bg-[url('{{ asset('images/garis-kuning.png') }}')] bg-cover bg-center 
                                                 border-4 border-[#FC00BB] px-1.5 py-0.5 leading-none 
                                                 transform {{ $isEven ? 'rotate-[2deg]' : '-rotate-[2deg]' }}">
-                                        <span class="font-display text-xl sm:text-3xl lg:text-4xl text-[#2F3AFF] uppercase tracking-wider whitespace-nowrap truncate px-0.5">
+                                        <span class="font-display text-xl sm:text-3xl lg:text-4xl text-[#2F3AFF] tracking-wider whitespace-nowrap truncate px-0.5" style="text-transform: none !important;">
                                             {{ $creator->name }}
                                         </span>
                                     </div>
@@ -51,7 +51,7 @@
                             <div class="w-full lg:w-1/2 space-y-3 sm:space-y-4">
                                 <div class="flex flex-wrap items-center justify-between gap-2 pb-1 sm:pb-2">
                                     <div>
-                                        <p class="font-sans text-[11px] sm:text-xs text-[#2F3AFF] uppercase font-bold tracking-wide">
+                                        <p class="font-sans text-[11px] sm:text-xs text-[#2F3AFF] font-bold tracking-wide" style="text-transform: none !important;">
                                             {{ $creator->creator_type ?? 'Riset Mengabdi Desa' }}
                                         </p>
                                         <p class="font-sans text-xs sm:text-sm font-semibold text-[#2F3AFF]">
@@ -65,29 +65,29 @@
 
                                     @auth
                                         @if (auth()->id() === $creator->user_id)
-                                            <a href="{{ route('profile.show') }}" class="px-3.5 py-1 sm:px-4 sm:py-1.5 bg-[#2F3AFF] text-white font-display text-[11px] sm:text-xs uppercase hover:bg-[#FC00BB] transition">
+                                            <a href="{{ route('profile.show') }}" class="px-3.5 py-1 sm:px-4 sm:py-1.5 bg-[#2F3AFF] text-white font-display text-[11px] sm:text-xs hover:bg-[#FC00BB] transition" style="text-transform: none !important;">
                                                 Profil Saya
                                             </a>
                                         @else
-                                            <button wire:click="toggleFollow({{ $creator->id }})" class="px-3.5 py-1 sm:px-4 sm:py-1.5 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-[11px] sm:text-xs uppercase active:translate-y-0.5 transition">
+                                            <button wire:click="toggleFollow({{ $creator->id }})" class="px-3.5 py-1 sm:px-4 sm:py-1.5 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-[11px] sm:text-xs active:translate-y-0.5 transition" style="text-transform: none !important;">
                                                 {{ $creator->isFollowedBy(auth()->id()) ? '✓ Mengikuti' : 'Ikuti' }}
                                             </button>
                                         @endif
                                     @else
-                                        <button wire:click="toggleFollow({{ $creator->id }})" class="px-3.5 py-1 sm:px-4 sm:py-1.5 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-[11px] sm:text-xs uppercase active:translate-y-0.5 transition">
+                                        <button wire:click="toggleFollow({{ $creator->id }})" class="px-3.5 py-1 sm:px-4 sm:py-1.5 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-[11px] sm:text-xs active:translate-y-0.5 transition" style="text-transform: none !important;">
                                             Ikuti
                                         </button>
                                     @endauth
                                 </div>
 
-                                {{-- GRID PREVIEW KARYA (BILA 0 KARYA, AREA INI KOSONG BERSIH) --}}
+                                {{-- GRID PREVIEW KARYA --}}
                                 <div class="grid grid-cols-2 gap-3 sm:gap-4 pt-1">
                                     @foreach ($creator->preview_works as $work)
                                         <a href="{{ route('work.show', $work->slug) }}" class="group relative aspect-[4/3] bg-gray-900 border-2 border-[#FC00BB] block">
-                                            <div class="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 bg-[#D9FC28] border border-[#2F3AFF] z-30"></div>
-                                            <div class="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 bg-[#D9FC28] border border-[#2F3AFF] z-30"></div>
-                                            <div class="absolute -bottom-1.5 -left-1.5 w-2.5 h-2.5 bg-[#D9FC28] border border-[#2F3AFF] z-30"></div>
-                                            <div class="absolute -bottom-1.5 -right-1.5 w-2.5 h-2.5 bg-[#D9FC28] border border-[#2F3AFF] z-30"></div>
+                                            <div class="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 bg-[#D9FC28] border-2 border-[#FC00BB] z-30"></div>
+                                            <div class="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 bg-[#D9FC28] border-2 border-[#FC00BB] z-30"></div>
+                                            <div class="absolute -bottom-1.5 -left-1.5 w-2.5 h-2.5 bg-[#D9FC28] border-2 border-[#FC00BB] z-30"></div>
+                                            <div class="absolute -bottom-1.5 -right-1.5 w-2.5 h-2.5 bg-[#D9FC28] border-2 border-[#FC00BB] z-30"></div>
 
                                             <div class="w-full h-full overflow-hidden flex items-center justify-center">
                                                 @if ($work->cover_image)
@@ -107,8 +107,8 @@
             </div>
 
             {{-- JELAJAHI KREATOR LAINNYA --}}
-            <div class="pt-10 sm:pt-16 max-w-7xl mx-auto">
-                <h2 class="font-display text-3xl sm:text-5xl text-[#2F3AFF] uppercase tracking-normal text-center mb-10 sm:mb-16">
+            <div class="pt-10 sm:pt-16 max-w-full">
+                <h2 class="font-display text-3xl sm:text-5xl text-[#2F3AFF] tracking-normal text-center mb-10 sm:mb-16" style="text-transform: none !important;">
                     Jelajahi kreator lainnya
                 </h2>
 
@@ -116,22 +116,22 @@
                     @foreach ($creators as $creator)
                         <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 lg:gap-8">
                             
-                            <div class="w-full lg:w-[420px] flex items-center gap-4 shrink-0">
-                                <a href="{{ route('creator.show', $creator->slug) }}" class="w-24 h-24 sm:w-28 sm:h-28 aspect-square bg-gray-900 border-2 border-[#2F3AFF] shrink-0 overflow-hidden">
+                            <div class="w-full lg:w-[480px] flex items-center gap-4 shrink-0">
+                                <a href="{{ route('creator.show', $creator->slug) }}" class="w-24 h-24 sm:w-32 sm:h-32 aspect-square bg-gray-900 border-2 border-[#2F3AFF] shrink-0 overflow-hidden">
                                     @if ($creator->profile_image)
                                         <img src="{{ asset('storage/' . $creator->profile_image) }}" alt="{{ $creator->name }}" class="w-full h-full object-cover">
                                     @else
-                                        <div class="w-full h-full bg-[#2F3AFF] text-[#D9FC28] font-display flex items-center justify-center text-xl sm:text-2xl">
+                                        <div class="w-full h-full bg-[#2F3AFF] text-[#D9FC28] font-display flex items-center justify-center text-xl sm:text-2xl" style="text-transform: none !important;">
                                             {{ substr($creator->name, 0, 2) }}
                                         </div>
                                     @endif    
                                 </a>
 
                                 <div class="flex-1 min-w-0 space-y-1">
-                                    <h3 class="font-display text-xl sm:text-3xl text-[#2F3AFF] uppercase truncate leading-none">
+                                    <h3 class="font-display text-xl sm:text-3xl text-[#2F3AFF] truncate leading-none" style="text-transform: none !important;">
                                         {{ $creator->name }}
                                     </h3>
-                                    <p class="font-sans text-xs sm:text-sm text-[#2F3AFF] font-medium truncate">
+                                    <p class="font-sans text-xs sm:text-sm text-[#2F3AFF] font-medium truncate" style="text-transform: none !important;">
                                         {{ $creator->creator_type ?? 'Riset Mengabdi Desa' }}
                                     </p>
                                     <p class="font-sans text-xs sm:text-sm text-[#2F3AFF] whitespace-nowrap">
@@ -143,16 +143,16 @@
                                     <div class="pt-1">
                                         @auth
                                             @if (auth()->id() === $creator->user_id)
-                                                <a href="{{ route('profile.show') }}" class="inline-block px-4 py-1 bg-[#2F3AFF] text-white font-display text-xs sm:text-sm uppercase hover:bg-[#FC00BB] transition">
+                                                <a href="{{ route('profile.show') }}" class="inline-block px-4 py-1 bg-[#2F3AFF] text-white font-display text-xs sm:text-sm hover:bg-[#FC00BB] transition" style="text-transform: none !important;">
                                                     Profil Saya
                                                 </a>
                                             @else
-                                                <button wire:click="toggleFollow({{ $creator->id }})" class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm uppercase active:translate-y-0.5 transition">
+                                                <button wire:click="toggleFollow({{ $creator->id }})" class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm active:translate-y-0.5 transition" style="text-transform: none !important;">
                                                     {{ $creator->isFollowedBy(auth()->id()) ? '✓ Mengikuti' : 'Ikuti' }}
                                                 </button>
                                             @endif
                                         @else
-                                            <button wire:click="toggleFollow({{ $creator->id }})" class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm uppercase active:translate-y-0.5 transition">
+                                            <button wire:click="toggleFollow({{ $creator->id }})" class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm active:translate-y-0.5 transition" style="text-transform: none !important;">
                                                 Ikuti
                                             </button>
                                         @endauth
@@ -163,10 +163,10 @@
                             <div class="w-full lg:flex-1 grid grid-cols-3 gap-3 sm:gap-4">
                                 @foreach ($creator->preview_works as $work)
                                     <a href="{{ route('work.show', $work->slug) }}" class="group relative aspect-[4/3] bg-gray-900 border-2 border-[#FC00BB] block">
-                                        <div class="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 bg-[#D9FC28] border border-[#2F3AFF] z-30"></div>
-                                        <div class="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 bg-[#D9FC28] border border-[#2F3AFF] z-30"></div>
-                                        <div class="absolute -bottom-1.5 -left-1.5 w-2.5 h-2.5 bg-[#D9FC28] border border-[#2F3AFF] z-30"></div>
-                                        <div class="absolute -bottom-1.5 -right-1.5 w-2.5 h-2.5 bg-[#D9FC28] border border-[#2F3AFF] z-30"></div>
+                                        <div class="absolute -top-1.5 -left-1.5 w-2.5 h-2.5 bg-[#D9FC28] border-2 border-[#FC00BB] z-30"></div>
+                                        <div class="absolute -top-1.5 -right-1.5 w-2.5 h-2.5 bg-[#D9FC28] border-2 border-[#FC00BB] z-30"></div>
+                                        <div class="absolute -bottom-1.5 -left-1.5 w-2.5 h-2.5 bg-[#D9FC28] border-2 border-[#FC00BB] z-30"></div>
+                                        <div class="absolute -bottom-1.5 -right-1.5 w-2.5 h-2.5 bg-[#D9FC28] border-2 border-[#FC00BB] z-30"></div>
 
                                         <div class="w-full h-full overflow-hidden flex items-center justify-center bg-gray-900">
                                             @if ($work->cover_image)
@@ -184,13 +184,13 @@
                 </div>
 
                 <div class="mt-14 sm:mt-20 mb-10 sm:mb-16 text-center">
-                    <a href="{{ route('creators.more') }}" class="inline-flex items-center gap-2 font-display text-lg sm:text-2xl text-[#2F3AFF] hover:text-[#FC00BB] uppercase tracking-wider transition-colors">
+                    <a href="{{ route('creators.more') }}" class="inline-flex items-center gap-2 font-display text-lg sm:text-2xl text-[#2F3AFF] hover:text-[#FC00BB] tracking-wider transition-colors" style="text-transform: none !important;">
                         <span>Lihat lebih banyak</span>
                         <span class="text-xl sm:text-2xl">→</span>
                     </a>
                 </div>
             </div>
 
-        </div>
+        </div>  
     </div>
 </div>

@@ -3,22 +3,22 @@
         @forelse ($creators as $creator)
             <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 lg:gap-8">
                 
-                <div class="w-full lg:w-[420px] flex items-center gap-4 shrink-0">
-                    <a href="{{ route('creator.show', $creator->slug) }}" class="w-24 h-24 sm:w-28 sm:h-28 aspect-square bg-gray-900 border-2 border-[#2F3AFF] shrink-0 overflow-hidden">
+                <div class="w-full lg:w-[480px] flex items-center gap-4 shrink-0">
+                    <a href="{{ route('creator.show', $creator->slug) }}" class="w-24 h-24 sm:w-32 sm:h-32 aspect-square bg-gray-900 border-2 border-[#2F3AFF] shrink-0 overflow-hidden">
                         @if ($creator->profile_image)
                             <img src="{{ asset('storage/' . $creator->profile_image) }}" alt="{{ $creator->name }}" class="w-full h-full object-cover">
                         @else
-                            <div class="w-full h-full bg-[#2F3AFF] text-[#D9FC28] font-display flex items-center justify-center text-xl sm:text-2xl uppercase">
+                            <div class="w-full h-full bg-[#2F3AFF] text-[#D9FC28] font-display flex items-center justify-center text-xl sm:text-2xl">
                                 {{ substr($creator->name, 0, 2) }}
                             </div>
                         @endif    
                     </a>
 
                     <div class="flex-1 min-w-0 space-y-1">
-                        <a href="{{ route('creator.show', $creator->slug) }}" class="font-display text-xl sm:text-3xl text-[#2F3AFF] hover:text-[#FC00BB] uppercase truncate block leading-none transition-colors">
+                        <p class="font-display text-xl sm:text-3xl text-[#2F3AFF] truncate block leading-none transition-colors">
                             {{ $creator->name }}
-                        </a>
-                        
+                        </p>
+                    
                         <p class="font-sans text-xs sm:text-sm text-[#2F3AFF] font-medium truncate">
                             {{ $creator->creator_type ?? 'Riset Mengabdi Desa' }}
                         </p>
@@ -32,16 +32,16 @@
                         <div class="pt-1">
                             @auth
                                 @if (auth()->id() === $creator->user_id)
-                                    <a href="{{ route('profile.show') }}" class="inline-block px-4 py-1 bg-[#2F3AFF] text-white font-display text-xs sm:text-sm uppercase hover:bg-[#FC00BB] transition">
+                                    <a href="{{ route('profile.show') }}" class="inline-block px-4 py-1 bg-[#2F3AFF] text-white font-display text-xs sm:text-sm hover:bg-[#FC00BB] transition">
                                         Profil Saya
                                     </a>
                                 @else
-                                    <button wire:click="toggleFollow({{ $creator->id }})" class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm uppercase active:translate-y-0.5 transition-all cursor-pointer">
+                                    <button wire:click="toggleFollow({{ $creator->id }})" class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm active:translate-y-0.5 transition-all cursor-pointer">
                                         {{ $creator->isFollowedBy(auth()->id()) ? '✓ Mengikuti' : 'Ikuti' }}
                                     </button>
                                 @endif
                             @else
-                                <button wire:click="toggleFollow({{ $creator->id }})" class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm uppercase active:translate-y-0.5 transition-all cursor-pointer">
+                                <button wire:click="toggleFollow({{ $creator->id }})" class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm active:translate-y-0.5 transition-all cursor-pointer">
                                     Ikuti
                                 </button>
                             @endauth
@@ -71,7 +71,7 @@
             </div>
         @empty
             <div class="text-center py-16 text-[#2F3AFF]">
-                <p class="font-display text-lg sm:text-xl uppercase tracking-wider">Belum ada kreator ditemukan.</p>
+                <p class="font-display text-lg sm:text-xl tracking-wider">Belum ada kreator ditemukan.</p>
             </div>
         @endforelse
     </div>

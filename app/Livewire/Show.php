@@ -52,7 +52,14 @@ class Show extends Component
     public function render()
 {
     $user = Auth::user();
-    $creator = CreatorProfile::where('user_id', $user->id)->firstOrFail();
+
+    $creator = CreatorProfile::firstOrCreate(
+        ['user_id' => $user->id],
+        [
+            'name' => $user->name,
+            'slug' => \Illuminate\Support\Str::slug($user->name . '-' . $user->id),
+        ]
+    );
 
     $worksQuery = Work::query()->with(['creator.user', 'wasteDna'])->withCount('appreciations');
 
@@ -83,8 +90,8 @@ class Show extends Component
         'postsCount' => $postsCount,
         'followersCount' => $followersCount,
         'followingCount' => $followingCount,
+        'activeFilter' => $this->activeFilter,   // ini juga hilang, dibutuhkan blade untuk @entangle
     ]);
-    
 }
 
     

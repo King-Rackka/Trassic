@@ -9,10 +9,8 @@
             <img src="{{ asset('images/vector/vector_sayap_atas.png') }}" alt="Vector Wing Top Right" class="h-6 sm:h-12 object-contain -scale-x-100">
         </div>
 
-        {{-- KONTEN UTAMA --}}
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 w-full flex-1">
-            
-            {{-- Breadcrumbs Rata Kiri (Diberi pt-4 sm:pt-6 agar jarak turun & tidak mepet pita atas) --}}
+        {{-- HEADER: Breadcrumb + Judul, tetap dibatasi max-w-7xl biar rapi di tengah --}}
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 w-full">
             <nav class="text-left pt-4 sm:pt-6 mb-4 sm:mb-6">
                 <p class="text-xs sm:text-sm font-semibold uppercase tracking-widest flex items-center gap-2">
                     <a href="{{ route('explore') }}" class="text-gray-500 hover:text-[#254bfe] hover:underline">Explore</a> 
@@ -21,11 +19,13 @@
                 </p>
             </nav>
 
-            {{-- Judul Utama Rata Tengah --}}
-            <h1 class="font-display text-3xl sm:text-5xl text-[#254bfe] uppercase text-center mb-6 sm:mb-8 tracking-normal">
+            <h1 class="font-display text-3xl sm:text-5xl text-[#254bfe] text-center mb-6 sm:mb-8 tracking-normal">
                 Hasil karya daur ulang
             </h1>
+        </div>
 
+        {{-- GRID: full width, TIDAK dibatasi max-w-7xl, biar kolom bisa nambah saat layar lebar/zoom out --}}
+        <div class="w-full flex-1">
             <livewire:explore-more :category="request('category')" />
         </div>
 
