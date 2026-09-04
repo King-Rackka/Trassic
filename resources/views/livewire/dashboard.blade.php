@@ -124,7 +124,7 @@
 
         <section class="w-full text-center space-y-12 sm:space-y-16">
             <h2 class="font-display text-3xl sm:text-5xl lg:text-6xl text-[#2F3AFF] tracking-normal">
-                Karya dengan like terbanyak minggu ini
+                Kreator dengan kontribusi tertinggi
             </h2>
 
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 lg:gap-14 max-w-6xl mx-auto items-end px-2">
