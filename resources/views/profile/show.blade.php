@@ -10,6 +10,25 @@
                 -webkit-box-orient: vertical;
                 overflow: hidden;
             }
+            .line-clamp-2-custom {
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+
+            @keyframes floatAnimation {
+                0%, 100% {
+                    transform: translateY(0px) scaleX(-1);
+                }
+                50% {
+                    transform: translateY(-16px) scaleX(-1);
+                }
+            }
+
+            .animate-float {
+                animation: floatAnimation 4s ease-in-out infinite;
+            }
         </style>
 
         {{-- ========================================== --}}
@@ -263,6 +282,162 @@
 
             <div class="flex justify-center pt-8">
                 {{ $works->links() }}
+            </div>
+            {{-- ========================================== --}}
+            {{-- 3. RIWAYAT KOMENTAR & ILUSTRASI RECYCLE   --}}
+            {{-- ========================================== --}}
+            @php
+                // Ambil riwayat komentar yang pernah dibuat oleh user
+                $userComments = \App\Models\Comment::where('user_id', $user->id)
+                    ->whereNull('parent_id')
+                    ->with(['work.creator', 'replies.user.creatorProfile'])
+                    ->withCount('likes')
+                    ->latest()
+                    ->take(5)
+                    ->get();
+            @endphp
+
+            <div class="mt-16 pt-10 border-t border-[#2F3AFF]/20">
+                <h2 class="font-display text-3xl sm:text-5xl text-[#2F3AFF] uppercase mb-8 tracking-wide">
+                    Riwayat komentar
+                </h2>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+                    
+                    {{-- KOLOM KIRI: DAFTAR KOMENTAR (LEBAR 8 KOLOM) --}}
+                    <div class="lg:col-span-8 space-y-6">
+                        @forelse ($userComments as $comment)
+                            <div>
+                                {{-- Judul Karya Target Komentar --}}
+                                @if ($comment->work)
+                                    <a href="{{ route('work.show', $comment->work->slug) }}" 
+                                       class="inline-block font-sans font-bold text-xs sm:text-sm text-[#2F3AFF] hover:underline mb-2">
+                                        {{ $comment->work->title }} by {{ $comment->work->creator?->name ?? 'Kreator' }}
+                                    </a>
+                                @endif
+
+                                {{-- Komentar Utama --}}
+                                <div class="flex items-start gap-3 sm:gap-4">
+                                    {{-- Avatar Kotak --}}
+                                    <div class="w-10 h-10 sm:w-11 sm:h-11 shrink-0 border-2 border-black bg-white shadow-[2px_2px_0px_rgba(0,0,0,1)] overflow-hidden z-10">
+                                        @if ($comment->user->creatorProfile?->profile_image)
+                                            <img src="{{ asset('storage/' . $comment->user->creatorProfile->profile_image) }}" 
+                                                 alt="{{ $comment->user->name }}" 
+                                                 class="w-full h-full object-cover">
+                                        @else
+                                            <div class="w-full h-full bg-[#2F3AFF] text-[#D9FC28] font-display flex items-center justify-center text-xs uppercase">
+                                                {{ substr($comment->user->name, 0, 2) }}
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    {{-- Bubble Biru Komentar --}}
+                                    <div class="flex-1 min-w-0">
+                                        <div class="bg-[#2F3AFF] p-3.5 sm:p-4 text-white shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+                                            <div class="flex items-center justify-between gap-2 mb-1.5">
+                                                <div class="flex items-center gap-3 min-w-0">
+                                                    <span class="font-sans font-bold text-sm sm:text-base text-white truncate">
+                                                        {{ $comment->user->id === auth()->id() ? 'Anda' : $comment->user->name }}
+                                                    </span>
+                                                    <span class="font-sans text-xs text-white/80 shrink-0">
+                                                        {{ $comment->created_at->translatedFormat('d F Y') }}
+                                                    </span>
+                                                </div>
+                                                <button type="button" class="text-white hover:text-[#D9FC28] p-0.5">
+                                                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+                                                </button>
+                                            </div>
+                                            <p class="font-sans text-sm sm:text-base text-white leading-relaxed break-words">
+                                                {{ $comment->content }}
+                                            </p>
+                                        </div>
+
+                                        {{-- Aksi di Bawah Komentar --}}
+                                        <div class="flex items-center gap-4 mt-1.5 ml-1 text-xs sm:text-sm font-bold text-[#2F3AFF]">
+                                            <span class="flex items-center gap-1.5">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" /></svg>
+                                                <span>Balas</span>
+                                            </span>
+                                            <span class="flex items-center gap-1.5">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3" /></svg>
+                                                <span>{{ $comment->likes_count ?? 0 }}</span>
+                                            </span>
+                                        </div>
+
+                                        {{-- Balasan / Replies (Jika Ada) --}}
+                                        @if ($comment->replies && $comment->replies->count() > 0)
+                                            <div class="relative pl-7 sm:pl-10 mt-4 space-y-4">
+                                                @foreach ($comment->replies as $reply)
+                                                    <div class="relative flex items-start gap-3 sm:gap-4">
+                                                        {{-- Garis Cabang Siku Presisi Pas di Tengah Avatar --}}
+                                                        <div class="absolute -left-[60px] sm:-left-[78px] -top-[65px] sm:-top-[70px] w-[60px] sm:w-[78px] h-[81px] sm:h-[88px] border-b-2 border-l-2 border-[#2F3AFF] pointer-events-none"></div>
+
+                                                        <div class="w-8 h-8 sm:w-9 sm:h-9 shrink-0 border-2 border-black bg-white shadow-[2px_2px_0px_rgba(0,0,0,1)] overflow-hidden z-10">
+                                                            @if ($reply->user->creatorProfile?->profile_image)
+                                                                <img src="{{ asset('storage/' . $reply->user->creatorProfile->profile_image) }}" 
+                                                                     alt="{{ $reply->user->name }}" 
+                                                                     class="w-full h-full object-cover">
+                                                            @else
+                                                                <div class="w-full h-full bg-[#2F3AFF] text-[#D9FC28] font-display flex items-center justify-center text-[10px] uppercase">
+                                                                    {{ substr($reply->user->name, 0, 2) }}
+                                                                </div>
+                                                            @endif
+                                                        </div>
+
+                                                        <div class="flex-1 min-w-0">
+                                                            <div class="bg-[#2F3AFF] p-3 sm:p-3.5 text-white shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+                                                                <div class="flex items-center justify-between gap-2 mb-1">
+                                                                    <div class="flex items-center gap-2.5 min-w-0">
+                                                                        <span class="font-sans font-bold text-xs sm:text-sm text-white truncate">
+                                                                            {{ $reply->user->id === auth()->id() ? 'Anda' : $reply->user->name }}
+                                                                        </span>
+                                                                        <span class="font-sans text-[11px] text-white/80 shrink-0">
+                                                                            {{ $reply->created_at->translatedFormat('d F Y') }}
+                                                                        </span>
+                                                                    </div>
+                                                                    <button type="button" class="text-white hover:text-[#D9FC28] p-0.5">
+                                                                        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+                                                                    </button>
+                                                                </div>
+
+                                                                <p class="font-sans text-xs sm:text-sm text-white leading-relaxed break-words">
+                                                                    {{ $reply->content }}
+                                                                </p>
+                                                            </div>
+
+                                                            <div class="font-sans flex items-center gap-4 mt-1 ml-1 text-xs font-bold text-[#2F3AFF]">
+                                                                <span class="flex items-center gap-1">
+                                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" /></svg>
+                                                                    <span>Balas</span>
+                                                                </span>
+                                                                <span class="flex items-center gap-1">
+                                                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3" /></svg>
+                                                                    <span>{{ $reply->likes_count ?? 0 }}</span>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="border-2 border-dashed border-[#2F3AFF]/20 p-8 text-center bg-white/50">
+                                <p class="text-sm font-bold text-[#2F3AFF]">Belum ada riwayat komentar yang ditulis.</p>
+                            </div>
+                        @endforelse
+                    </div>
+
+                    {{-- KOLOM KANAN: ILUSTRASI KALENG RECYCLE (LEBAR 4 KOLOM) --}}
+                    <div class="lg:col-span-4 flex items-center justify-center sticky top-28 py-6">
+                        <img src="{{ asset('images/recycle-can.png') }}"
+                             alt="Recycle Can"
+                             class="w-[75%] sm:w-[85%] lg:w-full max-w-[320px] object-contain drop-shadow-2xl z-20 animate-float -scale-x-100">
+                    </div>
+
+                </div>
             </div>
 
             <div x-show="shareModalOpen" 

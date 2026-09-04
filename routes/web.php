@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Profile\Show as ProfileShow;
 
+
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('auth.google');
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 
@@ -33,6 +34,7 @@ Route::get('/about', function () {
 
 Route::get('/work/{work:slug}', [WorkController::class, 'show'])->name('work.show');
 
+Route::get('/works/{id}', [\App\Http\Controllers\WorkController::class, 'show'])->name('works.show');
 
 Route::get('/creators', function () {
     return view('creators');
@@ -59,9 +61,8 @@ Route::get('/waste-explorer/{material}', function ($material) {
 })->name('waste-explorer.show');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/submit', function () {
-        return "Halaman Submit Work (belum dibangun)";
-    })->name('works.create');
+    Route::get('/submit', [WorkController::class, 'create'])->name('works.create');
+    Route::post('/submit', [WorkController::class, 'store'])->name('works.store');
 });
 
 Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () {

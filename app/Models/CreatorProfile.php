@@ -10,6 +10,9 @@ class CreatorProfile extends Model
         'user_id', 'name', 'slug', 'bio', 'profile_image', 'cover_image',
         'creator_type', 'location', 'social_links', 'phone',
     ];
+    protected $attributes = [
+        'creator_type' => 'individual',
+    ];
 
     protected $casts = [
         'social_links' => 'array',

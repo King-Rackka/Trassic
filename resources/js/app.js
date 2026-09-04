@@ -1,4 +1,3 @@
-
 import Alpine from 'alpinejs';
 import collapse from '@alpinejs/collapse'
 import './react-entries/pixelswap-entry';

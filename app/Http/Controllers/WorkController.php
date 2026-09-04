@@ -30,4 +30,8 @@ class WorkController extends Controller
             'appreciationsCount' => $work->appreciations()->count(),
         ]);
     }
+    public function create()
+    {
+        return view('work-create');
+    }
 }
