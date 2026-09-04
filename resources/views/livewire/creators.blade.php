@@ -134,7 +134,7 @@
                                     <p class="font-sans text-xs sm:text-sm text-[#2F3AFF] font-medium truncate">
                                         {{ $creator->creator_type ?? 'Riset Mengabdi Desa' }}
                                     </p>
-                                    <p class="font-sans text-xs sm:text-sm text-[#2F3AFF]">
+                                    <p class="font-sans text-xs sm:text-sm text-[#2F3AFF] whitespace-nowrap">
                                         <span class="font-extrabold">{{ number_format($creator->totalInteractions()) }} likes</span> 
                                         <span class="mx-1">|</span> 
                                         Bergabung sejak {{ $creator->created_at->translatedFormat('d F Y') }}

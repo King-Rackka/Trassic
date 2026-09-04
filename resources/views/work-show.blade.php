@@ -15,24 +15,27 @@
                 <span class="mx-1">/</span>
                 <a href="{{ route('explore') }}" class="hover:text-[#254bfe] transition-colors">Karya lainnya</a>
                 <span class="mx-1">/</span>
-                <span class="text-[#254bfe] font-bold">{{ $work->title }} by {{ $work->creator->name }}</span>
+                <span class="text-[#254bfe] font-bold">{{ $work->title }} by {{ $work->creator->name ?? 'Creator' }}</span>
             </p>
         </div>
 
-        {{-- ========================================== --}}
-        {{-- 1. GALERI FOTO + INFO KARYA --}}
-        {{-- ========================================== --}}
         <div class="max-w-7xl mx-auto px-4 sm:px-8 py-4 sm:py-6">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-10">
 
                 {{-- KIRI: Galeri --}}
                 <div>
-                   <div class="w-full max-w-[560px] aspect-[4/3] bg-gray-900 border-2 border-[#FC00BB] shadow-[4px_4px_0px_rgba(0,0,0,1)] overflow-hidden">
-                    <img src="{{ asset('storage/' . $work->cover_image) }}" class="w-full h-full object-cover">
-                </div>
+                    <div class="w-full max-w-[560px] aspect-[4/3] bg-gray-900 border-2 border-[#FC00BB] shadow-[4px_4px_0px_rgba(0,0,0,1)] overflow-hidden">
+                        <img :src="activeImage" class="w-full h-full object-cover" alt="{{ $work->title }}">
+                    </div>
 
-                    @if ($work->images->count() > 0)
-                        <div class="grid grid-cols-4 gap-2 sm:gap-3">
+                    @if ($work->images && $work->images->count() > 0)
+                        <div class="grid grid-cols-4 gap-2 sm:gap-3 mt-3">
+                            <button type="button"
+                                    @click="activeImage = '{{ asset('storage/'.$work->cover_image) }}'"
+                                    class="aspect-square border-2 border-[#ff007a] overflow-hidden hover:opacity-80 transition">
+                                <img src="{{ asset('storage/'.$work->cover_image) }}" alt="" class="w-full h-full object-cover">
+                            </button>
+
                             @foreach ($work->images as $img)
                                 <button type="button"
                                         @click="activeImage = '{{ asset('storage/'.$img->image_path) }}'"
@@ -58,18 +61,18 @@
                                 <button onclick="$dispatch('show-login-prompt')"
                                         type="button"
                                         class="flex items-center gap-1.5 border-2 border-black bg-[#ccff00] hover:bg-[#ff007a] text-[#254bfe] hover:text-white font-display text-xs uppercase px-3.5 py-2 shadow-[2px_2px_0px_rgba(0,0,0,1)] active:translate-y-0.5 transition-all">
-                                    {{-- Icon Gambar + Tulisan Favorit --}}
                                     <img src="{{ asset('images/icons/bookmark.png') }}" 
-                                        alt="Favorit" 
-                                        class="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain">
+                                         alt="Favorit" 
+                                         class="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain">
                                     <span>Favorit</span>
                                 </button>
                             @endauth
+
                             <button type="button" onclick="navigator.clipboard.writeText(window.location.href)"
-                                    class="w-9 h-9 border-2 border-black bg-white flex items-center justify-center text-[#254bfe] shadow-[2px_2px_0px_rgba(0,0,0,1)] hover:bg-[#ccff00] transition">
+                                    class="w-9 h-9 border-2 border-black bg-white flex items-center justify-center text-[#254bfe] shadow-[2px_2px_0px_rgba(0,0,0,1)] hover:bg-[#ccff00] transition" title="Bagikan">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                             </button>
-                            <button class="w-9 h-9 border-2 border-black bg-white flex items-center justify-center text-[#254bfe] shadow-[2px_2px_0px_rgba(0,0,0,1)] hover:bg-[#ccff00] transition">
+                            <button class="w-9 h-9 border-2 border-black bg-white flex items-center justify-center text-[#254bfe] shadow-[2px_2px_0px_rgba(0,0,0,1)] hover:bg-[#ccff00] transition" title="Opsi">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
                             </button>
                         </div>
@@ -102,25 +105,35 @@
                         @endif
                     </div>
 
-                    <p class="font-sans text-base sm:text-[16px] text-[#2F3AFF] leading-relaxed font-normal">
+                    <p class="font-sans text-base sm:text-[16px] text-[#2F3AFF] leading-relaxed font-normal mb-6">
                         {{ $work->description }}
                     </p>
 
                     {{-- DETAIL PENGGUNAAN SAMPAH --}}
                     @foreach ($work->wasteDna as $dna)
+                        @php
+                            // Mengubah string JSON dari DB menjadi array PHP murni secara aman
+                            $suppMaterials = [];
+                            if (!empty($dna->supporting_materials)) {
+                                $suppMaterials = is_array($dna->supporting_materials) 
+                                    ? $dna->supporting_materials 
+                                    : json_decode($dna->supporting_materials, true);
+                            }
+                        @endphp
+
                         <div class="bg-white border-[3px] sm:border-4 border-[#FC00BB] shadow-[6px_6px_0px_#2F3AFF] p-5 sm:p-6 mb-6">
-                            {{-- Judul dengan Font Display --}}
                             <h3 class="font-display text-2xl sm:text-3xl text-[#2F3AFF] tracking-wide mb-4">
                                 Detail penggunaan sampah
                             </h3>
 
-                            {{-- Grid Rata Titik Dua (:) --}}
                             <div class="grid grid-cols-[140px_16px_1fr] sm:grid-cols-[160px_20px_1fr] gap-y-3 text-sm sm:text-base text-[#2F3AFF] items-start">
                                 
                                 {{-- Jenis Sampah --}}
                                 <span class="font-sans font-bold">Jenis sampah</span>
                                 <span>:</span>
-                                <span class="font-sans font-medium">{{ $dna->material }}@if($dna->waste_type)/{{ $dna->waste_type }}@endif</span>
+                                <span class="font-sans font-medium">
+                                    {{ $dna->waste_type ?? $dna->material }}
+                                </span>
 
                                 {{-- Sumber --}}
                                 @if ($dna->source)
@@ -133,26 +146,26 @@
                                 @if ($dna->quantity)
                                     <span class="font-sans font-bold">Berat</span>
                                     <span>:</span>
-                                    <span class="font-sans font-medium">± {{ $dna->quantity }} {{ $dna->unit === 'item' ? 'item' : 'gram' }}</span>
+                                    <span class="font-sans font-medium">
+                                        ± {{ $dna->unit === 'g' || $dna->unit === 'gram' ? ($dna->quantity < 1 ? $dna->quantity * 1000 : $dna->quantity) : $dna->quantity }} {{ $dna->unit === 'item' ? 'item' : 'gram' }}
+                                    </span>
                                 @endif
 
                                 {{-- Bahan Pendukung --}}
-                                @if ($dna->supporting_materials && count($dna->supporting_materials))
-                                    <span class="font-sansfont-bold">Bahan pendukung</span>
+                                @if (is_array($suppMaterials) && count(array_filter($suppMaterials)) > 0)
+                                    <span class="font-sans font-bold">Bahan pendukung</span>
                                     <span>:</span>
                                     <ol class="list-decimal list-inside space-y-0.5 font-medium">
-                                        @foreach ($dna->supporting_materials as $item)
+                                        @foreach (array_filter($suppMaterials) as $item)
                                             <li>{{ $item }}</li>
                                         @endforeach
                                     </ol>
                                 @endif
 
                                 {{-- Hasil Pemanfaatan --}}
-                                @if ($dna->usage_result)
-                                    <span class="font-sans font-bold">Hasil pemanfaatan</span>
-                                    <span>:</span>
-                                    <span class="font-sans font-medium">{{ $dna->usage_result }}</span>
-                                @endif
+                                <span class="font-sans font-bold">Hasil pemanfaatan</span>
+                                <span>:</span>
+                                <span class="font-sans font-medium">{{ $dna->usage_result ?? $work->title }}</span>
 
                             </div>
                         </div>
@@ -160,29 +173,21 @@
 
                     {{-- PROGRESS BAR SAMPAH TERPAKAI --}}
                     @php
-                        // Type cast (float) otomatis menghapus nol di belakang koma (.00 jadi hilang)
-                        $used = (float) $work->totalWasteQuantity();
+                        $used = (float) ($work->totalWasteQuantity() ?? $work->wasteDna->sum('quantity'));
                         $target = (float) ($work->target_quantity ?? 4);
                         $pct = $target > 0 ? min(100, round(($used / $target) * 100)) : 0;
-
-                        $usedStr = str_replace('.', ',', (string) $used);
-                        $targetStr = str_replace('.', ',', (string) $target);
                     @endphp
 
                     @if ($used > 0)
                         <div class="flex items-center gap-3.5 sm:gap-5 bg-[#2F3AFF] text-white px-5 sm:px-6 py-3 sm:py-3.5 rounded-tl-2xl rounded-br-2xl sm:rounded-tl-[26px] sm:rounded-br-[26px] shadow-sm">
-                            
-                            {{-- Icon Tong Sampah --}}
                             <svg class="w-6 h-6 text-white shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
 
-                            {{-- Teks Status --}}
                             <span class="font-sans text-xs sm:text-sm font-medium whitespace-nowrap">
-                                <strong class="font-extrabold text-sm sm:text-base">{{ str_replace('.', ',', (string)$used) }} kg</strong> dari {{ $target }}kg sampah terpakai
+                                <strong class="font-extrabold text-sm sm:text-base">{{ str_replace('.', ',', (string)$used) }} kg</strong> dari {{ str_replace('.', ',', (string)$target) }}kg sampah terpakai
                             </span>
 
-                            {{-- Progress Bar (Outline Putih + Isi Putih) --}}
                             <div class="flex-1 h-3 sm:h-3.5 border-2 border-white rounded-full p-[1.5px] flex items-center ml-1">
                                 <div class="h-full bg-white rounded-full transition-all duration-500" style="width: {{ $pct }}%"></div>
                             </div>
@@ -192,30 +197,22 @@
             </div>
         </div>
 
-        {{-- ========================================== --}}
-        {{-- 2. HERO CREATOR + LANYARD (Detail Karya)   --}}
-        {{-- ========================================== --}}
-        <div class="w-full bg-[#254bfe] border-y-4 sm:border-y-[6px] border-[#ff007a] py-8 sm:py-12 relative z-20 mt-10 sm:mt-16">
+        <div class="w-full bg-[#2F3AFF] border-y-4 sm:border-y-[6px] border-[#FC00BB] py-8 sm:py-12 relative z-20 mt-10 sm:mt-16">
             <div class="max-w-7xl mx-auto px-4 sm:px-8">
                 <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-14">
 
-                    {{-- KIRI: Kartu Lanyard 3D --}}
                     <div class="w-full max-w-[280px] sm:max-w-xs lg:w-80 shrink-0 flex items-center justify-center">
                         <div id="creator-lanyard-react-root"
                              data-name="{{ $work->creator->name }}"
-                             data-join="{{ $work->creator->created_at->format('d/m/Y') }}"
+                             data-join="{{ optional($work->creator->created_at)->format('d/m/Y') }}"
                              class="w-full h-[360px] sm:h-[420px] cursor-pointer">
                         </div>
                     </div>
 
-                    {{-- KANAN: Detail Info Profil Kreator --}}
                     <div class="flex-1 min-w-0 w-full flex flex-col justify-between space-y-5">
-
-                        {{-- Baris 1: Avatar + Nama & Role (Kiri) | Follow, Share & Opsi (Kanan) --}}
                         <div class="flex items-center justify-between gap-4 w-full">
                             <div class="flex items-center gap-4 sm:gap-6 min-w-0">
-                                {{-- Avatar --}}
-                                <div class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full border-4 border-white overflow-hidden bg-white shrink-0 shadow-lg">
+                                <div class="w-24 h-24 sm:w-28 sm:h-28 lg:w-32 lg:h-32 rounded-full border-4 sm:border-[5px] border-white overflow-hidden bg-white shrink-0 shadow-xl flex items-center justify-center">
                                     @if ($work->creator->profile_image)
                                         <img src="{{ asset('storage/' . $work->creator->profile_image) }}"
                                              alt="{{ $work->creator->name }}"
@@ -227,24 +224,16 @@
                                     @endif
                                 </div>
 
-                                {{-- Nama & Tipe --}}
                                 <div class="min-w-0">
                                     <h2 class="font-display text-3xl sm:text-5xl text-white uppercase tracking-normal leading-none truncate">
                                         {{ $work->creator->name }}
                                     </h2>
-                                    @if ($work->creator->creator_type)
-                                        <p class="font-sans text-xs sm:text-sm font-extrabold text-[#ccff00] uppercase mt-1 tracking-wider">
-                                            {{ $work->creator->creator_type }}
-                                        </p>
-                                    @endif
                                 </div>
                             </div>
 
-                            {{-- Action Buttons Rata Kanan --}}
                             <div class="flex items-center gap-3 sm:gap-4 shrink-0">
                                 <livewire:follow-button :creator="$work->creator" :key="'follow-'.$work->creator->id" />
 
-                                {{-- Icon Share --}}
                                 <button type="button" onclick="navigator.clipboard.writeText(window.location.href)" 
                                         class="text-white hover:text-[#ccff00] transition p-1" title="Bagikan">
                                     <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -252,7 +241,6 @@
                                     </svg>
                                 </button>
 
-                                {{-- Icon Opsi (...) --}}
                                 <button type="button" class="text-white hover:text-[#ccff00] transition p-1" title="Opsi">
                                     <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
                                         <circle cx="5" cy="12" r="2"/>
@@ -263,24 +251,20 @@
                             </div>
                         </div>
 
-                        {{-- Baris 2: Stats (Posts, Followers, Following) --}}
                         <div class="flex items-center gap-8 sm:gap-12 text-white font-display text-lg sm:text-2xl tracking-wide pt-1">
-                            <span><strong>{{ $work->creator->publishedWorksCount() }}</strong> posts</span>
-                            <span><strong>{{ number_format($work->creator->followersCount()) }}</strong> followers</span>
-                            <span><strong>{{ number_format($work->creator->followingCount()) }}</strong> following</span>
+                            <span><strong>{{ method_exists($work->creator, 'publishedWorksCount') ? $work->creator->publishedWorksCount() : 0 }}</strong> posts</span>
+                            <span><strong>{{ method_exists($work->creator, 'followersCount') ? number_format($work->creator->followersCount()) : 0 }}</strong> followers</span>
+                            <span><strong>{{ method_exists($work->creator, 'followingCount') ? number_format($work->creator->followingCount()) : 0 }}</strong> following</span>
                         </div>
 
-                        {{-- Baris 3: Deskripsi Bio (Membentang Penuh tanpa Max-Width) --}}
                         @if($work->creator->bio)
                             <p class="text-white/95 text-sm sm:text-base leading-relaxed font-normal w-full pt-1">
                                 {{ $work->creator->bio }}
                             </p>
                         @endif
 
-                        {{-- Baris 4: Link Sosial & Kontak (Sejajar Penuh Rata Kanan) --}}
                         <div class="flex flex-wrap lg:flex-nowrap items-center justify-between gap-y-3 gap-x-4 pt-2 text-white text-xs sm:text-sm md:text-base font-bold w-full">
-                            {{-- Website --}}
-                            @if ($work->creator->website())
+                            @if (method_exists($work->creator, 'website') && $work->creator->website())
                                 <a href="{{ $work->creator->website() }}" target="_blank" rel="noopener" class="flex items-center gap-2 hover:text-[#ccff00] transition whitespace-nowrap">
                                     <svg class="w-4 h-4 sm:w-5 sm:h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
@@ -289,8 +273,7 @@
                                 </a>
                             @endif
 
-                            {{-- Instagram --}}
-                            @if ($work->creator->instagramHandle())
+                            @if (method_exists($work->creator, 'instagramHandle') && $work->creator->instagramHandle())
                                 <a href="https://instagram.com/{{ ltrim($work->creator->instagramHandle(), '@') }}" target="_blank" rel="noopener" class="flex items-center gap-2 hover:text-[#ccff00] transition whitespace-nowrap">
                                     <svg class="w-4 h-4 sm:w-5 sm:h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                         <rect x="3" y="3" width="18" height="18" rx="5" />
@@ -301,7 +284,6 @@
                                 </a>
                             @endif
 
-                            {{-- Lokasi --}}
                             @if ($work->creator->location)
                                 <span class="flex items-center gap-2 whitespace-nowrap">
                                     <svg class="w-4 h-4 sm:w-5 sm:h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -312,7 +294,6 @@
                                 </span>
                             @endif
 
-                            {{-- Telepon --}}
                             @if ($work->creator->phone)
                                 <span class="flex items-center gap-2 whitespace-nowrap">
                                     <svg class="w-4 h-4 sm:w-5 sm:h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
@@ -328,10 +309,8 @@
             </div>
         </div>
 
-        {{-- ========================================== --}}
-        {{-- 3. KARYA LAINNYA DARI CREATOR --}}
-        {{-- ========================================== --}}
-        @if ($creatorWorks->count() > 0)
+        {{-- KARYA LAINNYA DARI CREATOR --}}
+        @if (isset($creatorWorks) && $creatorWorks->count() > 0)
             <div class="max-w-7xl mx-auto px-4 sm:px-8 py-10 sm:py-14 mt-6 sm:mt-10">
                 <h2 class="font-display text-3xl sm:text-5xl text-[#254bfe] uppercase text-center mb-8 tracking-wide leading-tight">
                     Karya lainnya dari {{ $work->creator->name }}
@@ -347,21 +326,17 @@
                         <div class="group flex flex-col items-center w-full">
                             <a href="{{ route('work.show', $cw->slug) }}" class="block w-full">
                                 <div class="relative w-full aspect-square bg-gray-900 border-2 border-[#ff007a] shadow-[3px_3px_0px_rgba(0,0,0,1)] shrink-0">
-                                    
-                                    {{-- 4 KOTAK KUNING PRESISI DI 4 SUDUT LUAR --}}
                                     <div class="absolute -top-1.5 -left-1.5 w-3 h-3 bg-[#ccff00] border border-black z-30 pointer-events-none"></div>
                                     <div class="absolute -top-1.5 -right-1.5 w-3 h-3 bg-[#ccff00] border border-black z-30 pointer-events-none"></div>
                                     <div class="absolute -bottom-1.5 -left-1.5 w-3 h-3 bg-[#ccff00] border border-black z-30 pointer-events-none"></div>
                                     <div class="absolute -bottom-1.5 -right-1.5 w-3 h-3 bg-[#ccff00] border border-black z-30 pointer-events-none"></div>
 
-                                    {{-- BADGE SAMPAH TERPAKAI --}}
                                     @if ($qty > 0)
                                         <div class="absolute top-2 left-2 z-30 bg-[#ccff00] text-[#254bfe] border border-black font-sans text-[7px] sm:text-[10px] font-extrabold px-1.5 sm:px-2 py-0.5 uppercase tracking-tight shadow-[1px_1px_0px_rgba(0,0,0,1)]">
                                             {{ $qtyStr }}kg sampah terpakai
                                         </div>
                                     @endif
 
-                                    {{-- GAMBAR DENGAN CROP OVERFLOW-HIDDEN INTERNAL --}}
                                     <div class="w-full h-full overflow-hidden flex items-center justify-center">
                                         @if ($cw->cover_image)
                                             <img src="{{ asset('storage/' . $cw->cover_image) }}" 
@@ -374,7 +349,6 @@
                                 </div>
                             </a>
 
-                            {{-- INFO KARYA TEKS BIRU (#254bfe) RATA TENGAH --}}
                             <div class="mt-2.5 sm:mt-3 text-center w-full">
                                 <h4 class="font-display text-xs sm:text-base text-[#254bfe] truncate uppercase leading-tight tracking-wide">
                                     #{{ $loop->iteration }} {{ $cw->title }}
@@ -401,9 +375,7 @@
             </div>
         @endif
 
-        {{-- ========================================== --}}
-        {{-- 4. KOMENTAR + KARYA SERUPA --}}
-        {{-- ========================================== --}}
+        {{-- KOMENTAR + KARYA SERUPA --}}
         <div class="max-w-7xl mx-auto px-4 sm:px-8 pb-14 mt-6 sm:mt-10">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
 
@@ -411,9 +383,8 @@
                     <livewire:work-comments :work="$work" />
                 </div>
 
-               @if ($similarWorks->count() > 0)
+                @if (isset($similarWorks) && $similarWorks->count() > 0)
                     <div>
-                        {{-- Judul Section --}}
                         <h2 class="font-display text-2xl sm:text-3xl text-[#254bfe] uppercase mb-6 tracking-wide">
                             Karya serupa
                         </h2>
@@ -428,21 +399,17 @@
                                 <div class="group flex flex-col items-center w-full">
                                     <a href="{{ route('work.show', $sw->slug) }}" class="block w-full">
                                         <div class="relative w-full aspect-square bg-gray-900 border-2 border-[#ff007a] shadow-[3px_3px_0px_rgba(0,0,0,1)] shrink-0">
-                                            
-                                            {{-- 4 KOTAK KUNING PRESISI DI 4 SUDUT LUAR --}}
                                             <div class="absolute -top-1.5 -left-1.5 w-3 h-3 bg-[#ccff00] border border-black z-30 pointer-events-none"></div>
                                             <div class="absolute -top-1.5 -right-1.5 w-3 h-3 bg-[#ccff00] border border-black z-30 pointer-events-none"></div>
                                             <div class="absolute -bottom-1.5 -left-1.5 w-3 h-3 bg-[#ccff00] border border-black z-30 pointer-events-none"></div>
                                             <div class="absolute -bottom-1.5 -right-1.5 w-3 h-3 bg-[#ccff00] border border-black z-30 pointer-events-none"></div>
 
-                                            {{-- BADGE SAMPAH TERPAKAI --}}
                                             @if ($swQty > 0)
                                                 <div class="absolute top-2 left-2 z-30 bg-[#ccff00] text-[#254bfe] border border-black font-sans text-[7px] sm:text-[9px] font-extrabold px-1.5 py-0.5 uppercase tracking-tight shadow-[1px_1px_0px_rgba(0,0,0,1)]">
                                                     {{ $swQtyStr }}kg sampah terpakai
                                                 </div>
                                             @endif
 
-                                            {{-- GAMBAR DENGAN OVERFLOW-HIDDEN INTERNAL --}}
                                             <div class="w-full h-full overflow-hidden flex items-center justify-center">
                                                 @if ($sw->cover_image)
                                                     <img src="{{ asset('storage/' . $sw->cover_image) }}" 
@@ -455,13 +422,12 @@
                                         </div>
                                     </a>
 
-                                    {{-- INFO KARYA TEKS BIRU (#254bfe) RATA TENGAH --}}
                                     <div class="mt-2.5 sm:mt-3 text-center w-full">
                                         <h4 class="font-display text-xs sm:text-sm text-[#254bfe] truncate uppercase leading-tight tracking-wide">
                                             #{{ $loop->iteration }} {{ $sw->title }}
                                         </h4>
                                         <p class="font-sans text-[9px] sm:text-xs font-medium text-[#254bfe] uppercase mt-0.5 sm:mt-1 truncate">
-                                            {{ $sw->creator->name }}
+                                            {{ $sw->creator->name ?? '' }}
                                         </p>
                                         <p class="font-sans text-[10px] sm:text-xs font-semibold text-[#254bfe] mt-0.5 sm:mt-1 flex items-center justify-center gap-1">
                                             <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-[#254bfe]" viewBox="0 0 24 24">

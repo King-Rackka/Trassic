@@ -223,56 +223,74 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2">
-            <div class="lg:col-span-2">
-                <p class="font-sans text-xs sm:text-sm text-[#2F3AFF] leading-relaxed font-medium">
-                    {{ $creator->bio ?? 'Belum ada deskripsi profil untuk kreator ini.' }}
-                </p>
-            </div>
-
-            <div class="space-y-2.5 sm:space-y-3 text-sm sm:text-base text-[#2F3AFF] font-semibold lg:pl-12">
-                @if ($creator->website())
-                    <p class="flex items-center gap-2.5 sm:gap-3 truncate">
-                        <svg class="w-5 h-5 text-[#2F3AFF] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
-                        </svg>
-                        <a href="{{ $creator->website() }}" target="_blank" rel="noopener" class="hover:underline">
-                            {{ str($creator->website())->replace(['https://', 'http://'], '') }}
-                        </a>
+        {{-- GRID UTAMA: BIO DI KIRI & KONTAK DI KANAN ATAS (MENEMPEL DI BAWAH TOMBOL AKSI) --}}
+        <div class="relative pt-2 pb-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                {{-- DESKRIPSI / BIO DI KIRI --}}
+                <div class="lg:col-span-7 pr-0 lg:pr-12">
+                    <p class="font-sans text-xs sm:text-sm text-[#2F3AFF] leading-relaxed font-medium">
+                        {{ $creator->bio ?? 'Belum ada deskripsi profil untuk kreator ini.' }}
                     </p>
-                @endif
+                </div>
 
-                @if ($creator->instagramHandle())
-                    <p class="flex items-center gap-2.5 sm:gap-3 truncate">
-                        <svg class="w-5 h-5 text-[#2F3AFF] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-                            <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
-                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
-                        </svg>
-                        <a href="https://instagram.com/{{ ltrim($creator->instagramHandle(), '@') }}" target="_blank" rel="noopener" class="hover:underline">
-                            {{ ltrim($creator->instagramHandle(), '@') }}
-                        </a>
-                    </p>
-                @endif
+                {{-- KONTAK & SOSMED DI KANAN ATAS (ABSOLUTE DI LAYAR BESAR AGAR NAIK PAS DI BAWAH TOMBOL) --}}
+                <div class="lg:col-span-5 lg:absolute lg:right-0 lg:-top-14 w-full lg:w-auto">
+                    <div class="space-y-2 sm:space-y-2.5 text-sm sm:text-base text-[#2F3AFF] font-semibold text-left">
+                        
+                        {{-- Website / Link --}}
+                        @if ($creator->website())
+                            <p class="flex items-center gap-2.5 sm:gap-3 truncate">
+                                <svg class="w-5 h-5 text-[#2F3AFF] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+                                </svg>
+                                <a href="{{ $creator->website() }}" target="_blank" rel="noopener" class="hover:underline">
+                                    {{ str($creator->website())->replace(['https://', 'http://'], '') }}
+                                </a>
+                            </p>
+                        @endif
 
-                @if ($creator->location)
-                    <p class="flex items-center gap-2.5 sm:gap-3 truncate">
-                        <svg class="w-5 h-5 text-[#2F3AFF] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        </svg>
-                        <span>{{ $creator->location }}</span>
-                    </p>
-                @endif
+                        {{-- Instagram --}}
+                        @if ($creator->instagramHandle() || isset($creator->instagram))
+                            @php
+                                $insta = $creator->instagramHandle() ?? $creator->instagram;
+                            @endphp
+                            <p class="flex items-center gap-2.5 sm:gap-3 truncate">
+                                <svg class="w-5 h-5 text-[#2F3AFF] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                                    <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/>
+                                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                                </svg>
+                                <a href="https://instagram.com/{{ ltrim($insta, '@') }}" target="_blank" rel="noopener" class="hover:underline">
+                                    {{ ltrim($insta, '@') }}
+                                </a>
+                            </p>
+                        @endif
 
-                @if ($creator->phone)
-                    <p class="flex items-center gap-2.5 sm:gap-3 truncate">
-                        <svg class="w-5 h-5 text-[#2F3AFF] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                        </svg>
-                        <span>{{ $creator->phone }}</span>
-                    </p>
-                @endif
+                        {{-- Lokasi --}}
+                        @if ($creator->location)
+                            <p class="flex items-center gap-2.5 sm:gap-3 truncate">
+                                <svg class="w-5 h-5 text-[#2F3AFF] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                                <span>{{ $creator->location }}</span>
+                            </p>
+                        @endif
+
+                        {{-- Telepon --}}
+                        @if ($creator->phone)
+                            <p class="flex items-center gap-2.5 sm:gap-3 truncate">
+                                <svg class="w-5 h-5 text-[#2F3AFF] shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                </svg>
+                                <span>{{ $creator->phone }}</span>
+                            </p>
+                        @endif
+
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -334,7 +352,7 @@
                     {{-- DETAIL TEKS & LIKE BUTTON --}}
                     <div class="mt-2.5 sm:mt-3 flex flex-col justify-between flex-grow text-center w-full">
                         <h4 class="font-display text-xs sm:text-base text-[#2F3AFF] uppercase leading-tight tracking-wide line-clamp-2-custom min-h-[2rem] sm:min-h-[2.5rem]" title="{{ $work->title }}">
-                            #{{ $loop->iteration }} {{ $work->title }}
+                            {{ $work->title }}
                         </h4>
 
                         <div class="mt-2 pt-1 border-t border-[#2F3AFF]/10">
@@ -470,7 +488,6 @@
                                     &times;
                                 </button>
                             </div>
-
                             <div class="grid grid-cols-4 gap-4 mb-6 text-center">
                                 
                                 <a :href="'https://api.whatsapp.com/send?text=' + encodeURIComponent('Cek profil {{ $creator->name }} di Trassic: ' + window.location.href)" 

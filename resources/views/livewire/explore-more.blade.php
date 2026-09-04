@@ -62,7 +62,7 @@
                 <div class="mt-2.5 sm:mt-3 flex flex-col justify-between flex-grow text-center w-full">
                     
                     <h4 class="font-display text-xs sm:text-base text-[#2F3AFF] uppercase leading-tight tracking-wide line-clamp-2-custom min-h-[2rem] sm:min-h-[2.5rem]" title="#{{ $loop->iteration }} {{ $work->title }}">
-                        #{{ $loop->iteration }} {{ $work->title }}
+                        {{ $work->title }}
                     </h4>
 
                     <div class="mt-2 pt-1 border-t border-[#2F3AFF]/10">
