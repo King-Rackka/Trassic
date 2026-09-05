@@ -36,7 +36,7 @@
 
                     {{-- Teks Kiri (Rata Tengah di HP, Rata Kiri di Desktop) --}}
                     <div class="md:col-span-4 text-center md:text-left">
-                        <h1 class="relative font-display uppercase leading-[0.9] tracking-normal text-[#2F3AFF] text-4xl sm:text-6xl lg:text-7xl">
+                        <h1 class="relative font-display leading-[0.9] tracking-normal text-[#2F3AFF] text-4xl sm:text-6xl lg:text-7xl">
                             <span class="invisible" aria-hidden="true">
                                 NICE<br>RECYCLE<br>GALLERY<br>ART<br>HERE
                             </span>
@@ -53,7 +53,7 @@
 
                     {{-- Teks Kanan (Di HP Tampil di Bawah Piringan Rata Tengah, Di Desktop Rata Kanan) --}}
                     <div class="md:col-span-4 text-center md:text-right">
-                        <h1 class="relative font-display uppercase leading-[0.9] tracking-normal text-[#D9FC28] [-webkit-text-stroke:1.5px_#2F3AFF] text-4xl sm:text-6xl lg:text-7xl">
+                        <h1 class="relative font-display leading-[0.9] tracking-normal text-[#D9FC28] [-webkit-text-stroke:1.5px_#2F3AFF] text-4xl sm:text-6xl lg:text-7xl">
                             <span class="invisible" aria-hidden="true">
                                 NICE<br>RECYCLE<br>GALLERY<br>ART<br>HERE
                             </span>
@@ -105,7 +105,7 @@
         }">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
-                <h2 class="font-display uppercase text-3xl sm:text-5xl text-[#2F3AFF] text-center mb-12 tracking-wide">
+                <h2 class="font-display text-3xl sm:text-5xl text-[#2F3AFF] text-center mb-12 tracking-wide">
                     Meet the Creator
                 </h2>
 
@@ -117,18 +117,19 @@
                             
                             <img src="{{ asset('images/template-tv.png') }}" alt="TV Frame" class="w-full relative z-20 pointer-events-none">
 
-                            <div class="absolute top-[12%] left-[12%] w-[76%] h-[68%] z-10 overflow-hidden bg-black flex items-center justify-center">
+                            {{-- KODE BARU (Sudah ditarik ke atas & melebar di balik bezel TV) --}}
+                            <div class="absolute top-[8%] left-[10%] w-[80%] h-[74%] z-10 overflow-hidden bg-black">
                                 <template x-for="(dev, index) in developers" :key="index">
                                     <img :src="dev.image" 
-                                         x-show="currentDev === index"
-                                         x-transition:enter="transition opacity duration-300"
-                                         x-transition:enter-start="opacity-0"
-                                         x-transition:enter-end="opacity-100"
-                                         class="w-full h-full object-cover"
-                                         alt="Creator Photo">
+                                        x-show="currentDev === index"
+                                        x-transition:enter="transition opacity duration-300"
+                                        x-transition:enter-start="opacity-0"
+                                        x-transition:enter-end="opacity-100"
+                                        class="absolute inset-0 w-full h-full object-cover"
+                                        alt="Creator Photo">
                                 </template>
 
-                                <div class="absolute bottom-2 right-2 z-30 bg-[#2F3AFF] text-[#D9FC28] text-[10px] font-bold px-2 py-1 uppercase opacity-80 group-hover:opacity-100 transition-opacity">
+                                <div class="absolute bottom-2 right-2 z-30 bg-[#2F3AFF] text-[#D9FC28] text-[10px] font-bold px-2 py-1 opacity-80 group-hover:opacity-100 transition-opacity">
                                     Klik Layar TV ➔
                                 </div>
                             </div>
@@ -139,38 +140,38 @@
                         
                         <div>
                             <div class="bg-[#FC00BB] px-5 py-3 border-2 border-[#FC00BB] inline-block w-full">
-                                <h3 class="font-display text-1xl sm:text-2xl text-[#D9FC28] uppercase tracking-normal" 
+                                <h3 class="font-display text-1xl sm:text-2xl text-[#D9FC28] tracking-normal" 
                                     x-text="developers[currentDev].number + ' ' + developers[currentDev].name">
                                 </h3>
                             </div>
-                            <p class="font-display text-xl text-[#2F3AFF] uppercase mt-2" x-text="developers[currentDev].role"></p>
+                            <p class="font-display text-xl text-[#2F3AFF] mt-2" x-text="developers[currentDev].role"></p>
                         </div>
 
                         <div class="border-2 border-[#FC00BB] bg-[#F8F9FA] p-3 sm:p-6 shadow-[6px_6px_0px_#2F3AFF] font-sans">
-                            <h4 class="font-display text-xl sm:text-2xl text-[#2F3AFF] uppercase mb-3">Detail</h4>
+                            <h4 class="font-display text-xl sm:text-2xl text-[#2F3AFF] mb-3">Detail</h4>
                             
                             <table class="w-full text-[10px] sm:text-sm text-[#2F3AFF] font-bold border-separate border-spacing-y-2">
                                 <tbody>
                                     <tr>
-                                        <td class="uppercase whitespace-nowrap align-top pr-2 w-1">NIM</td>
+                                        <td class="whitespace-nowrap align-top pr-2 w-1">NIM</td>
                                         <td class="align-top w-1 pr-2">:</td>
                                         <td class="font-normal align-top" x-text="developers[currentDev].nim"></td>
                                     </tr>
 
                                     <tr>
-                                        <td class="uppercase whitespace-nowrap align-top pr-2 w-1">Institusi</td>
+                                        <td class="whitespace-nowrap align-top pr-2 w-1">Institusi</td>
                                         <td class="align-top w-1 pr-2">:</td>
                                         <td class="font-normal align-top" x-text="developers[currentDev].instansi"></td>
                                     </tr>
 
                                     <tr>
-                                        <td class="uppercase whitespace-nowrap align-top pr-2 w-1">Nomor Telepon</td>
+                                        <td class="whitespace-nowrap align-top pr-2 w-1">Nomor Telepon</td>
                                         <td class="align-top w-1 pr-2">:</td>
                                         <td class="font-normal align-top" x-text="developers[currentDev].phone"></td>
                                     </tr>
 
                                     <tr>
-                                        <td class="uppercase whitespace-nowrap align-top pr-2 w-1">Email</td>
+                                        <td class="whitespace-nowrap align-top pr-2 w-1">Email</td>
                                         <td class="align-top w-1 pr-2">:</td>
                                         <td class="font-normal align-top break-all" x-text="developers[currentDev].email"></td>
                                     </tr>
@@ -190,11 +191,11 @@
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 <div class="flex items-center justify-center gap-3 mb-12 flex-wrap">
-                    <h2 class="font-display uppercase text-3xl sm:text-5xl text-[#2F3AFF]">
+                    <h2 class="font-display text-3xl sm:text-5xl text-[#2F3AFF]">
                         Apa itu
                     </h2>
                     <img src="{{ asset('images/logo.png') }}" alt="Trassic Logo" class="h-10 sm:h-14 object-contain inline-block">
-                    <h2 class="font-display uppercase text-3xl sm:text-5xl text-[#2F3AFF]">?</h2>
+                    <h2 class="font-display text-3xl sm:text-5xl text-[#2F3AFF]">?</h2>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -221,12 +222,9 @@
         </section>
 
 
-        {{-- ========================================== --}}
-        {{-- SECTION 4: FAQ (SESUAI GAMBAR REFERENSI 3)  --}}
-        {{-- ========================================== --}}
         <section class="py-16 sm:py-24 relative">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                <h2 class="font-display uppercase text-3xl sm:text-5xl text-[#2F3AFF] mb-12 text-center tracking-wide">
+                <h2 class="font-display text-3xl sm:text-5xl text-[#2F3AFF] mb-12 text-center tracking-wide">
                     Frequently Asked Questions (FAQ)
                 </h2>
 

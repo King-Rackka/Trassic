@@ -9,12 +9,13 @@ class Work extends Model
     protected $fillable = [
         'creator_id', 'community_id', 'title', 'slug', 'description',
         'category', 'year', 'location', 'story', 'process', 'status',
-        'cover_image', 'is_featured', 'published_at', 'target_quantity',
+        'cover_image', 'is_featured', 'published_at', 'target_quantity','tags'
     ];
 
     protected $casts = [
         'is_featured' => 'boolean',
         'published_at' => 'datetime',
+        'tags' => 'array',
         'target_quantity' => 'decimal:2',
     ];
 
@@ -119,4 +120,6 @@ class Work extends Model
                   });
             });
     }
+
+
 }

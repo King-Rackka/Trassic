@@ -52,45 +52,30 @@
             <template x-for="(toast, index) in toasts" :key="index">
                 <div class="pointer-events-auto px-4 py-2.5 sm:px-5 sm:py-3 rounded-2xl border-2 border-black font-display uppercase tracking-wider text-xs sm:text-sm shadow-[4px_4px_0px_rgba(0,0,0,1)] transition-all transform duration-300"
                      :class="{
-
-
                          'bg-[#D9FC28] text-[#2F3AFF]': toast.type === 'success',
                          'bg-[#FC00BB] text-white': toast.type === 'error',
                          'bg-[#2F3AFF] text-white': toast.type === 'info'
-
                      }"
                      x-text="toast.message">
                 </div>
             </template>
         </div>
 
-        <section class="w-full min-h-[calc(100vh-62px)] flex flex-col lg:flex-row bg-grid-pattern relative overflow-hidden py-8 sm:py-16">
-            
+        {{-- Section 1: Hero --}}
+        <section class="w-full min-h-[calc(100vh-62px)] flex flex-col lg:flex-row bg-grid-pattern relative overflow-hidden py-8 sm:py-16 px-6 sm:px-12 lg:px-[80px]">
             {{-- KIRI: Visual Kaleng --}}
             <div class="w-full lg:w-[50%] flex items-center justify-center p-4 sm:p-7 relative">
                 <div class="relative w-[280px] xs:w-[320px] sm:w-[480px] h-[280px] xs:h-[320px] sm:h-[480px] flex items-center justify-center my-4">
-                    
-                    <img src="{{ asset('images/vector/vector_petir_1.png') }}"
-                         alt="Vector Petir 1"
-                         class="absolute w-[115%] h-[115%] object-contain z-0 pointer-events-none transform -rotate-12">
-
-                    <img src="{{ asset('images/vector/vector_petir_2.png') }}"
-                         alt="Vector Petir 2"
-                         class="absolute w-[120%] h-[120%] object-contain z-0 pointer-events-none transform rotate-45">
-
-                    <img src="{{ asset('images/vector/Vector_Landingpage_1.png') }}"
-                         alt="Vector Circular"
-                         class="absolute inset-0 w-full h-full object-contain animate-[spin_16s_linear_infinite] z-10 pointer-events-none">
-
-                    <img src="{{ asset('images/recycle-can.png') }}"
-                         alt="Recycle Can"
-                         class="w-[85%] sm:w-[90%] h-[85%] sm:h-[90%] object-contain drop-shadow-2xl z-20 animate-float -scale-x-100">
+                    <img src="{{ asset('images/vector/vector_petir_1.png') }}" alt="Vector Petir 1" class="absolute w-[115%] h-[115%] object-contain z-0 pointer-events-none transform -rotate-12">
+                    <img src="{{ asset('images/vector/vector_petir_2.png') }}" alt="Vector Petir 2" class="absolute w-[120%] h-[120%] object-contain z-0 pointer-events-none transform rotate-45">
+                    <img src="{{ asset('images/vector/Vector_Landingpage_1.png') }}" alt="Vector Circular" class="absolute inset-0 w-full h-full object-contain animate-[spin_16s_linear_infinite] z-10 pointer-events-none">
+                    <img src="{{ asset('images/recycle-can.png') }}" alt="Recycle Can" class="w-[85%] sm:w-[90%] h-[85%] sm:h-[90%] object-contain drop-shadow-2xl z-20 animate-float -scale-x-100">
                 </div>
             </div>
 
             <div class="w-full lg:w-[50%] flex items-center justify-center p-6 sm:p-12">
                 <div class="max-w-lg space-y-6 text-center lg:text-left">
-                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-display text-[#2F3AFF] uppercase tracking-wide" style="line-height: 1.35 !important;">
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-display text-[#2F3AFF] tracking-wide" style="line-height: 1.35 !important;">
                         Zaman gini masih buang sampah sembarangan?
                     </h1>
                     <p class="text-gray-700 text-sm sm:text-base font-medium leading-relaxed">
@@ -106,37 +91,28 @@
             </div>
         </section>
 
-        <section class="w-full flex flex-col items-center justify-center py-8 sm:py-20 px-2 sm:px-8 bg-grid-pattern relative overflow-hidden"
+        {{-- Section 2: Mini Game --}}
+        <section class="w-full flex flex-col items-center justify-center py-8 sm:py-20 px-6 sm:px-12 lg:px-[80px] bg-grid-pattern relative overflow-hidden"
                  @pointermove.window="onPointerMove($event)"
                  @pointerup.window="onPointerUp($event)">
             
-            <h2 class="text-2xl sm:text-5xl font-display text-[#2F3AFF] uppercase tracking-normal text-center mb-4 sm:mb-10 z-20 px-4">
+            <h2 class="text-2xl sm:text-5xl font-display text-[#2F3AFF] tracking-normal text-center mb-4 sm:mb-10 z-20 px-4">
                 Latihan membuang sampah pada tempat yang sesuai
             </h2>
 
             <div x-ref="gameArea" class="w-full max-w-5xl h-[380px] sm:h-[620px] relative flex items-center justify-center select-none">
-
-                <img src="{{ asset('images/vector/Group 20.png') }}"
-                     alt="Background Vector Trash"
-                     class="absolute w-[280px] sm:w-[580px] h-auto object-contain z-0 pointer-events-none drop-shadow-md">
+                <img src="{{ asset('images/vector/Group 20.png') }}" alt="Background Vector Trash" class="absolute w-[280px] sm:w-[580px] h-auto object-contain z-0 pointer-events-none drop-shadow-md">
 
                 <div class="relative w-[210px] sm:w-[610px] h-[220px] sm:h-[420px] z-10 flex items-center justify-center">
-                    
-                    <div data-bin="b3"
-                        class="absolute top-8 sm:top-2 left-1/2 -translate-x-1/2 w-28 sm:w-80 z-10 transition-transform duration-200 hover:scale-110 active:scale-105 cursor-pointer">
+                    <div data-bin="b3" class="absolute top-8 sm:top-2 left-1/2 -translate-x-1/2 w-28 sm:w-80 z-10 transition-transform duration-200 hover:scale-110 active:scale-105 cursor-pointer">
                         <img src="{{ asset('images/tempat-sampah-red.png') }}" alt="Tong B3" class="w-full h-auto object-contain drop-shadow-xl pointer-events-none">
                     </div>
-
-                    <div data-bin="organik"
-                        class="absolute bottom-8 sm:bottom-2 left-4 sm:left-6 w-28 sm:w-80 z-20 -rotate-6 transition-transform duration-200 hover:scale-110 hover:-rotate-3 active:scale-105 cursor-pointer">
+                    <div data-bin="organik" class="absolute bottom-8 sm:bottom-2 left-4 sm:left-6 w-28 sm:w-80 z-20 -rotate-6 transition-transform duration-200 hover:scale-110 hover:-rotate-3 active:scale-105 cursor-pointer">
                         <img src="{{ asset('images/tempat-sampah-green.png') }}" alt="Tong Organik" class="w-full h-auto object-contain drop-shadow-2xl pointer-events-none">
                     </div>
-
-                    <div data-bin="anorganik"
-                        class="absolute bottom-8 sm:bottom-2 right-4 sm:right-6 w-28 sm:w-80 z-20 rotate-6 transition-transform duration-200 hover:scale-110 hover:rotate-3 active:scale-105 cursor-pointer">
+                    <div data-bin="anorganik" class="absolute bottom-8 sm:bottom-2 right-4 sm:right-6 w-28 sm:w-80 z-20 rotate-6 transition-transform duration-200 hover:scale-110 hover:rotate-3 active:scale-105 cursor-pointer">
                         <img src="{{ asset('images/tempat-sampah-orange.png') }}" alt="Tong Anorganik" class="w-full h-auto object-contain drop-shadow-2xl pointer-events-none">
                     </div>
-
                 </div>
 
                 <template x-for="(item, index) in trashItems" :key="item.id">
@@ -154,7 +130,6 @@
                         <img :src="item.image" :alt="item.name" class="w-10 sm:w-28 h-auto object-contain drop-shadow-md pointer-events-none">
                     </div>
                 </template>
-
             </div>
 
             <button x-show="allCompleted"
@@ -164,48 +139,35 @@
             </button>
         </section>
 
-
+        {{-- Section 3: Physics Matter.js (Full width, nempel ke layar tanpa gap horizontal) --}}
         <section class="w-full flex flex-col items-center justify-center py-6 sm:py-12 px-0 bg-grid-pattern relative overflow-hidden">
-            
-            <h2 class="text-2xl sm:text-5xl font-display text-[#2F3AFF] uppercase tracking-normal text-center mb-4 sm:mb-8 z-20 px-4">
+            <h2 class="text-2xl sm:text-5xl font-display text-[#2F3AFF] tracking-normal text-center mb-4 sm:mb-8 z-20 px-6 sm:px-12 lg:px-[80px]">
                 Kenapa harus menggunakan trassic?
             </h2>
 
             <div class="w-full h-[250px] sm:h-[480px] relative flex items-center justify-center">
-                {{-- Dibuat tetap tajam/pekat sama seperti desktop (opacity-100) --}}
-                <img src="{{ asset('images/vector/Vector_Landingpage_2.png') }}"
-                     alt="Vector Left"
-                     class="absolute top-1/2 -left-0 -translate-y-1/2 w-[55px] sm:w-auto h-[100%] sm:h-[140%] object-contain pointer-events-none z-10 -scale-x-100">
+                <img src="{{ asset('images/vector/Vector_Landingpage_2.png') }}" alt="Vector Left" class="absolute top-1/2 -left-0 -translate-y-1/2 w-[55px] sm:w-auto h-[100%] sm:h-[140%] object-contain pointer-events-none z-10 -scale-x-100">
+                <img src="{{ asset('images/vector/Vector_Landingpage_2.png') }}" alt="Vector Right" class="absolute top-1/2 -right-0 -translate-y-1/2 w-[55px] sm:w-auto h-[100%] sm:h-[140%] object-contain pointer-events-none z-10">
 
-                <img src="{{ asset('images/vector/Vector_Landingpage_2.png') }}"
-                     alt="Vector Right"
-                     class="absolute top-1/2 -right-0 -translate-y-1/2 w-[55px] sm:w-auto h-[100%] sm:h-[140%] object-contain pointer-events-none z-10">
-
-                {{-- CONTAINER CANVAS PHYSICS DENGAN GARIS BORDER-Y BLUE MAIN --}}
-                <div id="physics-container" class="w-full h-full relative border-y-2 border-[#2F3AFF] overflow-hidden z-20" style="touch-action: pan-y;">
-                </div>
+                <div id="physics-container" class="w-full h-full relative border-y-2 border-[#2F3AFF] overflow-hidden z-20" style="touch-action: pan-y;"></div>
             </div>
 
-            <p class="text-xs sm:text-sm font-bold text-[#2F3AFF] mt-3 uppercase tracking-wider text-center">
+            <p class="text-xs sm:text-sm font-bold text-[#2F3AFF] mt-3 uppercase tracking-wider text-center px-6">
                 Coba tarik, geser, atau lempar kapsul di atas!
             </p>
         </section>
 
+        {{-- Section 4: Marquee Banners & Vector Petir (Direstrukturisasi agar petir tidak raksasa saat zoom-out) --}}
         <section class="w-full flex flex-col items-center justify-center bg-grid-pattern relative overflow-hidden py-6 sm:py-16">
             
-            <div class="w-full flex justify-center -mb-[50px] sm:-mb-[110px] lg:-mb-[160px] z-10 pointer-events-none select-none">
-                <img src="{{ asset('images/vector/Vector.png') }}"
-                    alt="Vector Top"
-                    class="w-full h-auto object-contain scale-[1.03] translate-y-[30px] sm:translate-y-[50px]">
+            {{-- VECTOR PETIR ATAS: Menggunakan w-full max-w-[1440px] object-cover agar skalanya terkontrol & tidak ikut membesar secara berlebihan saat zoom out --}}
+            <div class="w-full flex justify-center -mb-[50px] sm:-mb-[90px] lg:-mb-[130px] z-10 pointer-events-none select-none px-0">
+                <img src="{{ asset('images/vector/Vector.png') }}" alt="Vector Top" class="w-full max-w-[1440px] h-auto object-cover scale-[1.03] translate-y-[30px] sm:translate-y-[40px]">
             </div>
 
             <div class="w-full relative flex items-center justify-center border-y-4 sm:border-y-8 border-[#D9FC28] z-20 overflow-hidden bg-white h-[260px] sm:h-[480px] lg:h-[600px]">
-                
-                <img src="{{ asset('images/image_27.png') }}"
-                    alt="Sampah Daur Ulang"
-                    class="w-full h-full object-cover">
+                <img src="{{ asset('images/image_27.png') }}" alt="Sampah Daur Ulang" class="w-full h-full object-cover">
 
-                {{-- BANNER PINK ACCENT --}}
                 <div class="group absolute w-[140%] sm:w-[130%] h-16 sm:h-28 lg:h-32 transform -rotate-[8deg] bg-[#FC00BB] flex items-center overflow-hidden shadow-2xl origin-center cursor-pointer bg-[url('{{ asset('images/garis-pink.png') }}')] bg-cover bg-center">                
                     <div class="animate-marquee-l2r group-hover:[animation-play-state:paused] whitespace-nowrap flex items-center">
                         @for ($i = 0; $i < 3; $i++)
@@ -218,7 +180,6 @@
                     </div>
                 </div>
 
-                {{-- BANNER LIME SECONDARY --}}
                 <div class="group absolute w-[140%] sm:w-[130%] h-16 sm:h-28 lg:h-32 transform rotate-[6deg] bg-[#D9FC28] flex items-center overflow-hidden shadow-2xl origin-center cursor-pointer bg-[url('{{ asset('images/garis-kuning.png') }}')] bg-cover bg-center">
                     <div class="animate-marquee-r2l group-hover:[animation-play-state:paused] whitespace-nowrap flex items-center">
                         @for ($i = 0; $i < 3; $i++)
@@ -230,29 +191,24 @@
                         @endfor
                     </div>
                 </div>
-
             </div>
 
-            {{-- VECTOR PETIR BAWAH --}}
-            <div class="w-full flex justify-center -mt-[50px] sm:-mt-[110px] lg:-mt-[160px] z-10 pointer-events-none select-none">
-                <img src="{{ asset('images/vector/Vector (1).png') }}"
-                    alt="Vector Bottom"
-                    class="w-full h-auto object-contain scale-[1.03] -translate-y-[30px] sm:-translate-y-[50px]">
+            {{-- VECTOR PETIR BAWAH: Dibatasi max-w-[1440px] object-cover agar tidak melebar/membesar berlebihan --}}
+            <div class="w-full flex justify-center -mt-[50px] sm:-mt-[90px] lg:-mt-[130px] z-10 pointer-events-none select-none px-0">
+                <img src="{{ asset('images/vector/Vector (1).png') }}" alt="Vector Bottom" class="w-full max-w-[1440px] h-auto object-cover scale-[1.03] -translate-y-[30px] sm:-translate-y-[40px]">
             </div>
 
         </section>   
 
-        <section class="w-full my-10 sm:my-16 px-2 sm:px-6">
+        {{-- Section 5: CTA / Karya (Dengan gap kiri kanan konsisten px-[80px]) --}}
+        <section class="w-full my-10 sm:my-16 px-6 sm:px-12 lg:px-[80px]">
             <div class="w-full bg-[#D9FC28] rounded-2xl sm:rounded-[32px] p-6 sm:p-10 lg:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                
-                {{-- Sisi Kiri: Teks Utama --}}
                 <div class="shrink-0 text-left">
-                    <h2 class="font-display text-3xl sm:text-5xl lg:text-6xl text-[#2F3AFF] uppercase leading-tight tracking-normal">
-                        MULAI TAMBAH<br>KARYAMU DISINI!
+                    <h2 class="font-display text-3xl sm:text-5xl lg:text-6xl text-[#2F3AFF] leading-tight tracking-normal">
+                        Mulai tambah<br>karyamu disini!
                     </h2>
                 </div>
 
-                {{-- Sisi Tengah: Teks NICE Recycle --}}
                 <div class="flex-1 text-center px-4 hidden md:block">
                     <p class="font-sans text-xs sm:text-sm lg:text-base font-bold text-[#2F3AFF] leading-snug">
                         NICE Recycle<br>
@@ -268,7 +224,7 @@
 
                     @auth
                         <a href="{{ route('works.create') }}" 
-                        class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-xl sm:rounded-2xl border-2 sm:border-3 border-[#2F3AFF] flex items-center justify-center text-[#2F3AFF] hover:bg-[#2F3AFF] hover:text-[#D9FC28] transition-all duration-200 cursor-pointer">
+                        class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-xl sm:rounded-2xl border-2 sm:border-3 border-[#2F3AFF] flex items-center justify-center text-[#D9FC28] bg-[#FC00BB] hover:bg-[#2F3AFF] hover:text-white transition-all duration-200 cursor-pointer">
                             <svg class="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24">
                                 <line x1="7" y1="17" x2="17" y2="7"></line>
                                 <polyline points="7 7 17 7 17 17"></polyline>
@@ -277,7 +233,7 @@
                     @else
                         <button type="button" 
                                 @click="$dispatch('show-login-prompt')" 
-                                class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-xl sm:rounded-2xl border-2 sm:border-3 border-[#2F3AFF] flex items-center justify-center text-[#2F3AFF] hover:bg-[#2F3AFF] hover:text-[#D9FC28] transition-all duration-200 cursor-pointer">
+                                class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-xl sm:rounded-2xl border-2 sm:border-3 border-[#2F3AFF] flex items-center justify-center text-[#2F3AFF] hover:bg-[#2F3AFF] hover:text-white transition-all duration-200 cursor-pointer">
                             <svg class="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24">
                                 <line x1="7" y1="17" x2="17" y2="7"></line>
                                 <polyline points="7 7 17 7 17 17"></polyline>
@@ -285,7 +241,6 @@
                         </button>
                     @endauth
                 </div>
-
             </div>
         </section>
 
@@ -446,7 +401,6 @@
         const wallThickness = 400;
         const invisibleStyle = { render: { visible: false } };
 
-        // Dinding Fisik Utama
         const ground = Bodies.rectangle(width / 2, height + (wallThickness / 2), width * 2, wallThickness, { isStatic: true, ...invisibleStyle });
         const ceiling = Bodies.rectangle(width / 2, -(wallThickness / 2), width * 2, wallThickness, { isStatic: true, ...invisibleStyle });
         const leftWall = Bodies.rectangle(wallOffset - (wallThickness / 2), height / 2, wallThickness, height * 2, { isStatic: true, ...invisibleStyle });
@@ -455,14 +409,12 @@
         Composite.add(engine.world, [ground, ceiling, leftWall, rightWall]);
 
         const rawBadges = [
-
             { text: 'Daur Ulang Mudah Together', bg: '#D9FC28', color: '#2F3AFF', baseWidth: isMobile ? 170 : 540 },
             { text: 'Eko-Kreatif Dengan Trassic', bg: '#FC00BB', color: '#D9FC28', baseWidth: isMobile ? 160 : 520 },
             { text: 'Ubah Sampah Jadi Karya', bg: '#D9FC28', color: '#2F3AFF', baseWidth: isMobile ? 145 : 470 },
             { text: 'Dukung Lingkungan Bersih', bg: '#FC00BB', color: '#D9FC28', baseWidth: isMobile ? 155 : 500 },
             { text: 'Komunitas Trassic Aktif', bg: '#D9FC28', color: '#2F3AFF', baseWidth: isMobile ? 145 : 480 },
             { text: 'Aksi Nyata Bumi Hijau', bg: '#FC00BB', color: '#D9FC28', baseWidth: isMobile ? 130 : 440 }
-
         ];
 
         const badgeBodies = [];

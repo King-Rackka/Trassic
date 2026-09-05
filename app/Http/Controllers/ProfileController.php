@@ -29,7 +29,6 @@ class ProfileController extends Controller
 {
     $user = $request->user();
     
-    // 1. Update data User (Nama & Email)
     $user->fill($request->validated());
 
     if ($user->isDirty('email')) {
@@ -38,7 +37,6 @@ class ProfileController extends Controller
 
     $user->save();
 
-    // 2. Ambil atau buatkan profil kreator jika belum ada
     $creator = $user->creatorProfile()->firstOrCreate(
         ['user_id' => $user->id],
         ['name' => $user->name]
@@ -46,14 +44,12 @@ class ProfileController extends Controller
 
     $data = $request->only(['bio', 'creator_type', 'phone', 'location']);
 
-    // Handle social links
-    $existingLinks = json_decode($creator->social_links, true) ?? [];
-    $data['social_links'] = json_encode([
+    $existingLinks = $creator->social_links ?? [];
+    $data['social_links'] = [
         'website'   => $request->input('website', $existingLinks['website'] ?? null),
         'instagram' => $request->input('instagram', $existingLinks['instagram'] ?? null),
-    ]);
+    ];
 
-    // Handle Upload Profile Image
     if ($request->hasFile('profile_image')) {
         $data['profile_image'] = $request->file('profile_image')->store('creators', 'public');
     }

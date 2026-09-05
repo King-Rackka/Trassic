@@ -22,7 +22,7 @@
             </nav>
 
             <div class="text-center mb-8 sm:mb-12">
-                <h1 class="font-display text-3xl sm:text-5xl text-[#254bfe] uppercase tracking-normal leading-tight">
+                <h1 class="font-display text-3xl sm:text-5xl text-[#254bfe] tracking-normal leading-tight">
                     Jelajahi Kreator Lainnya
                 </h1>
             </div>

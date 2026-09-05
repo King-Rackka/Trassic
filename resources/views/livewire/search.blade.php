@@ -92,7 +92,7 @@
                             <div class="mt-2.5 sm:mt-3 flex flex-col justify-between flex-grow text-center w-full">
                                 
                                 <h4 class="font-display text-xs sm:text-base text-[#2F3AFF] uppercase leading-tight tracking-wide line-clamp-2-custom min-h-[2rem] sm:min-h-[2.5rem]" title="#{{ $loop->iteration }} {{ $work->title }}">
-                                    #{{ $loop->iteration }} {{ $work->title }}
+                                    {{ $work->title }}
                                 </h4>
 
                                 <div class="mt-2 pt-1 border-t border-[#2F3AFF]/10">
@@ -188,17 +188,28 @@
                                     <p class="font-sans text-xs sm:text-sm text-[#2F3AFF] font-medium truncate">
                                         {{ $creator->creator_type ?? 'Riset Mengabdi Desa' }}
                                     </p>
-                                    <p class="font-sans text-xs sm:text-sm text-[#2F3AFF]">
+                                    <p class="font-sans text-xs sm:text-sm text-[#2F3AFF] whitespace-nowrap">
                                         <span class="font-extrabold">{{ number_format($creator->total_likes_sum ?? $creator->published_works_count) }} likes</span> 
                                         <span class="mx-1">|</span> 
                                         Bergabung sejak {{ $creator->created_at->translatedFormat('d F Y') }}
                                     </p>
 
                                     <div class="pt-1">
-                                        <button wire:click="toggleFollow({{ $creator->id }})" 
-                                                class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm uppercase active:translate-y-0.5 transition">
-                                            {{ $creator->isFollowedBy(auth()->id()) ? '✓ Mengikuti' : 'Ikuti' }}
-                                        </button>
+                                        @auth
+                                            @if (auth()->id() === $creator->user_id)
+                                                <a href="{{ route('profile.show') }}" class="inline-block px-4 py-1 bg-[#2F3AFF] text-white font-display text-xs sm:text-sm uppercase hover:bg-[#FC00BB] transition">
+                                                    Profil Saya
+                                                </a>
+                                            @else
+                                                <button wire:click="toggleFollow({{ $creator->id }})" class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm uppercase active:translate-y-0.5 transition-all cursor-pointer">
+                                                    {{ $creator->isFollowedBy(auth()->id()) ? '✓ Mengikuti' : 'Ikuti' }}
+                                                </button>
+                                            @endif
+                                        @else
+                                            <button wire:click="toggleFollow({{ $creator->id }})" class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm uppercase active:translate-y-0.5 transition-all cursor-pointer">
+                                                Ikuti
+                                            </button>
+                                        @endauth
                                     </div>
                                 </div>
                                 </div>

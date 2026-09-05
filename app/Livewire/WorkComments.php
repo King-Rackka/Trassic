@@ -99,6 +99,32 @@ class WorkComments extends Component
             ]);
         }
     }
+    public function deleteComment($commentId)
+    {
+        if (!Auth::check()) {
+            $this->dispatch('show-login-prompt');
+            return;
+        }
+
+        $comment = Comment::findOrFail($commentId);
+
+        // Validasi hak akses: hanya pemilik komentar atau pemilik karya yang boleh menghapus
+        $isCommentOwner = $comment->user_id === Auth::id();
+        $isWorkOwner = $this->work->user_id === Auth::id();
+
+        if (!$isCommentOwner && !$isWorkOwner) {
+            abort(403, 'Anda tidak memiliki izin untuk menghapus komentar ini.');
+        }
+
+        // Hapus juga balasan di dalamnya jika ada (jika relasi database belum cascade delete)
+        if ($comment->parent_id === null) {
+            Comment::where('parent_id', $comment->id)->delete();
+        }
+
+        // Hapus like terkait dan komentarnya
+        CommentLike::where('comment_id', $comment->id)->delete();
+        $comment->delete();
+    }
 
     public function render()
     {

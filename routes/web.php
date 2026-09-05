@@ -5,7 +5,8 @@ use App\Http\Controllers\ProfileShowController;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Profile\Show as ProfileShow;
+use App\Livewire\Work\Create as WorkCreate;
+use App\Livewire\Work\WorkEdit;
 
 
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('auth.google');
@@ -34,7 +35,14 @@ Route::get('/about', function () {
 
 Route::get('/work/{work:slug}', [WorkController::class, 'show'])->name('work.show');
 
-Route::get('/works/{id}', [\App\Http\Controllers\WorkController::class, 'show'])->name('works.show');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/works/create', WorkCreate::class)->name('works.create');
+    Route::get('/works/{work}/edit', WorkEdit::class)->name('works.edit');
+});
+
+Route::get('/works/{id}', [WorkController::class, 'show'])->name('works.show');
+
 
 Route::get('/creators', function () {
     return view('creators');
@@ -60,10 +68,6 @@ Route::get('/waste-explorer/{material}', function ($material) {
     return "Detail material: " . $material . " (belum dibangun)";
 })->name('waste-explorer.show');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/submit', [WorkController::class, 'create'])->name('works.create');
-    Route::post('/submit', [WorkController::class, 'store'])->name('works.store');
-});
 
 Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () {
     Route::get('/', function () {
@@ -84,10 +88,11 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', ProfileShowController::class)->name('profile.show');
+    Route::view('/profile', 'profile.index')->name('profile.show');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
 });
 
 require __DIR__.'/auth.php';

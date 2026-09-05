@@ -6,6 +6,7 @@
     <title>{{ $title ?? 'Trassic' }}</title>
     @viteReactRefresh
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -103,14 +104,14 @@
     
     <div class="w-full flex items-stretch justify-between h-16">
 
-        <div class="w-full xl:w-1/2 flex items-center justify-between gap-3 sm:gap-6 px-4 sm:px-6 lg:px-8 bg-white shrink-0">
+        <div class="w-full xl:w-1/2 flex items-center justify-between gap-2 sm:gap-4 px-3 sm:px-6 lg:px-8 bg-white shrink-0 min-w-0">
             <a href="{{ url('/') }}" class="shrink-0">
                 <img src="{{ asset('images/logo.png') }}" alt="Trassic" class="h-7 sm:h-8 object-contain" onerror="this.src='https://via.placeholder.com/120x35/2F3AFF/ffffff?text=Trassic'">
             </a>
 
-            <form action="{{ route('search') }}" method="GET" class="w-full max-w-md">
+            <form action="{{ route('search') }}" method="GET" class="flex-1 min-w-0">
                 <div class="relative flex items-center w-full">
-                    <button type="submit" class="absolute left-3 text-[#2F3AFF] hover:text-[#FC00BB] transition cursor-pointer">
+                    <button type="submit" class="absolute left-3 text-[#2F3AFF] hover:text-[#FC00BB] transition cursor-pointer z-10">
                         <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24">
                             <circle cx="11" cy="11" r="8"></circle>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -135,7 +136,7 @@
         </div>
 
 
-        <div class="hidden xl:flex w-1/2 bg-[#2F3AFF] px-6 lg:px-8 py-3.5 items-center justify-between shrink-0">
+        <div class="hidden xl:flex w-1/2 bg-[#2F3AFF] px-6 lg:px-8 py-3.5 items-center justify-between shrink-0 gap-4 xl:gap-6">
             
             <nav class="flex items-center gap-4 xl:gap-6 text-white font-display text-xs xl:text-sm uppercase tracking-tight shrink-0">
                 <a href="{{ url('/') }}" class="{{ request()->is('/') ? 'text-[#D9FC28]' : '' }} hover:text-[#D9FC28] transition whitespace-nowrap">Beranda</a>
@@ -145,34 +146,35 @@
                 <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'text-[#D9FC28]' : '' }} hover:text-[#D9FC28] transition whitespace-nowrap">About</a>
             </nav>
             
-            <div class="flex items-center gap-2 font-display shrink-0 relative ml-auto">
+            <div class="flex-1 flex items-center justify-end font-display shrink-0 relative min-w-0">
                 @guest
-                    <a href="{{ route('login') }}" class="bg-[#D9FC28] text-[#2F3AFF] px-3 xl:px-4 py-1 uppercase text-xs xl:text-sm hover:bg-opacity-90 transition whitespace-nowrap">Login</a>
-                    <a href="{{ route('register') }}" class="bg-[#FC00BB] text-[#D9FC28] px-3 xl:px-4 py-1 uppercase text-xs xl:text-sm hover:bg-opacity-90 transition whitespace-nowrap">Register</a>
+                    <div class="flex items-center justify-end gap-2 w-full">
+                        <a href="{{ route('login') }}" class="flex-1 max-w-[100px] text-center bg-[#D9FC28] text-[#2F3AFF] px-3 py-1 uppercase text-xs xl:text-sm hover:bg-opacity-90 transition whitespace-nowrap">Login</a>
+                        <a href="{{ route('register') }}" class="flex-1 max-w-[110px] text-center bg-[#FC00BB] text-[#D9FC28] px-3 py-1 uppercase text-xs xl:text-sm hover:bg-opacity-90 transition whitespace-nowrap">Register</a>
+                    </div>
                 @else
-                    <div class="relative flex items-center">
+                    <div class="relative flex items-center justify-end w-full">
                         <button @click="userDropdownOpen = !userDropdownOpen" 
                                 @click.away="userDropdownOpen = false"
                                 type="button" 
-                                class="group relative flex items-center cursor-pointer transition-transform hover:scale-105">
+                                class="group relative flex items-center justify-end cursor-pointer transition-transform hover:scale-105 w-full">
                             
                             {{-- Lingkaran Foto / Inisial --}}
                             <div class="w-9 h-9 xl:w-10 xl:h-10 rounded-full border-2 border-[#FC00BB] overflow-hidden bg-[#2F3AFF] z-10 shrink-0 flex items-center justify-center">
                                 @if (auth()->user()->profile_image)
                                     <img src="{{ asset('storage/' . auth()->user()->profile_image) }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
                                 @else
-                                    <span class="text-[#D9FC28] font-display text-xs xl:text-sm font-bold">
+                                    <span class="text-[#D9FC28] font-display text-xs xl:text-sm">
                                         {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                                     </span>
                                 @endif
                             </div>
 
-                            <div class="-ml-3 bg-[#D9FC28] text-[#FC00BB] font-sans text-xs xl:text-sm font-bold tracking-normal rounded-r-full pl-6 pr-5 py-1.5 flex items-center min-w-[120px] xl:min-w-[140px]">
-                                <span class="whitespace-nowrap">{{ Str::words(auth()->user()->name, 1, '') }}</span>
+                            <div class="-ml-4 bg-[#D9FC28] text-[#FC00BB] font-sans text-xs xl:text-sm font-bold tracking-normal rounded-r-full pl-6 pr-4 py-1.5 flex items-center justify-center flex-1 min-w-[120px] text-center">
+                                <span class="truncate">{{ Str::words(auth()->user()->name, 10, '') }}</span>
                             </div>
                         </button>
 
-                        {{-- Dropdown Menu --}}
                         <div x-show="userDropdownOpen" 
                              x-cloak
                              x-transition
@@ -184,7 +186,7 @@
                             </a>
 
                             <a href="{{ Route::has('profile.show') ? route('profile.show') : '#' }}" 
-                            class="flex items-center gap-2.5 px-2.5 py-2 text-[#2F3AFF] hover:bg-[#D9FC28] hover:text-black font-display text-xs uppercase tracking-wide transition-colors border border-transparent hover:border-black">
+                               class="flex items-center gap-2.5 px-2.5 py-2 text-[#2F3AFF] hover:bg-[#D9FC28] hover:text-black font-display text-xs uppercase tracking-wide transition-colors border border-transparent hover:border-black">
                                 <svg class="w-3.5 h-3.5 shrink-0 stroke-current fill-none" stroke-width="2.5" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                                 </svg>
@@ -295,6 +297,7 @@
 @stack('scripts')
 
 <x-login-prompt-modal />
+@livewireScripts
 
 </body>
 </html>

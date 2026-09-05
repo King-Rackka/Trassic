@@ -1,3 +1,4 @@
+
 <div class="w-full bg-grid-pattern min-h-screen py-6 sm:py-8 font-sans">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
@@ -20,14 +21,15 @@
                         @if (count($images) > 0)
                             <label class="cursor-pointer text-[#2F3AFF] hover:text-[#FC00BB] transition flex items-center gap-1 font-bold">
                                 <span>↺ Replace Image</span>
-                                <input type="file" wire:model="images" multiple class="hidden" accept="image/*">
+                                <input type="file" wire:model="replacementImage" class="hidden" accept="image/*">
                             </label>
                         @endif
                     </div>
 
                     <div class="relative w-[280px] sm:w-[320px] aspect-square bg-[#FFD6F6] border-2 border-[#FC00BB] mb-6 flex items-center justify-center overflow-hidden">
                         
-                        <div wire:loading wire:target="images" class="absolute inset-0 bg-[#0c0d1a]/90 z-30 flex flex-col items-center justify-center p-4">
+                        {{-- KODE BARU --}}
+                        <div wire:loading.flex wire:target="images, replacementImage" class="absolute inset-0 bg-[#0c0d1a]/90 z-30 flex-col items-center justify-center p-4">
                             <svg class="animate-spin h-8 w-8 text-[#D9FC28] mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="12" y1="2" x2="12" y2="6"></line>
                                 <line x1="12" y1="18" x2="12" y2="22"></line>
@@ -108,28 +110,87 @@
                         @error('title') <span class="text-xs text-red-600 font-medium">{{ $message }}</span> @enderror
                     </div>
 
-                    {{-- TAGS --}}
-                    <div>
+                    {{-- TAGS (CHIPS + DROPDOWN LIST PERSIS GAMBAR) --}}
+                    <div class="relative" x-data="{ isOpen: false }">
                         <label class="block font-sans text-xs uppercase text-[#2F3AFF] font-bold tracking-wider mb-1">TAGS</label>
-                        <input type="text" 
-                               wire:model="tags" 
-                               placeholder="Contoh: Raditya Meyka" 
-                               class="w-full bg-[#F8F8F8] border-2 border-[#FC00BB] rounded-tl-2xl rounded-br-2xl rounded-tr-none rounded-bl-none px-4 py-2.5 text-sm text-[#2F3AFF] placeholder-gray-400 focus:outline-none">
-                    </div>
 
-                    {{-- SUGGESTED TAGS --}}
-                    <div>
-                        <label class="block font-sans text-xs uppercase text-[#2F3AFF] font-bold tracking-wider mb-1.5">SUGGESTED TAGS</label>
-                        <div class="flex flex-wrap gap-2">
-                            @foreach (['Organik', 'Anorganik', 'K3', 'Plastik'] as $sTag)
-                                <button type="button" 
-                                        wire:click="selectSuggestedTag('{{ $sTag }}')" 
-                                        class="px-3.5 py-1.5 bg-[#2F3AFF] hover:bg-[#FC00BB] border border-[#FC00BB] text-white hover:text-[#D9FC28] font-sans text-xs font-medium uppercase transition-colors cursor-pointer">
-                                    + {{ $sTag }}
-                                </button>
+                        {{-- Wadah Input Utama Berbingkai Retro Trassic --}}
+                        <div @click="isOpen = true; $refs.tagInput.focus()"
+                             class="w-full bg-[#F8F8F8] border-2 border-[#FC00BB] rounded-tl-2xl rounded-br-2xl rounded-tr-none rounded-bl-none p-2 flex flex-wrap items-center gap-1.5 min-h-[46px] relative cursor-text focus-within:ring-2 focus-within:ring-[#2F3AFF]/30">
+                            
+                            {{-- Kotak Tag Terpilih (Chips) --}}
+                            @foreach ($selectedTags as $idx => $tag)
+                                <span class="inline-flex items-center gap-2 bg-[#2F3AFF] border-2 border-[#FC00BB] text-white px-3.5 py-1.5 text-xs font-bold font-sans">
+                                    <span>{{ $tag }}</span>
+                                    <button type="button" 
+                                            wire:click.stop="removeTag({{ $idx }})" 
+                                            class="text-white hover:text-[#D9FC28] font-bold text-sm leading-none cursor-pointer">
+                                        &times;
+                                    </button>
+                                </span>
                             @endforeach
+
+                            {{-- Input Ketik Tag --}}
+                            <input type="text" 
+                                   x-ref="tagInput"
+                                   @focus="isOpen = true"
+                                   wire:model.live="tagSearch"
+                                   wire:keydown.enter.prevent="addTag(tagSearch); isOpen = false"
+                                   placeholder="{{ count($selectedTags) == 0 ? 'Ketik nama sampah...' : '' }}" 
+                                   class="flex-1 bg-transparent border-none text-xs text-[#2F3AFF] placeholder-gray-400 focus:outline-none min-w-[120px] px-1 py-1 font-semibold">
+
+                            {{-- Icon Panah Dropdown di Kanan --}}
+                            <div class="pr-2 text-[#2F3AFF] pointer-events-none shrink-0" :class="isOpen ? 'rotate-180' : ''">
+                                <svg class="w-3.5 h-3.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        {{-- DROPDOWN PILIHAN KE BAWAH --}}
+                        <div x-show="isOpen" 
+                             x-cloak
+                             @click.outside="isOpen = false"
+                             class="absolute left-0 right-0 top-full mt-1 bg-white border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,1)] z-50 max-h-52 overflow-y-auto">
+                            
+                            @if (!empty($this->tagSuggestions))
+                                <div class="flex flex-col divide-y divide-gray-100">
+                                    @foreach ($this->tagSuggestions as $suggestion)
+                                        <button type="button" 
+                                                wire:click="addTag('{{ $suggestion }}'); isOpen = false"
+                                                class="w-full text-left px-4 py-2 text-sm font-bold text-black hover:bg-[#2F3AFF] hover:text-white transition-none cursor-pointer">
+                                            {{ $suggestion }}
+                                        </button>
+                                    @endforeach
+                                </div>
+                            @else
+                                <div class="px-4 py-3 text-xs text-gray-500 font-semibold text-center">
+                                    Tidak ada tag sampah yang cocok. Tekan <span class="text-black font-bold">Enter</span> untuk menambahkan sebagai tag baru.
+                                </div>
+                            @endif
                         </div>
                     </div>
+
+                    {{-- SUGGESTED TAGS (OTOMATIS HILANG JIKA SUDAH DIPILIH) --}}
+                    @php
+                        $suggestedList = ['Organik', 'Anorganik', 'Plastik HDPE', 'Minyak Jelantah', 'Kardus', 'Kain Perca'];
+                        $availableSuggestions = array_diff($suggestedList, $selectedTags ?? []);
+                    @endphp
+
+                    @if (!empty($availableSuggestions))
+                        <div>
+                            <label class="block font-sans text-xs uppercase text-[#2F3AFF] font-bold tracking-wider mb-1.5">SUGGESTED TAGS</label>
+                            <div class="flex flex-wrap gap-2">
+                                @foreach ($availableSuggestions as $sTag)
+                                    <button type="button" 
+                                            wire:click="selectSuggestedTag('{{ $sTag }}')" 
+                                            class="px-3.5 py-1.5 bg-[#2F3AFF] hover:bg-[#FC00BB] border-2 border-[#FC00BB] text-white hover:text-[#D9FC28] font-sans text-xs font-bold transition-colors cursor-pointer">
+                                        + {{ $sTag }}
+                                    </button>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
 
                     {{-- DESKRIPSI --}}
                     <div>
@@ -141,17 +202,42 @@
                         @error('description') <span class="text-xs text-red-600 font-medium">{{ $message }}</span> @enderror
                     </div>
 
-                    {{-- KOMENTAR TOGGLE --}}
-                    <div class="flex items-center justify-between pt-2">
+                    
+                    {{-- KOMENTAR TOGGLE (Animasi Tilt Meluncur Persis Video) --}}
+                    <div class="flex items-center justify-between pt-2"
+                        x-data="{
+                            on: @entangle('allowComments').live,
+                            tilting: false,
+                            toggle() {
+                                this.tilting = true;
+                                this.on = !this.on;
+                                setTimeout(() => { this.tilting = false }, 220);
+                            }
+                        }">
                         <span class="font-sans text-xs uppercase text-[#2F3AFF] font-bold tracking-wider">KOMENTAR</span>
+                        
                         <div class="flex items-center gap-3">
-                            <span class="font-sans text-xs uppercase text-[#2F3AFF] font-medium">
+                            {{-- Teks Status ON / OFF --}}
+                            <span class="font-sans text-xs uppercase font-bold tracking-wider min-w-[28px] text-right select-none transition-colors"
+                                :class="on ? 'text-[#FC00BB]' : 'text-[#2F3AFF]'"
+                                x-text="on ? 'ON' : 'OFF'">
                                 {{ $allowComments ? 'ON' : 'OFF' }}
                             </span>
+
+                            {{-- Tombol Toggle --}}
                             <button type="button" 
-                                    wire:click="$toggle('allowComments')" 
-                                    class="w-12 h-6 flex items-center bg-[#a2a8fb] border-2 border-[#2F3AFF] p-0.5 cursor-pointer transition">
-                                <div class="bg-[#2F3AFF] w-4 h-4 transition-transform duration-200 {{ $allowComments ? 'translate-x-6' : '' }}"></div>
+                                    @click="toggle()" 
+                                    class="w-12 h-6 flex items-center border-2 p-0.5 cursor-pointer transition-all duration-200 focus:outline-none"
+                                    :class="on ? 'bg-[#FC00BB]/40 border-[#FC00BB]' : 'bg-[#a2a8fb] border-[#2F3AFF]'">
+                                
+                                {{-- Kotak Dalam yang Meluncur Sambil Miring --}}
+                                <div class="w-4 h-4 transition-all duration-200 ease-out transform"
+                                    :class="{
+                                        'translate-x-6 bg-[#D9FC28] border-2 border-[#FC00BB]': on,
+                                        'translate-x-0 bg-[#2F3AFF]': !on,
+                                        '-rotate-12 scale-95': tilting
+                                    }">
+                                </div>
                             </button>
                         </div>
                     </div>
@@ -206,17 +292,29 @@
                                 <label class="block font-sans text-xs uppercase text-[#2F3AFF] font-bold tracking-wider mb-1">
                                     TOTAL BERAT SAMPAH YANG DIGUNAKAN / TOTAL BERAT KARYA
                                 </label>
-                                <div class="flex gap-2">
+                                <div class="flex items-center gap-2">
+                                    {{-- Input Angka Berat (Tinggi h-11 & Panah Angka Bawaan Dimatikan) --}}
                                     <input type="number" 
-                                           step="any"
-                                           wire:model="wasteDetails.{{ $wIndex }}.weight" 
-                                           placeholder="Contoh: 500" 
-                                           class="flex-1 bg-[#F8F8F8] border-2 border-[#FC00BB] rounded-tl-2xl rounded-bl-none rounded-tr-none rounded-br-none px-4 py-2.5 text-sm text-[#2F3AFF] placeholder-gray-400 focus:outline-none">
-                                    <select wire:model="wasteDetails.{{ $wIndex }}.unit" 
-                                            class="bg-[#F8F8F8] border-2 border-[#FC00BB] rounded-br-2xl rounded-tl-none rounded-tr-none rounded-bl-none px-3 py-2.5 text-xs font-semibold text-[#2F3AFF] focus:outline-none cursor-pointer">
-                                        <option value="gram">gram ∨</option>
-                                        <option value="kg">kg ∨</option>
-                                    </select>
+                                        step="any"
+                                        wire:model="wasteDetails.{{ $wIndex }}.weight" 
+                                        placeholder="Contoh: 500" 
+                                        class="flex-1 h-11 bg-[#F8F8F8] border-2 border-[#FC00BB] rounded-tl-2xl rounded-bl-none rounded-tr-none rounded-br-none px-4 text-sm text-[#2F3AFF] placeholder-gray-400 focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+
+                                    {{-- Dropdown Satuan (Tinggi h-11 Presisi & Bebas Panah Ganda) --}}
+                                    <div class="relative shrink-0 h-11">
+                                        <select wire:model="wasteDetails.{{ $wIndex }}.unit" 
+                                                class="h-11 appearance-none bg-none bg-[#F8F8F8] border-2 border-[#FC00BB] rounded-br-2xl rounded-tl-none rounded-tr-none rounded-bl-none pl-4 pr-9 text-xs font-bold text-[#2F3AFF] focus:outline-none cursor-pointer min-w-[95px]">
+                                            <option value="gram">gram</option>
+                                            <option value="kg">kg</option>
+                                        </select>
+
+                                        {{-- Satu Ikon Panah Biru Custom --}}
+                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3 text-[#2F3AFF]">
+                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                                            </svg>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -253,4 +351,5 @@
 
         </form>
     </div>
+
 </div>
