@@ -109,10 +109,11 @@
                 <img src="{{ asset('images/logo.png') }}" alt="Trassic" class="h-7 sm:h-8 object-contain" onerror="this.src='https://via.placeholder.com/120x35/2F3AFF/ffffff?text=Trassic'">
             </a>
 
+            {{-- SEARCH BAR (SUDAH DITAMBAH TINGGINYA JUGA) --}}
             <form action="{{ route('search') }}" method="GET" class="flex-1 min-w-0">
                 <div class="relative flex items-center w-full">
                     <button type="submit" class="absolute left-3 text-[#2F3AFF] hover:text-[#FC00BB] transition cursor-pointer z-10">
-                        <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24">
                             <circle cx="11" cy="11" r="8"></circle>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                         </svg>
@@ -121,7 +122,7 @@
                            name="q" 
                            value="{{ request('q') }}"
                            placeholder="Cari karya daur ulang" 
-                           class="w-full bg-[#F8F8F8] border-2 border-[#2F3AFF] text-[#2F3AFF] text-xs font-medium pl-8 sm:pl-9 pr-2 sm:pr-3 py-1.5 focus:outline-none placeholder-[#2F3AFF]/50">
+                           class="w-full h-9 sm:h-11 bg-[#F8F8F8] border-2 border-[#2F3AFF] text-[#2F3AFF] text-xs sm:text-sm font-medium pl-9 sm:pl-10 pr-3 focus:outline-none placeholder-[#2F3AFF]/50">
                 </div>
             </form>
 
@@ -138,7 +139,6 @@
         <div class="hidden lg:flex w-1/2 bg-[#2F3AFF] px-6 lg:px-8 py-3.5 items-center justify-between shrink-0 gap-4 xl:gap-6">
             
             <nav class="flex items-center gap-4 xl:gap-6 text-white font-display text-xs xl:text-sm tracking-tight shrink-0">
-                {{-- BERANDA LOGIC: DASHBOARD JIKA LOGIN, LANDING PAGE JIKA GUEST --}}
                 <a href="{{ auth()->check() ? route('dashboard') : url('/') }}" 
                    class="{{ (auth()->check() ? request()->routeIs('dashboard') : request()->is('/')) ? 'text-[#D9FC28]' : '' }} hover:text-[#D9FC28] transition whitespace-nowrap">
                     Beranda
@@ -162,9 +162,16 @@
                                 type="button" 
                                 class="group relative flex items-center justify-end cursor-pointer transition-transform hover:scale-105 w-full">
                             
+                            {{-- LOGIKA FOTO PROFIL HEADER --}}
+                            @php
+                                $headerAvatar = auth()->user()->creatorProfile->profile_image ?? null;
+                            @endphp
+
                             <div class="w-9 h-9 xl:w-10 xl:h-10 rounded-full border-2 border-[#FC00BB] overflow-hidden bg-[#2F3AFF] z-10 shrink-0 flex items-center justify-center">
-                                @if (auth()->user()->profile_image)
-                                    <img src="{{ asset('storage/' . auth()->user()->profile_image) }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
+                                @if ($headerAvatar)
+                                    <img src="{{ asset('storage/' . $headerAvatar) }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
+                                @elseif (auth()->user()->avatar)
+                                    <img src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover">
                                 @else
                                     <span class="text-[#D9FC28] font-display text-xs xl:text-sm">
                                         {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
@@ -182,7 +189,6 @@
                              x-transition
                              class="absolute right-0 top-full mt-2 w-48 bg-white border-2 border-[#FC00BB] z-50 p-1.5 space-y-1 shadow-lg">
                             
-                            {{-- MENU PROFILE SAYA --}}
                             <a href="{{ Route::has('profile.show') ? route('profile.show') : '#' }}" 
                                class="flex items-center gap-2.5 px-2.5 py-2 text-[#2F3AFF] hover:bg-[#D9FC28] hover:text-black font-display text-xs tracking-wide transition-colors border border-transparent hover:border-black">
                                 <svg class="w-3.5 h-3.5 shrink-0 stroke-current fill-none" stroke-width="2.5" viewBox="0 0 24 24">
@@ -193,7 +199,6 @@
 
                             <div class="border-t border-gray-100 my-1"></div>
 
-                            {{-- MENU LOGOUT --}}
                             <form method="POST" action="{{ route('logout') }}" class="w-full">
                                 @csrf
                                 <button type="submit" class="w-full flex items-center gap-2.5 px-2.5 py-2 text-[#FC00BB] hover:bg-[#FC00BB] hover:text-white font-display text-xs tracking-wide transition-colors border border-transparent hover:border-black cursor-pointer">

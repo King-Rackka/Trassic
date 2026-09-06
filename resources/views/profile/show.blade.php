@@ -96,16 +96,6 @@
                         <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                     </svg>
                 </button>
-
-                <button type="button" 
-                        class="text-[#2F3AFF] hover:text-[#FC00BB] p-1 transition-colors cursor-pointer" 
-                        title="Opsi">
-                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
-                        <circle cx="5" cy="12" r="2"/>
-                        <circle cx="12" cy="12" r="2"/>
-                        <circle cx="19" cy="12" r="2"/>
-                    </svg>
-                </button>
             </div>
         </div>
 
@@ -133,7 +123,7 @@
                     </p>
                 </div>
 
-                <div class="lg:col-span-5 lg:absolute lg:right-0 lg:-top-14 w-full lg:w-auto">
+                <div class="lg:col-span-5 lg:absolute lg:right-0 lg:-top-8 w-full lg:w-auto">
                     <div class="space-y-2 sm:space-y-2.5 text-sm sm:text-base text-[#2F3AFF] font-semibold text-left">
                         @php $links = $creator->social_links ?? []; @endphp
                         
@@ -255,15 +245,14 @@
                 <div class="group relative flex flex-col transition-transform duration-200 hover:-translate-y-1 p-1 w-full">
                     <a href="{{ route('work.show', $work->slug) }}" class="block w-full">
                         
-                        {{-- BINGKAI FOTO (ASPECT SQUARE PURE TAILWIND) --}}
-                        {{-- BINGKAI KOTAK UTAMA (PENGUNCI UKURAN 1:1) --}}
+
 <div class="relative w-full aspect-square bg-gray-900 border-2 border-[#FC00BB] shrink-0">
     
     {{-- 4 KOTAK KUNING NEON DI SUDUT BORDER (BEBAS DARI OVERFLOW) --}}
-    <div class="absolute -top-1 -left-1 w-2.5 h-2.5 bg-[#D9FC28] border border-black z-30 pointer-events-none"></div>
-    <div class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#D9FC28] border border-black z-30 pointer-events-none"></div>
-    <div class="absolute -bottom-1 -left-1 w-2.5 h-2.5 bg-[#D9FC28] border border-black z-30 pointer-events-none"></div>
-    <div class="absolute -bottom-1 -right-1 w-2.5 h-2.5 bg-[#D9FC28] border border-black z-30 pointer-events-none"></div>
+    <div class="absolute -top-1 -left-1 w-2.5 h-2.5 bg-[#D9FC28] border-2 border-[#FC00BB] z-30 pointer-events-none"></div>
+    <div class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-[#D9FC28] border-2 border-[#FC00BB] z-30 pointer-events-none"></div>
+    <div class="absolute -bottom-1 -left-1 w-2.5 h-2.5 bg-[#D9FC28] border-2 border-[#FC00BB] z-30 pointer-events-none"></div>
+    <div class="absolute -bottom-1 -right-1 w-2.5 h-2.5 bg-[#D9FC28] border-2 border-[#FC00BB] z-30 pointer-events-none"></div>
 
     {{-- BADGE SAMPAH TERPAKAI --}}
     @if ($work->wasteDna && $work->wasteDna->sum('quantity') > 0)
@@ -424,25 +413,12 @@
                                                     {{ $comment->created_at->translatedFormat('d F Y') }}
                                                 </span>
                                             </div>
-                                            <button type="button" class="text-white hover:text-[#D9FC28] p-0.5">
-                                                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
-                                            </button>
                                         </div>
                                         <p class="font-sans text-sm sm:text-base text-white leading-relaxed break-words">
                                             {{ $comment->content }}
                                         </p>
                                     </div>
 
-                                    <div class="flex items-center gap-4 mt-1.5 ml-1 text-xs sm:text-sm font-bold text-[#2F3AFF]">
-                                        <span class="flex items-center gap-1.5">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" /></svg>
-                                            <span>Balas</span>
-                                        </span>
-                                        <span class="flex items-center gap-1.5">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3" /></svg>
-                                            <span>{{ $comment->likes_count ?? 0 }}</span>
-                                        </span>
-                                    </div>
 
                                     @if ($comment->replies && $comment->replies->count() > 0)
                                         <div class="relative pl-7 sm:pl-10 mt-4 space-y-4">
@@ -473,25 +449,11 @@
                                                                         {{ $reply->created_at->translatedFormat('d F Y') }}
                                                                     </span>
                                                                 </div>
-                                                                <button type="button" class="text-white hover:text-[#D9FC28] p-0.5">
-                                                                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
-                                                                </button>
                                                             </div>
 
                                                             <p class="font-sans text-xs sm:text-sm text-white leading-relaxed break-words">
                                                                 {{ $reply->content }}
                                                             </p>
-                                                        </div>
-
-                                                        <div class="font-sans flex items-center gap-4 mt-1 ml-1 text-xs font-bold text-[#2F3AFF]">
-                                                            <span class="flex items-center gap-1">
-                                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" /></svg>
-                                                                <span>Balas</span>
-                                                            </span>
-                                                            <span class="flex items-center gap-1">
-                                                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3" /></svg>
-                                                                <span>{{ $reply->likes_count ?? 0 }}</span>
-                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>

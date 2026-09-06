@@ -12,7 +12,6 @@
         }
     </style>
     
-    {{-- Section 1: Top Works --}}
     <section class="w-full py-8 sm:py-12 px-6 sm:px-12 lg:px-[80px] max-w-[1440px] mx-auto text-center relative z-10">
         
         <h1 class="font-display text-3xl sm:text-5xl lg:text-6xl text-[#2F3AFF] normal-case-title mb-16 sm:mb-20 tracking-normal" style="text-transform: none !important;">
@@ -39,6 +38,9 @@
                     </div>
 
                     <div class="text-center w-full space-y-1.5 mt-2">
+                        <h3 class="font-display text-xl sm:text-2xl lg:text-3xl text-[#2F3AFF] normal-case-title leading-tight line-clamp-2-custom min-h-[3rem]" style="text-transform: none !important;">
+                            #{{ $i + 1 }} {{ $work->title }}
+                        </h3>
                         <p class="font-sans text-xs sm:text-sm font-semibold text-[#2F3AFF] tracking-wider">
                             {{ $work->creator->name ?? 'RIMESA 2026' }}
                         </p>
@@ -49,10 +51,6 @@
                             </svg>
                             <span>{{ number_format($work->weekly_likes ?? 0) }} likes</span>
                         </p>
-
-                        <h3 class="font-display text-xl sm:text-2xl lg:text-3xl text-[#2F3AFF] normal-case-title leading-tight line-clamp-2-custom min-h-[3rem]" style="text-transform: none !important;">
-                            #{{ $i + 1 }} {{ $work->title }}
-                        </h3>
                     </div>
 
                 </div>
