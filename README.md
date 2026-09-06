@@ -3,13 +3,13 @@
   # TRASSIC
   ### Waste. Reworked. — Galeri Digital untuk Karya Daur Ulang Indonesia
   
-  [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_Site-success?style=for-the-badge)](https://[URL_DEMO])
-  [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://[URL_REPO])
+  [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_Site-success?style=for-the-badge)](https://trassic.radityameyka.my.id/)
+  [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/King-Rackka/Trassic)
   [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
   
   **Submission for ITECHNO CUP 2026 - Web Development**
   
-  **By [Nama Tim Kalian]**
+  **By FENDI RAJA ELANG**
   
 </div>
 
@@ -34,9 +34,9 @@
 
 | Nama | Peran | GitHub |
 |------|-------|--------|
-| **[Nama Lengkap 1]** | Project Lead & Full Stack Developer | [GitHub](https://github.com/[username1]) |
-| **[Nama Lengkap 2]** | Frontend Developer | [GitHub](https://github.com/[username2]) |
-| **[Nama Lengkap 3]** | Backend Developer | [GitHub](https://github.com/[username3]) |
+| **[Muhammad Daffa Syarif Syaddad]** | UI/UX Designer & Team Leader | [GitHub](https://github.com/[username1]) |
+| **[Raditya Meyka Harry Sandhiva]** | Frontend Developer | [GitHub](https://github.com/King-Rackka) |
+| **[Muhammad Fahreza Prasetya Ramadhan]** | Backend Developer | [GitHub](https://github.com/fexartifico) |
 
 ---
 
