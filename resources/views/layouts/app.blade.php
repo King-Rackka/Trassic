@@ -283,8 +283,8 @@
                 <nav class="flex flex-wrap items-center justify-center gap-x-6 lg:gap-x-8 gap-y-3 text-[#2F3AFF] font-display text-base lg:text-xl tracking-wide">
                     <a href="{{ auth()->check() ? route('dashboard') : url('/') }}" class="hover:text-[#FC00BB] transition whitespace-nowrap">Beranda</a>
                     <a href="{{ route('explore') }}" class="hover:text-[#FC00BB] transition whitespace-nowrap">Explore</a>
-                    <a href="{{ Route::has('waste-impact') ? route('waste-impact') : '#' }}" class="hover:text-[#FC00BB] transition whitespace-nowrap">Waste &amp; Impact</a>
                     <a href="{{ Route::has('creators') ? route('creators') : '#' }}" class="hover:text-[#FC00BB] transition whitespace-nowrap">Creators</a>
+                    <a href="{{ Route::has('waste-impact') ? route('waste-impact') : '#' }}" class="hover:text-[#FC00BB] transition whitespace-nowrap">Waste &amp; Impact</a>
                     <a href="{{ route('about') }}" class="hover:text-[#FC00BB] transition whitespace-nowrap">About</a>
                 </nav>
 

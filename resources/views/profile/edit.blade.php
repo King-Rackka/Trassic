@@ -24,22 +24,36 @@
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start relative">
 
                 <div class="lg:sticky lg:top-6 w-full space-y-6 z-10">
-                    <div class="bg-[#F8F8F8] border-4 border-[#FC00BB] p-5 sm:p-6 shadow-[8px_8px_0px_0px_#2F3AFF] relative w-full flex flex-col items-center text-center">
+                    
+                    {{-- SECTION FOTO PROFIL WITH LIVE PREVIEW --}}
+                    <div class="bg-[#F8F8F8] border-4 border-[#FC00BB] p-5 sm:p-6 shadow-[8px_8px_0px_0px_#2F3AFF] relative w-full flex flex-col items-center text-center"
+                         x-data="{ 
+                            fileName: '', 
+                            previewUrl: '{{ $creator && $creator->profile_image ? asset('storage/' . $creator->profile_image) : ($user->avatar ? $user->avatar : '') }}',
+                            updatePreview(event) {
+                                const file = event.target.files[0];
+                                if (file) {
+                                    this.fileName = file.name;
+                                    const reader = new FileReader();
+                                    reader.onload = (e) => { this.previewUrl = e.target.result; };
+                                    reader.readAsDataURL(file);
+                                }
+                            }
+                         }">
                         <h3 class="font-display text-2xl text-[#2F3AFF] mb-4">Foto Profile</h3>
                         
-                        <div class="relative w-40 h-40 sm:w-48 sm:h-48 rounded-full border-4 border-[#FC00BB] p-1 bg-white shadow-[4px_4px_0px_0px_#2F3AFF] overflow-hidden mb-5">
-                            @if ($creator && $creator->profile_image)
-                                <img src="{{ asset('storage/' . $creator->profile_image) }}" alt="Avatar" class="w-full h-full object-cover rounded-full">
-                            @elseif ($user->avatar)
-                                <img src="{{ $user->avatar }}" alt="Avatar" class="w-full h-full object-cover rounded-full">
-                            @else
+                        <div class="relative w-40 h-40 sm:w-48 sm:h-48 rounded-full border-4 border-[#FC00BB] p-1 bg-white shadow-[4px_4px_0px_0px_#2F3AFF] overflow-hidden mb-5 flex items-center justify-center">
+                            <template x-if="previewUrl">
+                                <img :src="previewUrl" alt="Avatar Preview" class="w-full h-full object-cover rounded-full">
+                            </template>
+                            <template x-if="!previewUrl">
                                 <div class="w-full h-full bg-[#2F3AFF] text-[#D9FC28] font-display text-4xl flex items-center justify-center rounded-full font-black">
                                     {{ substr($user->name, 0, 2) }}
                                 </div>
-                            @endif
+                            </template>
                         </div>
 
-                            <div class="w-full flex flex-col items-center justify-center text-center" x-data="{ fileName: '' }">
+                        <div class="w-full flex flex-col items-center justify-center text-center">
                             <span class="block font-sans text-[11px] text-[#2F3AFF] font-bold tracking-wider mb-2">PILIH FOTO PROFIL BARU</span>
                             
                             <div class="flex items-center justify-center gap-2">
@@ -51,26 +65,41 @@
 
                             <input type="file" id="profile_image" form="form-profile-update" name="profile_image" accept="image/*" 
                                    style="display: none !important;" 
-                                   @change="fileName = $event.target.files[0] ? $event.target.files[0].name : ''">
+                                   @change="updatePreview($event)">
                             
                             <x-input-error class="mt-1 text-center" :messages="$errors->get('profile_image')" />
                         </div>
                     </div>
                     
-                    <div class="bg-[#F8F8F8] border-4 border-[#FC00BB] p-5 sm:p-6 shadow-[8px_8px_0px_0px_#2F3AFF] relative w-full flex flex-col items-center text-center">
+                    {{-- SECTION SAMPUL PROFIL WITH LIVE PREVIEW --}}
+                    <div class="bg-[#F8F8F8] border-4 border-[#FC00BB] p-5 sm:p-6 shadow-[8px_8px_0px_0px_#2F3AFF] relative w-full flex flex-col items-center text-center"
+                         x-data="{ 
+                            fileName: '', 
+                            previewUrl: '{{ $creator && $creator->cover_image ? asset('storage/' . $creator->cover_image) : '' }}',
+                            updatePreview(event) {
+                                const file = event.target.files[0];
+                                if (file) {
+                                    this.fileName = file.name;
+                                    const reader = new FileReader();
+                                    reader.onload = (e) => { this.previewUrl = e.target.result; };
+                                    reader.readAsDataURL(file);
+                                }
+                            }
+                         }">
                         <h3 class="font-display text-2xl text-[#2F3AFF] mb-4">Sampul Profile</h3>
                         
                         <div class="relative w-full h-48 sm:h-60 bg-[#0c0d1a] border-2 border-[#FC00BB] overflow-hidden flex items-center justify-center mb-5">
-                            @if ($creator && $creator->cover_image)
-                                <img src="{{ asset('storage/' . $creator->cover_image) }}" alt="Cover" class="w-full h-full object-cover">
-                            @else
-                                <div class="w-full h-full bg-gradient-to-r from-[#D9FC28] via-[#ff8a4c] to-[#FC00BB] flex items-center justify-center text-[#2F3AFF] font-display text-sm ">
+                            <template x-if="previewUrl">
+                                <img :src="previewUrl" alt="Cover Preview" class="w-full h-full object-cover">
+                            </template>
+                            <template x-if="!previewUrl">
+                                <div class="w-full h-full bg-gradient-to-r from-[#D9FC28] via-[#ff8a4c] to-[#FC00BB] flex items-center justify-center text-[#2F3AFF] font-display text-sm">
                                     Belum Ada Cover
                                 </div>
-                            @endif
+                            </template>
                         </div>
 
-                        <div class="w-full flex flex-col items-center justify-center text-center" x-data="{ fileName: '' }">
+                        <div class="w-full flex flex-col items-center justify-center text-center">
                             <span class="block font-sans text-[11px] text-[#2F3AFF] font-bold tracking-wider mb-2">PILIH SAMPUL BARU</span>
                             
                             <div class="flex items-center justify-center gap-2">
@@ -82,17 +111,15 @@
 
                             <input type="file" id="cover_image" form="form-profile-update" name="cover_image" accept="image/*" 
                                    style="display: none !important;" 
-                                   @change="fileName = $event.target.files[0] ? $event.target.files[0].name : ''">
+                                   @change="updatePreview($event)">
                             
                             <x-input-error class="mt-1 text-center" :messages="$errors->get('cover_image')" />
                         </div>
                     </div>
 
-                    
-
                 </div>
 
-
+                {{-- FORM KANAN (INFORMASI PERSONAL & KEAMANAN) --}}
                 <div class="w-full space-y-8">
 
                     <form id="form-profile-update" method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="space-y-6">
@@ -126,7 +153,7 @@
 
                             <div>
                                 <label for="phone" class="block font-sans text-xs text-[#2F3AFF] font-bold tracking-wider mb-1">NOMOR HANDPHONE</label>
-                                <input type="text" id="phone" name="phone" value="{{ old('phone', $creator->phone ?? '') }}" 
+                                <input type="number" id="phone" name="phone" value="{{ old('phone', $creator->phone ?? '') }}" 
                                        placeholder="Contoh: 081234567890" 
                                        class="w-full bg-[#F8F8F8] border-2 border-[#FC00BB] rounded-tl-2xl rounded-br-2xl rounded-tr-none rounded-bl-none px-4 py-2.5 text-sm text-[#2F3AFF] font-medium placeholder-gray-400 focus:outline-none">
                                 <x-input-error class="mt-1" :messages="$errors->get('phone')" />
@@ -177,7 +204,7 @@
                                 <div class="relative flex items-center">
                                     <input type="url" id="website" name="website" value="{{ old('website', $socials['website'] ?? '') }}" 
                                            placeholder="trassic.id" 
-                                           class="w-full bg-[#F8F8F8] border-2 border-[#FC00BB] rounded-tl-2xl rounded-br-2xl rounded-tr-none rounded-bl-none  pr-4 py-2.5 text-sm text-[#2F3AFF] font-medium placeholder-gray-400 focus:outline-none">
+                                           class="w-full bg-[#F8F8F8] border-2 border-[#FC00BB] rounded-tl-2xl rounded-br-2xl rounded-tr-none rounded-bl-none pr-4 py-2.5 text-sm text-[#2F3AFF] font-medium placeholder-gray-400 focus:outline-none">
                                 </div>
                                 <x-input-error class="mt-1" :messages="$errors->get('website')" />
                             </div>
@@ -243,7 +270,7 @@
                     <hr class="border-red-300 my-8">
 
                     <div class="bg-red-50 border-2 border-red-500 p-5 rounded-tl-2xl rounded-br-2xl rounded-tr-none rounded-bl-none space-y-3" x-data="{ confirmingUserDeletion: false }">
-                        <h3 class="font-display text-xl text-red-600 ">Hapus Akun</h3>
+                        <h3 class="font-display text-xl text-red-600">Hapus Akun</h3>
                         <p class="font-sans text-xs text-red-700 leading-relaxed">
                             Setelah akun kamu dihapus, semua karya, foto, dan data profil akan dihapus secara permanen dari Trassic.
                         </p>
@@ -255,10 +282,9 @@
                             <span>Hapus Akun Permanen</span>
                         </button>
 
-                        {{-- MODAL KONFIRMASI HAPUS AKUN --}}
                         <div x-show="confirmingUserDeletion" x-cloak class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
                             <div class="bg-white border-4 border-red-600 p-6 max-w-md w-full shadow-[8px_8px_0px_#121210] space-y-4">
-                                <h3 class="font-display text-2xl text-red-600 ">Apakah kamu yakin?</h3>
+                                <h3 class="font-display text-2xl text-red-600">Apakah kamu yakin?</h3>
                                 <p class="text-xs text-gray-600 font-medium">
                                     Masukkan kata sandi untuk mengonfirmasi penghapusan permanen akun ini.
                                 </p>
@@ -272,10 +298,10 @@
                                     <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-1" />
 
                                     <div class="flex justify-end gap-3 pt-2">
-                                        <button type="button" @click="confirmingUserDeletion = false" class="px-4 py-2 bg-gray-200 text-gray-700 font-display text-xs ">
+                                        <button type="button" @click="confirmingUserDeletion = false" class="px-4 py-2 bg-gray-200 text-gray-700 font-display text-xs">
                                             Batal
                                         </button>
-                                        <button type="submit" class="px-4 py-2 bg-red-600 text-white font-display text-xs ">
+                                        <button type="submit" class="px-4 py-2 bg-red-600 text-white font-display text-xs">
                                             Hapus Permanen
                                         </button>
                                     </div>

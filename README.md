@@ -90,7 +90,7 @@ TRASSIC hadir sebagai galeri digital yang menjembatani kreator daur ulang dengan
 
 <div align="center">
   <img src="docs/screenshots/homepage.png" alt="Homepage" width="800"/>
-  <p><em>Homepage - Rekomendasi harian & karya dengan like terbanyak</em></p>
+  <p><em>Homepage - Pengenalan Website Trassic</em></p>
   
   <img src="docs/screenshots/explore.png" alt="Explore" width="800"/>
   <p><em>Explore - Filter karya berdasarkan jenis sampah</em></p>
