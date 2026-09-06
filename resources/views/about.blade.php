@@ -71,10 +71,10 @@
                 {
                     name: 'Muhammad Daffa Syarif Syaddad',
                     role: 'UI/UX Designer & Team Leader',
-                    nim: '2407411015',
+                    nim: '2407411001',
                     instansi: 'POLITEKNIK NEGERI JAKARTA',
                     phone: '0895373172879',
-                    email: 'example.com',
+                    email: 'daffasyrfs@gmail.com',
                     number: '#1',
                     image: '{{ asset('images/creators/daffa.png') }}'
                 },
@@ -91,10 +91,10 @@
                 {
                     name: 'Muhammad Fahreza Prasetya Ramadhan',
                     role: 'Developer 2',
-                    nim: '2407411016',
+                    nim: '2407411003',
                     instansi: 'POLITEKNIK NEGERI JAKARTA',
-                    phone: '0895111111111',
-                    email: 'developer3@gmail.com',
+                    phone: '088225669315',
+                    email: 'rezaprasetya721@gmail.com',
                     number: '#3',
                     image: '{{ asset('images/creators/reza.png') }}'
                 }

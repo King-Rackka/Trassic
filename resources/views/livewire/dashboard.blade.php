@@ -121,7 +121,7 @@
     {{-- ============================================================ --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20 sm:space-y-28 w-full my-4 flex-1">
 
-        <section class="w-full text-center space-y-12 sm:space-y-16">
+        <section class="w-full text-center space-y-12 sm:space-y-16 mt-16 sm:mt-20">
             <h2 class="font-display text-3xl sm:text-5xl lg:text-6xl text-[#2F3AFF] tracking-normal">
                 Kreator dengan kontribusi tertinggi
             </h2>

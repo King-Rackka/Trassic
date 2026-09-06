@@ -232,13 +232,20 @@
         }
     </style>
 
-    {{-- Ikon Sampah Biru Menempel Pas di Tepi Kiri-Bawah dan Kanan-Atas Layar --}}
-    <div class="absolute top-0 right-0 z-20 pointer-events-none">
-        <img src="{{ asset('images/vector-sampah-biru.png') }}" alt="Vector Sampah Kanan" class="w-36 sm:w-56 h-auto object-contain transform translate-x-4 -translate-y-4 scale-x-[-1] drop-shadow-md">
-    </div>
-    <div class="absolute bottom-0 left-0 z-20 pointer-events-none">
-        <img src="{{ asset('images/vector-sampah-biru.png') }}" alt="Vector Sampah Kiri" class="w-36 sm:w-56 h-auto object-contain transform -translate-x-4 translate-y-4 drop-shadow-md">
-    </div>
+    {{-- Vector Sampah Kanan (Ukuran dikecilkan & diturunkan di mobile) --}}
+      
+        <div class="absolute top-16 sm:top-0 right-0 z-20 pointer-events-none">
+            <img src="{{ asset('images/group_27.png') }}" 
+                alt="Vector Sampah Kanan" 
+                class="w-28 sm:w-56 h-auto object-contain transform translate-x-3 sm:translate-x-4 drop-shadow-md">
+        </div>
+
+        {{-- Vector Sampah Kiri (Ukuran dinaikkan & dinaikkan ke atas pada mobile) --}}
+        <div class="absolute bottom-4 sm:bottom-0 left-0 z-20 pointer-events-none">
+            <img src="{{ asset('images/vector-sampah-biru.png') }}" 
+                alt="Vector Sampah Kiri" 
+                class="w-28 sm:w-56 h-auto object-contain transform -translate-x-3 sm:-translate-x-4 drop-shadow-md">
+        </div>
 
     {{-- Judul: tetap max-w-7xl biar center rapi seperti semula --}}
     <div class="max-w-7xl mx-auto px-6 sm:px-12 lg:px-[80px] relative z-10">
@@ -317,7 +324,7 @@
     {{-- Link "Pelajari lebih banyak": tetap max-w-7xl biar align dengan judul --}}
     <div class="max-w-7xl mx-auto px-6 sm:px-12 lg:px-[80px] relative z-10">
         <div class="text-right mt-8 sm:mt-10">
-            <a href="{{ route('waste-explorer') }}" class="font-display text-xs sm:text-sm text-[#2F3AFF] hover:text-[#FC00BB] uppercase tracking-wider inline-flex items-center gap-1 transition">
+            <a href="{{ route('waste-impact') }}" class="font-display text-xs sm:text-sm text-[#2F3AFF] hover:text-[#FC00BB] uppercase tracking-wider inline-flex items-center gap-1 transition">
                 Pelajari lebih banyak di waste &amp; impact &rarr;
             </a>
         </div>
@@ -378,11 +385,58 @@
             activeDragIndex: null,
             
             trashItems: [
-                { id: 0, name: 'Botol Plastik', category: 'anorganik', image: "{{ asset('images/sampah-botol.png') }}", defaultClass: 'top-2 sm:top-10 left-2 sm:left-12', inBin: false, binCategory: null, dragging: false, bouncing: false, x: null, y: null },
-                { id: 1, name: 'Limbah Jaring', category: 'b3', image: "{{ asset('images/sampah-jaring.png') }}", defaultClass: 'top-2 sm:top-10 right-2 sm:right-12', inBin: false, binCategory: null, dragging: false, bouncing: false, x: null, y: null },
-                { id: 2, name: 'Kertas Remuk', category: 'anorganik', image: "{{ asset('images/sampah-kertas.png') }}", defaultClass: 'bottom-2 sm:bottom-10 left-2 sm:left-12', inBin: false, binCategory: null, dragging: false, bouncing: false, x: null, y: null },
-                { id: 3, name: 'Sampah Organik', category: 'organik', image: "{{ asset('images/sampah-organik.png') }}", defaultClass: 'bottom-2 sm:bottom-10 right-2 sm:right-12', inBin: false, binCategory: null, dragging: false, bouncing: false, x: null, y: null }
-            ],
+            // --- SISI KIRI (Atas, Tengah, Bawah) ---
+            { 
+                id: 0, 
+                name: 'Botol Plastik', 
+                category: 'anorganik', 
+                image: "{{ asset('images/sampah-botol.png') }}", 
+                defaultClass: 'top-4 sm:top-10 left-2 sm:left-10', 
+                inBin: false, binCategory: null, dragging: false, bouncing: false, x: null, y: null 
+            },
+            { 
+                id: 1, 
+                name: 'Sampah Organik', 
+                category: 'organik', 
+                image: "{{ asset('images/sampah-organik.png') }}", 
+                defaultClass: 'top-1/2 -translate-y-1/2 left-2 sm:left-6', 
+                inBin: false, binCategory: null, dragging: false, bouncing: false, x: null, y: null 
+            },
+            { 
+                id: 2, 
+                name: 'Kertas Remuk', 
+                category: 'anorganik', 
+                image: "{{ asset('images/sampah-kertas.png') }}", 
+                defaultClass: 'bottom-4 sm:bottom-10 left-2 sm:left-10', 
+                inBin: false, binCategory: null, dragging: false, bouncing: false, x: null, y: null 
+            },
+
+            // --- SISI KANAN (Atas, Tengah, Bawah) ---
+            { 
+                id: 3, 
+                name: 'Limbah Jaring', 
+                category: 'b3', 
+                image: "{{ asset('images/sampah-jaring.png') }}", 
+                defaultClass: 'top-4 sm:top-10 right-2 sm:right-10', 
+                inBin: false, binCategory: null, dragging: false, bouncing: false, x: null, y: null 
+            },
+            { 
+                id: 4, 
+                name: 'Baterai Bekas', 
+                category: 'b3', 
+                image: "{{ asset('images/sampah_baterai.png') }}", 
+                defaultClass: 'top-1/2 -translate-y-1/2 right-2 sm:right-6', 
+                inBin: false, binCategory: null, dragging: false, bouncing: false, x: null, y: null 
+            },
+            { 
+                id: 5, 
+                name: 'Kulit Pisang', 
+                category: 'organik', 
+                image: "{{ asset('images/sampah_pisang.png') }}", 
+                defaultClass: 'bottom-4 sm:bottom-10 right-2 sm:right-10', 
+                inBin: false, binCategory: null, dragging: false, bouncing: false, x: null, y: null 
+            }
+        ],
 
             get allCompleted() {
                 return this.trashItems.every(i => i.inBin && i.binCategory === i.category);

@@ -68,7 +68,7 @@
         @endphp
 
         {{-- Menggunakan space-y-32 untuk memberi jarak antarkotak yang lega dan aman dari tumpukan --}}
-        <div class="space-y-32 pt-8 mb-28">
+        <div class="space-y-32 pt-8  mb-20 sm:mb-32">
         @foreach ($wasteDictionary as $item)
             <div class="relative">
 
@@ -88,26 +88,44 @@
         @endforeach
     </div>
 
-        {{-- SECTION 3: MATERIAL YANG TERPAKAI --}}
-        <div class="bg-[#F8F8F8] border-2 border-[#FC00BB] shadow-[8px_8px_0px_#2F3AFF] p-8 sm:p-12">
-            <h2 class="font-display text-3xl sm:text-4xl text-[#2F3AFF] text-center mb-10">Material yang terpakai</h2>
+            {{-- Contoh dengan jarak bawaan Tailwind  --}}
+        <div class="bg-[#F8F8F8] border-2 border-[#FC00BB] shadow-[8px_8px_0px_#2F3AFF] p-8 sm:p-12 mt-12 sm:mt-20 mb-20 sm:mb-32">
+            {{-- 1. JUDUL (FONT LEBIH BESAR) --}}
+            <h2 class="font-display text-4xl sm:text-5xl text-[#2F3AFF] text-center mb-10 sm:mb-12 tracking-wide ">
+                Material yang terpakai
+            </h2>
 
-            <div class="space-y-6">
+            <div class="space-y-6 sm:space-y-8">
                 @forelse ($topMaterials as $i => $material)
-                    <div class="flex items-center gap-4">
-                        <span class="font-display text-2xl sm:text-3xl text-[#2F3AFF] w-14 shrink-0">#{{ $i + 1 }}</span>
-                        <div class="flex-1">
-                            <div class="flex justify-between items-center mb-1">
-                                <span class="font-bold text-[#2F3AFF] text-sm sm:text-base">{{ $material->material }}</span>
-                                <span class="text-xs text-gray-500">{{ $material->percentage }}%</span>
+                    {{-- 2. BARIS ITEM: GAP JARAK DIATUR DI SINI (gap-[12px]) --}}
+                    <div class="flex items-center gap-[24px]">
+                        
+                        {{-- 3. NOMOR (#1, #2, ...) --}}
+                        <span class="font-display text-4xl sm:text-6xl text-[#2F3AFF] w-14 sm:w-16 shrink-0 text-left leading-none">
+                            #{{ $i + 1 }}
+                        </span>
+
+                        <div class="flex-1 min-w-0">
+                            {{-- 4. LABEL MATERIAL & PERSENTASE --}}
+                            <div class="flex justify-between items-baseline mb-1.5 sm:mb-2">
+                                <span class="font-sans font-bold text-2xl sm:text-xl text-[#2F3AFF] truncate">
+                                    {{ $material->material }}
+                                </span>
+                                <span class="font-sans font-bold text-xs sm:text-sm text-[#2F3AFF] shrink-0 ml-2">
+                                    {{ $material->percentage }}%
+                                </span>
                             </div>
-                            <div class="w-full h-3 bg-white border border-[#2F3AFF] rounded-full overflow-hidden">
-                                <div class="h-full bg-[#2F3AFF] rounded-full" style="width: {{ $material->percentage }}%"></div>
+
+                            {{-- 5. PROGRESS BAR (KANAN-ATAS & KIRI-BAWAH LANCIP) --}}
+                            <div class="w-full h-3.5 sm:h-4 bg-white border-2 border-[#2F3AFF] rounded-tl-xl rounded-br-xl rounded-tr-none rounded-bl-none overflow-hidden">
+                                <div class="h-full bg-[#2F3AFF] transition-all duration-500" 
+                                    style="width: {{ $material->percentage }}%"></div>
                             </div>
                         </div>
+
                     </div>
                 @empty
-                    <p class="text-center text-gray-400">Belum ada data material.</p>
+                    <p class="text-center text-gray-400 font-sans text-sm py-4">Belum ada data material.</p>
                 @endforelse
             </div>
         </div>

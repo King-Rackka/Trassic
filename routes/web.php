@@ -10,6 +10,7 @@ use App\Livewire\Work\WorkEdit;
 use App\Livewire\WorkShow;
 
 
+
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('auth.google');
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 
@@ -43,6 +44,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/works/create', WorkCreate::class)->name('works.create');
     Route::get('/works/{work}/edit', WorkEdit::class)->name('works.edit');
 });
+Route::delete('/works/{work}', [WorkController::class, 'destroy'])
+    ->name('works.destroy')
+    ->middleware('auth');
 
 Route::get('/works/{id}', [WorkController::class, 'show'])->name('works.show');
 

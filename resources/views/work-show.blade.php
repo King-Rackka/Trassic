@@ -3,6 +3,7 @@
         activeImage: '{{ $work->cover_image ? asset('storage/'.$work->cover_image) : '' }}',
         showShareModal: false,
         showReportModal: false,
+        showDeleteModal: false,
         copied: false,
         reportReason: '',
         reportDetails: ''
@@ -78,27 +79,48 @@
                                     type="button"
                                     class="flex items-center gap-1.5 hover:bg-[#ff007a] text-[#254bfe] hover:text-white font-display text-xs px-3.5 py-2 active:translate-y-0.5 transition-all">
                                 <img src="{{ asset('images/icons/bookmark.png') }}" 
-                                     alt="Favorit" 
-                                     class="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain">
+                                    alt="Favorit" 
+                                    class="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain">
                                 <span>Favorit</span>
                             </button>
                         @endauth
 
                         {{-- SHARE BUTTON --}}
                         <button type="button" @click="showShareModal = true"
-                                class="w-9 h-9 flex items-center justify-center text-[#254bfe] transition" title="Bagikan">
+                                class="w-9 h-9 flex items-center justify-center text-[#254bfe] transition hover:text-[#ff007a]" title="Bagikan">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                         </button>
 
-                        {{-- REPORT BUTTON --}}
-                        <button type="button" @click="showReportModal = true"
-                                class="w-9 h-9 flex items-center justify-center text-[#ff007a] hover:text-red-600 transition" title="Laporkan">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
-                            </svg>
-                        </button>
+                        @php
+                            // Cek apakah user yang login adalah pemilik karya ini
+                            $isOwner = auth()->check() && (
+                                auth()->id() === ($work->creator->user_id ?? null) || 
+                                (isset(auth()->user()->creatorProfile) && auth()->user()->creatorProfile->id === $work->creator_id)
+                            );
+                        @endphp
+
+                        @if ($isOwner)
+                            {{-- TOMBOL HAPUS (KARYA SENDIRI) --}}
+                            <button type="button" 
+                                    @click="showDeleteModal = true"
+                                    class="w-9 h-9 flex items-center justify-center text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition cursor-pointer" 
+                                    title="Hapus Karya">
+                                <svg class="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        @else
+                            {{-- TOMBOL LAPORKAN (KARYA ORANG LAIN) --}}
+                            <button type="button" @click="showReportModal = true"
+                                    class="w-9 h-9 flex items-center justify-center text-[#ff007a] hover:text-red-600 transition" title="Laporkan">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
+                                </svg>
+                            </button>
+                        @endif
                     </div>
                 </div>
+                
 
                 <p class="text-sm text-gray-600 mb-4">
                     by <a href="{{ route('creator.show', $work->creator->slug) }}" class="text-[#254bfe] font-bold hover:underline">{{ $work->creator->name }}</a>
@@ -510,226 +532,369 @@
     </div>
 
     {{-- MODAL SHARE --}}
-    <div x-show="showShareModal" 
-     x-cloak
-     x-transition:enter="transition ease-out duration-200"
-     x-transition:enter-start="opacity-0 scale-95"
-     x-transition:enter-end="opacity-100 scale-100"
-     x-transition:leave="transition ease-in duration-150"
-     x-transition:leave-start="opacity-100 scale-100"
-     x-transition:leave-end="opacity-0 scale-95"
-     class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-    
-    <div @click.outside="showShareModal = false" 
-         class="w-full max-w-md bg-white border-4 border-[#2F3AFF] shadow-[8px_8px_0px_#2F3AFF] p-6 text-left relative font-sans">
-        
-        {{-- HEADER MODAL --}}
-        <div class="flex items-center justify-between border-b-2 border-[#2F3AFF]/20 pb-4 mb-5">
-            <h3 class="font-display text-xl sm:text-2xl text-[#2F3AFF] tracking-wide">
-                BAGIKAN KARYA INI
-            </h3>
-            <button @click="showShareModal = false" class="text-[#2F3AFF] hover:text-[#FC00BB] text-2xl font-bold leading-none cursor-pointer">
-                &times;
-            </button>
+            <div x-show="showShareModal" 
+            x-cloak
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 scale-95"
+            x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-95"
+            class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+            
+            <div @click.outside="showShareModal = false" 
+                class="w-full max-w-md bg-white border-4 border-[#2F3AFF] shadow-[8px_8px_0px_#2F3AFF] p-6 text-left relative font-sans">
+                
+                {{-- HEADER MODAL --}}
+                <div class="flex items-center justify-between border-b-2 border-[#2F3AFF]/20 pb-4 mb-5">
+                    <h3 class="font-display text-xl sm:text-2xl text-[#2F3AFF] tracking-wide">
+                        BAGIKAN KARYA INI
+                    </h3>
+                    <button @click="showShareModal = false" class="text-[#2F3AFF] hover:text-[#FC00BB] text-2xl font-bold leading-none cursor-pointer">
+                        &times;
+                    </button>
+                </div>
+
+                {{-- OPSI MEDIA SOSIAL --}}
+                <div class="grid grid-cols-4 gap-4 mb-6 text-center">
+                    
+                    {{-- WHATSAPP --}}
+                    <a :href="'https://api.whatsapp.com/send?text=' + encodeURIComponent('Cek karya {{ $work->title }} oleh {{ $work->creator->name ?? 'Kreator' }} di TRASSIC: ' + window.location.href)" 
+                    target="_blank" 
+                    class="flex flex-col items-center gap-2 group">
+                        <div class="w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-[2px_2px_0px_#000]">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+                        </div>
+                        <span class="text-xs font-bold text-[#2F3AFF] group-hover:text-[#FC00BB]">WhatsApp</span>
+                    </a>
+
+                    {{-- INSTAGRAM --}}
+                    <button type="button" 
+                            @click="
+                                navigator.clipboard.writeText(window.location.href);
+                                instaCopied = true;
+                                setTimeout(() => instaCopied = false, 3000);
+                                window.open('https://instagram.com', '_blank');
+                            "
+                            class="flex flex-col items-center gap-2 group cursor-pointer relative">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-[2px_2px_0px_#000]">
+                            <svg class="w-6 h-6 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24">
+                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-bold text-[#2F3AFF] group-hover:text-[#FC00BB]">Instagram</span>
+                    </button>
+
+                    {{-- FACEBOOK --}}
+                    <a :href="'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href)" 
+                    target="_blank" 
+                    class="flex flex-col items-center gap-2 group">
+                        <div class="w-12 h-12 rounded-full bg-[#1877F2] text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-[2px_2px_0px_#000]">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.374 14.5 5 15.5 5H18V0h-3.808C10.592 0 9 1.583 9 4.615V8z"/></svg>
+                        </div>
+                        <span class="text-xs font-bold text-[#2F3AFF] group-hover:text-[#FC00BB]">Facebook</span>
+                    </a>
+
+                    {{-- TWITTER / X --}}
+                    <a :href="'https://twitter.com/intent/tweet?text=' + encodeURIComponent('Cek karya {{ $work->title }} oleh {{ $work->creator->name ?? 'Kreator' }} di TRASSIC: ') + '&url=' + encodeURIComponent(window.location.href)" 
+                    target="_blank" 
+                    class="flex flex-col items-center gap-2 group">
+                        <div class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-[2px_2px_0px_#000]">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </div>
+                        <span class="text-xs font-bold text-[#2F3AFF] group-hover:text-[#FC00BB]">Twitter / X</span>
+                    </a>
+
+                    {{-- NOTIFIKASI SALIN UTK INSTAGRAM --}}
+                    <div x-show="instaCopied" x-cloak class="col-span-4 text-center text-xs font-bold text-[#25D366] mt-1">
+                        ✓ Link disalin! Tinggal paste/tempel di Instagram.
+                    </div>
+                </div>
+
+                {{-- INPUT COPY LINK --}}
+                <div class="space-y-2">
+                    <div class="flex items-center gap-2 border-2 border-[#2F3AFF] p-1 bg-[#F8F8F8] relative">
+                        <input type="text" 
+                            readonly 
+                            :value="window.location.href" 
+                            class="w-full bg-transparent px-2 text-xs font-medium text-[#2F3AFF] focus:outline-none">
+                        
+                        <button type="button" 
+                                @click="
+                                    navigator.clipboard.writeText(window.location.href);
+                                    copied = true;
+                                    setTimeout(() => copied = false, 2000);
+                                "
+                                class="px-4 py-2 bg-[#D9FC28] text-[#2F3AFF] hover:bg-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs tracking-wider transition whitespace-nowrap cursor-pointer border border-black shadow-[2px_2px_0px_#000]">
+                            <span x-text="copied ? 'Tersalin!' : 'Salin Link'"></span>
+                        </button>
+                    </div>
+
+                    <div x-show="copied" x-cloak class="text-xs font-bold text-[#25D366] text-right">
+                        ✓ Link berhasil disalin ke clipboard!
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-        {{-- OPSI MEDIA SOSIAL --}}
-        <div class="grid grid-cols-4 gap-4 mb-6 text-center">
-            
-            {{-- WHATSAPP --}}
-            <a :href="'https://api.whatsapp.com/send?text=' + encodeURIComponent('Cek karya {{ $work->title }} oleh {{ $work->creator->name ?? 'Kreator' }} di TRASSIC: ' + window.location.href)" 
-               target="_blank" 
-               class="flex flex-col items-center gap-2 group">
-                <div class="w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-[2px_2px_0px_#000]">
-                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
-                </div>
-                <span class="text-xs font-bold text-[#2F3AFF] group-hover:text-[#FC00BB]">WhatsApp</span>
-            </a>
+                    {{-- =================================================== --}}
+                        {{-- 1. MODAL LAPORKAN KARYA (Untuk Pengunjung/Orang Lain) --}}
+                        {{-- =================================================== --}}
+                        <div x-show="showReportModal" 
+                            x-cloak 
+                            x-transition.opacity
+                            class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
+                            
+                            <div @click.away="showReportModal = false" 
+                                class="relative w-full max-w-lg bg-[#F8F9FA] border-[5px] border-[#FC00BB] rounded-[28px] p-6 sm:p-8 shadow-2xl">
+                                
+                                {{-- Tombol Close --}}
+                                <button type="button" 
+                                        @click="showReportModal = false"
+                                        class="absolute -top-4 -right-4 w-10 h-10 bg-[#E60023] text-white font-bold text-lg rounded-tl-[18px] rounded-br-[18px] rounded-tr-sm rounded-bl-sm border-2 border-white ring-2 ring-[#E60023] shadow-md flex items-center justify-center hover:scale-105 active:scale-95 transition-transform cursor-pointer z-10">
+                                    <svg class="w-5 h-5 stroke-current stroke-[3]" fill="none" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
 
-            {{-- INSTAGRAM --}}
-            <button type="button" 
-                    @click="
-                        navigator.clipboard.writeText(window.location.href);
-                        instaCopied = true;
-                        setTimeout(() => instaCopied = false, 3000);
-                        window.open('https://instagram.com', '_blank');
-                    "
-                    class="flex flex-col items-center gap-2 group cursor-pointer relative">
-                <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-[2px_2px_0px_#000]">
-                    <svg class="w-6 h-6 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24">
-                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                    </svg>
-                </div>
-                <span class="text-xs font-bold text-[#2F3AFF] group-hover:text-[#FC00BB]">Instagram</span>
-            </button>
+                                <h3 class="font-display text-2xl sm:text-3xl text-[#2F3AFF] text-center mb-2 tracking-wide">
+                                    Laporkan Karya Ini
+                                </h3>
+                                <p class="font-sans text-xs sm:text-sm text-gray-600 text-center mb-6 font-medium">
+                                    Pilih alasan kamu melaporkan karya ini kepada tim verifikasi TRASSIC:
+                                </p>
 
-            {{-- FACEBOOK --}}
-            <a :href="'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href)" 
-               target="_blank" 
-               class="flex flex-col items-center gap-2 group">
-                <div class="w-12 h-12 rounded-full bg-[#1877F2] text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-[2px_2px_0px_#000]">
-                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.374 14.5 5 15.5 5H18V0h-3.808C10.592 0 9 1.583 9 4.615V8z"/></svg>
-                </div>
-                <span class="text-xs font-bold text-[#2F3AFF] group-hover:text-[#FC00BB]">Facebook</span>
-            </a>
+                                <form wire:submit.prevent="submitReport" class="space-y-4">
+                                    <div class="space-y-2.5 text-left font-sans text-xs sm:text-sm text-[#2F3AFF] font-bold">
+                                        <label class="flex items-center gap-3 p-2.5 bg-white border-2 border-[#2F3AFF]/20 rounded-xl cursor-pointer hover:border-[#FC00BB] transition">
+                                            <input type="radio" wire:model.live="reportReason" value="Konten tidak relevan/spam" class="w-4 h-4 accent-[#FC00BB]">
+                                            <span>Konten tidak relevan / Spam</span>
+                                        </label>
+                                        
+                                        <label class="flex items-center gap-3 p-2.5 bg-white border-2 border-[#2F3AFF]/20 rounded-xl cursor-pointer hover:border-[#FC00BB] transition">
+                                            <input type="radio" wire:model.live="reportReason" value="Klaim penggunaan sampah palsu" class="w-4 h-4 accent-[#FC00BB]">
+                                            <span>Klaim penggunaan sampah palsu</span>
+                                        </label>
+                                        
+                                        <label class="flex items-center gap-3 p-2.5 bg-white border-2 border-[#2F3AFF]/20 rounded-xl cursor-pointer hover:border-[#FC00BB] transition">
+                                            <input type="radio" wire:model.live="reportReason" value="Pelanggaran hak cipta" class="w-4 h-4 accent-[#FC00BB]">
+                                            <span>Pelanggaran hak cipta karya</span>
+                                        </label>
+                                        
+                                        <label class="flex items-center gap-3 p-2.5 bg-white border-2 border-[#2F3AFF]/20 rounded-xl cursor-pointer hover:border-[#FC00BB] transition">
+                                            <input type="radio" wire:model.live="reportReason" value="Lainnya" class="w-4 h-4 accent-[#FC00BB]">
+                                            <span>Alasan lainnya</span>
+                                        </label>
+                                    </div>
+                                    @error('reportReason') 
+                                        <span class="text-red-500 font-bold text-xs block text-left">{{ $message }}</span> 
+                                    @enderror
 
-            {{-- TWITTER / X --}}
-            <a :href="'https://twitter.com/intent/tweet?text=' + encodeURIComponent('Cek karya {{ $work->title }} oleh {{ $work->creator->name ?? 'Kreator' }} di TRASSIC: ') + '&url=' + encodeURIComponent(window.location.href)" 
-               target="_blank" 
-               class="flex flex-col items-center gap-2 group">
-                <div class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-[2px_2px_0px_#000]">
-                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                </div>
-                <span class="text-xs font-bold text-[#2F3AFF] group-hover:text-[#FC00BB]">Twitter / X</span>
-            </a>
+                                    <div class="pt-1">
+                                        <textarea wire:model="reportDetails" 
+                                                rows="3" 
+                                                placeholder="Tuliskan detail laporan tambahan..." 
+                                                class="w-full bg-white border-2 border-[#2F3AFF]/30 rounded-xl p-3 text-xs sm:text-sm font-sans text-gray-800 focus:outline-none focus:border-[#FC00BB] focus:ring-1 focus:ring-[#FC00BB]"></textarea>
+                                        @error('reportDetails') 
+                                            <span class="text-red-500 font-bold text-xs block text-left">{{ $message }}</span> 
+                                        @enderror
+                                    </div>
 
-            {{-- NOTIFIKASI SALIN UTK INSTAGRAM --}}
-            <div x-show="instaCopied" x-cloak class="col-span-4 text-center text-xs font-bold text-[#25D366] mt-1">
-                ✓ Link disalin! Tinggal paste/tempel di Instagram.
-            </div>
-        </div>
+                                    <div class="flex items-center justify-center gap-3 sm:gap-4 pt-3">
+                                        <button type="submit" 
+                                                wire:loading.attr="disabled"
+                                                class="flex-1 bg-[#D9FC28] hover:bg-[#c2e61a] text-[#2F3AFF] font-display text-sm sm:text-base py-3 sm:py-3.5 rounded-xl uppercase tracking-wider transition active:scale-95 shadow-sm font-black cursor-pointer disabled:opacity-50">
+                                            <span wire:loading.remove wire:target="submitReport">KIRIM</span>
+                                            <span wire:loading wire:target="submitReport">MENGIRIM...</span>
+                                        </button>
 
-        {{-- INPUT COPY LINK --}}
-        <div class="space-y-2">
-            <div class="flex items-center gap-2 border-2 border-[#2F3AFF] p-1 bg-[#F8F8F8] relative">
-                <input type="text" 
-                       readonly 
-                       :value="window.location.href" 
-                       class="w-full bg-transparent px-2 text-xs font-medium text-[#2F3AFF] focus:outline-none">
-                
-                <button type="button" 
-                        @click="
-                            navigator.clipboard.writeText(window.location.href);
-                            copied = true;
-                            setTimeout(() => copied = false, 2000);
-                        "
-                        class="px-4 py-2 bg-[#D9FC28] text-[#2F3AFF] hover:bg-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs tracking-wider transition whitespace-nowrap cursor-pointer border border-black shadow-[2px_2px_0px_#000]">
-                    <span x-text="copied ? 'Tersalin!' : 'Salin Link'"></span>
-                </button>
-            </div>
+                                        <button type="button" 
+                                                @click="showReportModal = false" 
+                                                class="flex-1 bg-[#FC00BB] hover:bg-[#e000a5] text-white font-display text-sm sm:text-base py-3 sm:py-3.5 rounded-xl uppercase tracking-wider transition active:scale-95 shadow-sm font-black cursor-pointer">
+                                            BATAL
+                                        </button>
+                                    </div>
+                                </form>
 
-            <div x-show="copied" x-cloak class="text-xs font-bold text-[#25D366] text-right">
-                ✓ Link berhasil disalin ke clipboard!
-            </div>
-        </div>
+                            </div>
+                        </div>
 
-    </div>
-</div>
 
-    {{-- MODAL REPORT --}}
-    <div x-show="showReportModal" 
-        x-cloak 
-        x-transition.opacity
-        class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
-        
-        <div @click.away="showReportModal = false" 
-            class="relative w-full max-w-lg bg-[#F8F9FA] border-[5px] border-[#FC00BB] rounded-[28px] p-6 sm:p-8 shadow-2xl">
-            
-            <button type="button" 
-                    @click="showReportModal = false"
-                    class="absolute -top-4 -right-4 w-10 h-10 bg-[#E60023] text-white font-bold text-lg rounded-tl-[18px] rounded-br-[18px] rounded-tr-sm rounded-bl-sm border-2 border-white ring-2 ring-[#E60023] shadow-md flex items-center justify-center hover:scale-105 active:scale-95 transition-transform cursor-pointer z-10">
-                <svg class="w-5 h-5 stroke-current stroke-[3]" fill="none" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
+                        {{-- =================================================== --}}
+                        {{-- 2. MODAL HAPUS KARYA (Untuk Pemilik Karya)          --}}
+                        {{-- =================================================== --}}
+                        <div x-show="showDeleteModal" 
+                            x-cloak
+                            class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs transition-opacity"
+                            x-transition:enter="ease-out duration-200"
+                            x-transition:enter-start="opacity-0"
+                            x-transition:enter-end="opacity-100"
+                            x-transition:leave="ease-in duration-150"
+                            x-transition:leave-start="opacity-100"
+                            x-transition:leave-end="opacity-0">
 
-            <h3 class="font-display text-2xl sm:text-3xl text-[#2F3AFF] text-center mb-2 tracking-wide">
-                Laporkan Karya Ini
-            </h3>
-            <p class="font-sans text-xs sm:text-sm text-gray-600 text-center mb-6 font-medium">
-                Pilih alasan kamu melaporkan karya ini kepada tim verifikasi TRASSIC:
-            </p>
+                            <div class="relative w-full max-w-md bg-[#F8F8F8] border-4 border-[#FC00BB] rounded-tl-3xl rounded-br-3xl rounded-tr-none rounded-bl-none p-6 sm:p-8"
+                                @click.outside="showDeleteModal = false"
+                                x-transition:enter="ease-out duration-200"
+                                x-transition:enter-start="opacity-0 scale-95"
+                                x-transition:enter-end="opacity-100 scale-100"
+                                x-transition:leave="ease-in duration-150"
+                                x-transition:leave-start="opacity-100 scale-100"
+                                x-transition:leave-end="opacity-0 scale-95">
 
-            <form wire:submit.prevent="submitReport" class="space-y-4">
-                
-                {{-- MODAL REPORT --}}
-<div x-show="showReportModal" 
-     x-cloak 
-     x-transition.opacity
-     class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
-    
-    {{-- CONTAINER UTAMA --}}
-    <div @click.away="showReportModal = false" 
-         class="relative w-full max-w-lg bg-[#F8F9FA] border-[5px] border-[#FC00BB] rounded-[28px] p-6 sm:p-8 shadow-2xl">
-        
-        {{-- TOMBOL CLOSE SILANG --}}
-        <button type="button" 
-                @click="showReportModal = false"
-                class="absolute -top-4 -right-4 w-10 h-10 bg-[#E60023] text-white font-bold text-lg rounded-tl-[18px] rounded-br-[18px] rounded-tr-sm rounded-bl-sm border-2 border-white ring-2 ring-[#E60023] shadow-md flex items-center justify-center hover:scale-105 active:scale-95 transition-transform cursor-pointer z-10">
-            <svg class="w-5 h-5 stroke-current stroke-[3]" fill="none" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-        </button>
+                                {{-- Tombol Close Merah --}}
+                                <button type="button" 
+                                        @click="showDeleteModal = false"
+                                        class="absolute -top-3.5 -right-3.5 w-9 h-9 sm:w-10 sm:h-10 bg-[#E51B24] hover:bg-[#c9121a] border-2 border-[#E51B24] ring-2 ring-white ring-inset rounded-tl-2xl rounded-br-2xl rounded-tr-none rounded-bl-none flex items-center justify-center transition-transform hover:scale-105 cursor-pointer shadow-md">
+                                    <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
 
-        <h3 class="font-display text-2xl sm:text-3xl text-[#2F3AFF] text-center mb-2 tracking-wide">
-            Laporkan Karya Ini
-        </h3>
-        <p class="font-sans text-xs sm:text-sm text-gray-600 text-center mb-6 font-medium">
-            Pilih alasan kamu melaporkan karya ini kepada tim verifikasi TRASSIC:
-        </p>
+                                {{-- Form Delete --}}
+                                <form action="{{ route('works.destroy', $work->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
 
-        {{-- FORM REPORT WITH LIVEWIRE --}}
-        <form wire:submit.prevent="submitReport" class="space-y-4">
-            
-            {{-- RADIO BUTTONS WITH LIVEWIRE BINDING --}}
-            <div class="space-y-2.5 text-left font-sans text-xs sm:text-sm text-[#2F3AFF] font-bold">
-                <label class="flex items-center gap-3 p-2.5 bg-white border-2 border-[#2F3AFF]/20 rounded-xl cursor-pointer hover:border-[#FC00BB] transition">
-                    <input type="radio" wire:model.live="reportReason" value="Konten tidak relevan/spam" class="w-4 h-4 accent-[#FC00BB]">
-                    <span>Konten tidak relevan / Spam</span>
-                </label>
-                
-                <label class="flex items-center gap-3 p-2.5 bg-white border-2 border-[#2F3AFF]/20 rounded-xl cursor-pointer hover:border-[#FC00BB] transition">
-                    <input type="radio" wire:model.live="reportReason" value="Klaim penggunaan sampah palsu" class="w-4 h-4 accent-[#FC00BB]">
-                    <span>Klaim penggunaan sampah palsu</span>
-                </label>
-                
-                <label class="flex items-center gap-3 p-2.5 bg-white border-2 border-[#2F3AFF]/20 rounded-xl cursor-pointer hover:border-[#FC00BB] transition">
-                    <input type="radio" wire:model.live="reportReason" value="Pelanggaran hak cipta" class="w-4 h-4 accent-[#FC00BB]">
-                    <span>Pelanggaran hak cipta karya</span>
-                </label>
-                
-                <label class="flex items-center gap-3 p-2.5 bg-white border-2 border-[#2F3AFF]/20 rounded-xl cursor-pointer hover:border-[#FC00BB] transition">
-                    <input type="radio" wire:model.live="reportReason" value="Lainnya" class="w-4 h-4 accent-[#FC00BB]">
-                    <span>Alasan lainnya</span>
-                </label>
-            </div>
-            @error('reportReason') 
-                <span class="text-red-500 font-bold text-xs block text-left">{{ $message }}</span> 
-            @enderror
+                                    <div class="py-6 sm:py-8 text-center">
+                                        <p class="font-sans text-base sm:text-lg font-bold text-[#2F3AFF] tracking-wide">
+                                            Apakah anda yakin ingin menghapus karya?
+                                        </p>
+                                    </div>
 
-            {{-- TEXTAREA DETAIL --}}
-            <div class="pt-1">
-                <textarea wire:model="reportDetails" 
-                          rows="3" 
-                          placeholder="Tuliskan detail laporan tambahan..." 
-                          class="w-full bg-white border-2 border-[#2F3AFF]/30 rounded-xl p-3 text-xs sm:text-sm font-sans text-gray-800 focus:outline-none focus:border-[#FC00BB] focus:ring-1 focus:ring-[#FC00BB]"></textarea>
-                @error('reportDetails') 
-                    <span class="text-red-500 font-bold text-xs block text-left">{{ $message }}</span> 
-                @enderror
-            </div>
+                                    <div class="grid grid-cols-2 gap-3 pt-2">
+                                        <button type="submit" 
+                                                class="w-full py-3 bg-[#D9FC28] hover:bg-[#bce018] text-[#2F3AFF] font-sans text-sm font-bold tracking-wider transition-colors flex items-center justify-center cursor-pointer shadow-sm">
+                                            Ya
+                                        </button>
 
-            {{-- ACTION BUTTONS --}}
-            <div class="flex items-center justify-center gap-3 sm:gap-4 pt-3">
-                <button type="submit" 
-                        wire:loading.attr="disabled"
-                        class="flex-1 bg-[#D9FC28] hover:bg-[#c2e61a] text-[#2F3AFF] font-display text-sm sm:text-base py-3 sm:py-3.5 rounded-xl uppercase tracking-wider transition active:scale-95 shadow-sm font-black cursor-pointer disabled:opacity-50">
-                    <span wire:loading.remove wire:target="submitReport">KIRIM</span>
-                    <span wire:loading wire:target="submitReport">MENGIRIM...</span>
-                </button>
+                                        <button type="button" 
+                                                @click="showDeleteModal = false"
+                                                class="w-full py-3 bg-[#FC00BB] hover:bg-[#d8009f] text-white font-sans text-sm font-bold tracking-wider transition-colors flex items-center justify-center cursor-pointer shadow-sm">
+                                            Tidak
+                                        </button>
+                                    </div>
+                                </form>
 
-                <button type="button" 
-                        @click="showReportModal = false" 
-                        class="flex-1 bg-[#FC00BB] hover:bg-[#e000a5] text-white font-display text-sm sm:text-base py-3 sm:py-3.5 rounded-xl uppercase tracking-wider transition active:scale-95 shadow-sm font-black cursor-pointer">
-                    BATAL
-                </button>
-            </div>
-        </form>
+                            </div>
+                        </div>
 
-    </div>
-</div>
+                        {{-- MODAL SHARE --}}
+                        <div x-show="showShareModal" 
+                            x-cloak
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 scale-95"
+                            x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 scale-100"
+                            x-transition:leave-end="opacity-0 scale-95"
+                            class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+                            
+                            <div @click.outside="showShareModal = false" 
+                                class="w-full max-w-md bg-white border-4 border-[#2F3AFF] shadow-[8px_8px_0px_#2F3AFF] p-6 text-left relative font-sans">
+                                
+                                {{-- HEADER MODAL --}}
+                                <div class="flex items-center justify-between border-b-2 border-[#2F3AFF]/20 pb-4 mb-5">
+                                    <h3 class="font-display text-xl sm:text-2xl text-[#2F3AFF] tracking-wide">
+                                        BAGIKAN KARYA INI
+                                    </h3>
+                                    <button @click="showShareModal = false" class="text-[#2F3AFF] hover:text-[#FC00BB] text-2xl font-bold leading-none cursor-pointer">
+                                        &times;
+                                    </button>
+                                </div>
+
+                                {{-- OPSI MEDIA SOSIAL --}}
+                                <div class="grid grid-cols-4 gap-4 mb-6 text-center" x-data="{ instaCopied: false }">
+                                    
+                                    {{-- WHATSAPP --}}
+                                    <a :href="'https://api.whatsapp.com/send?text=' + encodeURIComponent('Cek karya {{ $work->title }} oleh {{ $work->creator->name ?? 'Kreator' }} di TRASSIC: ' + window.location.href)" 
+                                    target="_blank" 
+                                    class="flex flex-col items-center gap-2 group">
+                                        <div class="w-12 h-12 rounded-full bg-[#25D366] text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-[2px_2px_0px_#000]">
+                                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#2F3AFF] group-hover:text-[#FC00BB]">WhatsApp</span>
+                                    </a>
+
+                                    {{-- INSTAGRAM --}}
+                                    <button type="button" 
+                                            @click="
+                                                navigator.clipboard.writeText(window.location.href);
+                                                instaCopied = true;
+                                                setTimeout(() => instaCopied = false, 3000);
+                                                window.open('https://instagram.com', '_blank');
+                                            "
+                                            class="flex flex-col items-center gap-2 group cursor-pointer relative">
+                                        <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-[2px_2px_0px_#000]">
+                                            <svg class="w-6 h-6 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24">
+                                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                            </svg>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#2F3AFF] group-hover:text-[#FC00BB]">Instagram</span>
+                                    </button>
+
+                                    {{-- FACEBOOK --}}
+                                    <a :href="'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href)" 
+                                    target="_blank" 
+                                    class="flex flex-col items-center gap-2 group">
+                                        <div class="w-12 h-12 rounded-full bg-[#1877F2] text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-[2px_2px_0px_#000]">
+                                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.374 14.5 5 15.5 5H18V0h-3.808C10.592 0 9 1.583 9 4.615V8z"/></svg>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#2F3AFF] group-hover:text-[#FC00BB]">Facebook</span>
+                                    </a>
+
+                                    {{-- TWITTER / X --}}
+                                    <a :href="'https://twitter.com/intent/tweet?text=' + encodeURIComponent('Cek karya {{ $work->title }} oleh {{ $work->creator->name ?? 'Kreator' }} di TRASSIC: ') + '&url=' + encodeURIComponent(window.location.href)" 
+                                    target="_blank" 
+                                    class="flex flex-col items-center gap-2 group">
+                                        <div class="w-12 h-12 rounded-full bg-black text-white flex items-center justify-center group-hover:scale-110 transition-transform shadow-[2px_2px_0px_#000]">
+                                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                                        </div>
+                                        <span class="text-xs font-bold text-[#2F3AFF] group-hover:text-[#FC00BB]">Twitter / X</span>
+                                    </a>
+
+                                    {{-- NOTIFIKASI SALIN UTK INSTAGRAM --}}
+                                    <div x-show="instaCopied" x-cloak class="col-span-4 text-center text-xs font-bold text-[#25D366] mt-1">
+                                        ✓ Link disalin! Tinggal paste/tempel di Instagram.
+                                    </div>
+                                </div>
+
+                                {{-- INPUT COPY LINK --}}
+                                <div class="space-y-2">
+                                    <div class="flex items-center gap-2 border-2 border-[#2F3AFF] p-1 bg-[#F8F8F8] relative">
+                                        <input type="text" 
+                                            readonly 
+                                            :value="window.location.href" 
+                                            class="w-full bg-transparent px-2 text-xs font-medium text-[#2F3AFF] focus:outline-none">
+                                        
+                                        <button type="button" 
+                                                @click="
+                                                    navigator.clipboard.writeText(window.location.href);
+                                                    copied = true;
+                                                    setTimeout(() => copied = false, 2000);
+                                                "
+                                                class="px-4 py-2 bg-[#D9FC28] text-[#2F3AFF] hover:bg-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs tracking-wider transition whitespace-nowrap cursor-pointer border border-black shadow-[2px_2px_0px_#000]">
+                                            <span x-text="copied ? 'Tersalin!' : 'Salin Link'"></span>
+                                        </button>
+                                    </div>
+
+                                    <div x-show="copied" x-cloak class="text-xs font-bold text-[#25D366] text-right">
+                                        ✓ Link berhasil disalin ke clipboard!
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div> 
             </form>
+            
 
         </div>
     </div>
