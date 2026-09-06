@@ -78,18 +78,40 @@
                     </h1>
 
                     <div class="flex items-center gap-2 shrink-0">
+                        
                         @auth
                             <livewire:bookmark-button :work="$work" :is-bookmarked="$isBookmarked" />
                         @else
-                            <button wire:click="toggleBookmark"
+                            {{-- TOMBOL SAAT BELUM LOGIN (STYLING SAMA PERSIS & SHADOW DIHAPUS) --}}
+                            <button @click="$dispatch('show-login-prompt')"
                                     type="button"
-                                    class="flex items-center gap-1.5 {{ $isBookmarked ? 'bg-[#ff007a] text-white' : 'text-[#254bfe] hover:bg-[#ff007a] hover:text-white' }} font-display text-xs px-3.5 py-2 active:translate-y-0.5 transition-all cursor-pointer">
+                                    class="flex items-center gap-1.5  bg-[#ccff00] text-[#254bfe] font-display text-xs uppercase px-3.5 py-2 active:translate-y-0.5 transition-all cursor-pointer">
                                 <img src="{{ asset('images/icons/bookmark.png') }}" 
                                     alt="Favorit" 
-                                    class="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain {{ $isBookmarked ? 'brightness-0 invert' : '' }}">
-                                <span>{{ $isBookmarked ? 'Tersimpan' : 'Favorit' }}</span>
+                                    class="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain">
+                                <span>Favorit</span>
                             </button>
                         @endauth
+                        
+                        @php
+                            $isLiked = auth()->check() && $work->isAppreciatedBy(auth()->id());
+                        @endphp
+
+                        {{-- TOMBOL LIKE (LANGSUNG WIRE:CLICK SAMA SEPERTI BOOKMARK) --}}
+                        <button wire:click="toggleLike({{ $work->id }})"
+                                type="button"
+                                class="w-9 h-9 flex items-center justify-center active:translate-y-0.5 transition-transform cursor-pointer"
+                                title="Suka">
+                            @if ($isLiked)
+                                <img src="{{ asset('images/icons/like_1.png') }}" 
+                                    alt="Liked" 
+                                    class="w-5 h-5 object-contain">
+                            @else
+                                <img src="{{ asset('images/icons/like.png') }}" 
+                                    alt="Like" 
+                                    class="w-5 h-5 object-contain">
+                            @endif
+                        </button>
 
                         {{-- SHARE BUTTON --}}
                         <button type="button" @click="showShareModal = true"
