@@ -39,27 +39,33 @@
                     
                     {{-- BADGE KARYA DENGAN LIKE TERBANYAK --}}
                     @if (isset($isTopLiked) && $isTopLiked)
-                        <div class="absolute top-2 left-2 z-30 bg-[#ccff00] text-[#254bfe] border border-black font-sans text-xs font-extrabold px-2.5 py-1 tracking-tight shadow-[2px_2px_0px_rgba(0,0,0,1)]">
+                        <div class="absolute top-2 left-2 z-30 bg-[#ccff00] text-[#2F3AFF] border border-black font-sans text-xs font-extrabold px-2.5 py-1 tracking-tight shadow-[2px_2px_0px_rgba(0,0,0,1)]">
                             #1 KARYA TERFAVORIT
                         </div>
                     @endif
                 </div>
 
-                @if ($work->images && $work->images->count() > 0)
+                @if ($work->cover_image)
                     <div class="grid grid-cols-4 gap-2 sm:gap-3 mt-3">
+                        {{-- THUMBNAIL 1: FOTO COVER UTAMA --}}
                         <button type="button"
                                 @click="activeImage = '{{ asset('storage/'.$work->cover_image) }}'"
-                                class="aspect-square border-2 border-[#ff007a] overflow-hidden hover:opacity-80 transition">
+                                class="aspect-square border-2 border-[#ff007a] overflow-hidden hover:opacity-80 transition cursor-pointer">
                             <img src="{{ asset('storage/'.$work->cover_image) }}" alt="" class="w-full h-full object-cover">
                         </button>
 
-                        @foreach ($work->images as $img)
-                            <button type="button"
-                                    @click="activeImage = '{{ asset('storage/'.$img->image_path) }}'"
-                                    class="aspect-square border-2 border-[#ff007a] overflow-hidden hover:opacity-80 transition">
-                                <img src="{{ asset('storage/'.$img->image_path) }}" alt="" class="w-full h-full object-cover">
-                            </button>
-                        @endforeach
+                        {{-- THUMBNAIL TAMBAHAN (HANYA MUNCUL JIKA BEDA DENGAN COVER) --}}
+                        @if ($work->images && $work->images->count() > 0)
+                            @foreach ($work->images as $img)
+                                @if ($img->image_path !== $work->cover_image)
+                                    <button type="button"
+                                            @click="activeImage = '{{ asset('storage/'.$img->image_path) }}'"
+                                            class="aspect-square border-2 border-[#ff007a] overflow-hidden hover:opacity-80 transition cursor-pointer">
+                                        <img src="{{ asset('storage/'.$img->image_path) }}" alt="" class="w-full h-full object-cover">
+                                    </button>
+                                @endif
+                            @endforeach
+                        @endif
                     </div>
                 @endif
             </div>
@@ -75,13 +81,13 @@
                         @auth
                             <livewire:bookmark-button :work="$work" :is-bookmarked="$isBookmarked" />
                         @else
-                            <button onclick="$dispatch('show-login-prompt')"
+                            <button wire:click="toggleBookmark"
                                     type="button"
-                                    class="flex items-center gap-1.5 hover:bg-[#ff007a] text-[#254bfe] hover:text-white font-display text-xs px-3.5 py-2 active:translate-y-0.5 transition-all">
+                                    class="flex items-center gap-1.5 {{ $isBookmarked ? 'bg-[#ff007a] text-white' : 'text-[#254bfe] hover:bg-[#ff007a] hover:text-white' }} font-display text-xs px-3.5 py-2 active:translate-y-0.5 transition-all cursor-pointer">
                                 <img src="{{ asset('images/icons/bookmark.png') }}" 
                                     alt="Favorit" 
-                                    class="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain">
-                                <span>Favorit</span>
+                                    class="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain {{ $isBookmarked ? 'brightness-0 invert' : '' }}">
+                                <span>{{ $isBookmarked ? 'Tersimpan' : 'Favorit' }}</span>
                             </button>
                         @endauth
 
@@ -111,8 +117,10 @@
                             </button>
                         @else
                             {{-- TOMBOL LAPORKAN (KARYA ORANG LAIN) --}}
-                            <button type="button" @click="showReportModal = true"
-                                    class="w-9 h-9 flex items-center justify-center text-[#ff007a] hover:text-red-600 transition" title="Laporkan">
+                            <button type="button" 
+                                    @click="{{ auth()->check() ? 'showReportModal = true' : "\$dispatch('show-login-prompt')" }}"
+                                    class="w-9 h-9 flex items-center justify-center text-[#ff007a] hover:text-red-600 transition cursor-pointer" 
+                                    title="Laporkan">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
                                 </svg>
@@ -281,17 +289,17 @@
     </div>
 
     {{-- SECTION CREATOR --}}
-    <div class="w-full bg-[#2F3AFF] border-y-4 sm:border-y-[6px] border-[#FC00BB] py-8 sm:py-12 relative z-20 mt-10 sm:mt-16">
+    <div class="w-full bg-[#2F3AFF] border-y-4 sm:border-y-[6px] border-[#FC00BB] py-8 sm:py-12 relative z-20 mt-10 sm:mt-16 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-8">
-            <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-14">
+             <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-14">
 
-                <div class="w-full max-w-[280px] sm:max-w-xs lg:w-80 shrink-0 flex items-center justify-center">
+                <div class="w-full max-w-[280px] sm:max-w-xs lg:w-80 shrink-0 flex items-center justify-center -mt-8 sm:-mt-12">
                     <div id="creator-lanyard-react-root"
-                         data-name="{{ $work->creator->name }}"
-                         data-join="{{ optional($work->creator->created_at)->format('d/m/Y') }}"
-                         class="w-full h-[360px] sm:h-[420px] cursor-pointer">
+                        data-name="{{ $work->creator->name }}"
+                        data-join="{{ optional($work->creator->created_at)->format('d/m/Y') }}"
+                        class="w-full h-[460px] sm:h-[520px] cursor-pointer">
                     </div>
-                </div>
+                 </div>
 
                 <div class="flex-1 min-w-0 w-full flex flex-col justify-between space-y-5">
                     <div class="flex items-center justify-between gap-4 w-full">
@@ -308,9 +316,12 @@
                                 @endif
                             </div>
 
-                            <div class="min-w-0">
+                           <div class="min-w-0">
                                 <h2 class="font-display text-3xl sm:text-5xl text-white tracking-normal leading-none truncate">
-                                    {{ $work->creator->name }}
+                                    <a href="{{ $isOwner ? route('profile.show') : route('creator.show', $work->creator->slug) }}" 
+                                    class="hover:text-[#ccff00] transition">
+                                        {{ $work->creator->name }}
+                                    </a>
                                 </h2>
                             </div>
                         </div>
@@ -322,14 +333,6 @@
                                     class="text-white hover:text-[#ccff00] transition p-1" title="Bagikan">
                                 <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                                </svg>
-                            </button>
-
-                            <button type="button" @click="showReportModal = true" class="text-white hover:text-[#ccff00] transition p-1" title="Opsi">
-                                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
-                                    <circle cx="5" cy="12" r="2"/>
-                                    <circle cx="12" cy="12" r="2"/>
-                                    <circle cx="19" cy="12" r="2"/>
                                 </svg>
                             </button>
                         </div>
