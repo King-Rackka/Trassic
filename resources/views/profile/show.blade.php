@@ -96,6 +96,16 @@
                         <path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                     </svg>
                 </button>
+
+                <button type="button" 
+                        class="text-[#2F3AFF] hover:text-[#FC00BB] p-1 transition-colors cursor-pointer" 
+                        title="Opsi">
+                    <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <circle cx="5" cy="12" r="2"/>
+                        <circle cx="12" cy="12" r="2"/>
+                        <circle cx="19" cy="12" r="2"/>
+                    </svg>
+                </button>
             </div>
         </div>
 
@@ -123,7 +133,7 @@
                     </p>
                 </div>
 
-                <div class="lg:col-span-5 lg:absolute lg:right-0 lg:-top-8 w-full lg:w-auto">
+                <div class="lg:col-span-5 lg:absolute lg:right-0 lg:-top-14 w-full lg:w-auto">
                     <div class="space-y-2 sm:space-y-2.5 text-sm sm:text-base text-[#2F3AFF] font-semibold text-left">
                         @php $links = $creator->social_links ?? []; @endphp
                         
@@ -245,7 +255,8 @@
                 <div class="group relative flex flex-col transition-transform duration-200 hover:-translate-y-1 p-1 w-full">
                     <a href="{{ route('work.show', $work->slug) }}" class="block w-full">
                         
-
+                        {{-- BINGKAI FOTO (ASPECT SQUARE PURE TAILWIND) --}}
+                        {{-- BINGKAI KOTAK UTAMA (PENGUNCI UKURAN 1:1) --}}
 <div class="relative w-full aspect-square bg-gray-900 border-2 border-[#FC00BB] shrink-0">
     
     {{-- 4 KOTAK KUNING NEON DI SUDUT BORDER (BEBAS DARI OVERFLOW) --}}

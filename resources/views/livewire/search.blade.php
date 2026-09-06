@@ -55,7 +55,7 @@
 
         {{-- BREADCRUMB — tetap max-w-7xl biar center rapi --}}
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-4">
-            <div class="flex items-center gap-2 text-xs sm:text-sm font-sans uppercase tracking-[0.15em] border-b border-[#2F3AFF]/10 pb-4 mb-6">
+            <div class="flex items-center gap-2 text-xs sm:text-sm font-sans tracking-[0.15em] border-b border-[#2F3AFF]/10 pb-4 mb-6">
                 <a href="{{ $fromRoute }}" class="text-[#2F3AFF] hover:text-[#FC00BB] transition-colors font-bold">
                     {{ $fromLabel }}
                 </a>
@@ -73,7 +73,7 @@
         {{-- ============================================================ --}}
         <section class="space-y-6 w-full my-4">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-                <h2 class="font-display text-2xl sm:text-4xl text-[#2F3AFF] uppercase tracking-wide">
+                <h2 class="font-display text-2xl sm:text-4xl text-[#2F3AFF] tracking-wide">
                     Hasil karya pencarian '{{ $query }}'
                 </h2>
             </div>
@@ -86,16 +86,16 @@
                         <a href="{{ route('work.show', $work->slug) }}" class="block w-full">
                             <div class="relative w-full aspect-square bg-gray-900 border-2 border-[#FC00BB] shrink-0">
                                 
-                                <div class="absolute -top-1.5 -left-1.5 w-3 h-3 bg-[#D9FC28] border border-[#2F3AFF] z-30 pointer-events-none"></div>
-                                <div class="absolute -top-1.5 -right-1.5 w-3 h-3 bg-[#D9FC28] border border-[#2F3AFF] z-30 pointer-events-none"></div>
-                                <div class="absolute -bottom-1.5 -left-1.5 w-3 h-3 bg-[#D9FC28] border border-[#2F3AFF] z-30 pointer-events-none"></div>
-                                <div class="absolute -bottom-1.5 -right-1.5 w-3 h-3 bg-[#D9FC28] border border-[#2F3AFF] z-30 pointer-events-none"></div>
+                                <div class="absolute -top-1.5 -left-1.5 w-3 h-3 bg-[#D9FC28] border-2 border-[#FC00BB] z-30 pointer-events-none"></div>
+                                <div class="absolute -top-1.5 -right-1.5 w-3 h-3 bg-[#D9FC28] border-2 border-[#FC00BB] z-30 pointer-events-none"></div>
+                                <div class="absolute -bottom-1.5 -left-1.5 w-3 h-3 bg-[#D9FC28] border-2 border-[#FC00BB] z-30 pointer-events-none"></div>
+                                <div class="absolute -bottom-1.5 -right-1.5 w-3 h-3 bg-[#D9FC28] border-2 border-[#FC00BB] z-30 pointer-events-none"></div>
 
                                 @php
                                     $totalWaste = isset($work->wasteDna) ? $work->wasteDna->sum('quantity') : ($work->waste_used ?? 0);
                                 @endphp
                                 @if($totalWaste > 0)
-                                    <div class="absolute top-1.5 left-1.5 z-30 bg-[#D9FC28] text-[#2F3AFF] border border-[#2F3AFF] font-sans text-[8px] sm:text-[10px] font-extrabold px-1.5 py-0.5 uppercase tracking-tight">
+                                    <div class="absolute top-1.5 left-1.5 z-30 bg-[#D9FC28] text-[#2F3AFF] border border-[#2F3AFF] font-sans text-[8px] sm:text-[10px] font-extrabold px-1.5 py-0.5 tracking-tight">
                                         {{ number_format($totalWaste, 2) }}KG SAMPAH TERPAKAI
                                     </div>
                                 @endif
@@ -115,12 +115,12 @@
 
                         <div class="mt-2.5 sm:mt-3 flex flex-col justify-between flex-grow text-center w-full">
                             
-                            <h4 class="font-display text-xs sm:text-base text-[#2F3AFF] uppercase leading-tight tracking-wide line-clamp-2-custom min-h-[2rem] sm:min-h-[2.5rem]" title="#{{ $loop->iteration }} {{ $work->title }}">
+                            <h4 class="font-display text-xs sm:text-base text-[#2F3AFF] leading-tight tracking-wide line-clamp-2-custom min-h-[2rem] sm:min-h-[2.5rem]" title="#{{ $loop->iteration }} {{ $work->title }}">
                                 {{ $work->title }}
                             </h4>
 
                             <div class="mt-2 pt-1 border-t border-[#2F3AFF]/10">
-                                <p class="font-sans text-[9px] sm:text-xs font-medium text-[#2F3AFF] uppercase truncate">
+                                <p class="font-sans text-[9px] sm:text-xs font-medium text-[#2F3AFF] truncate">
                                     {{ $work->creator->name ?? 'RIMESA 2026' }}
                                 </p>
                                 @php
@@ -144,7 +144,7 @@
                     <div class="text-center mt-6 sm:mt-8">
                         <button wire:click="loadMoreWorks" 
                                 type="button" 
-                                class="inline-flex items-center gap-1 font-display text-xs sm:text-base text-[#2F3AFF] hover:text-[#FC00BB] uppercase tracking-wider transition cursor-pointer font-extrabold hover:underline">
+                                class="inline-flex items-center gap-1 font-display text-xs sm:text-base text-[#2F3AFF] hover:text-[#FC00BB] tracking-wider transition cursor-pointer font-extrabold hover:underline">
                             <span wire:loading.remove wire:target="loadMoreWorks">LIHAT LAINNYA →</span>
                             <span wire:loading wire:target="loadMoreWorks" class="animate-pulse">MEMUAT KARYA...</span>
                         </button>
@@ -158,7 +158,7 @@
                             <img src="{{ asset('images/emote-sedih.png') }}" alt="Sedih" class="w-full h-full object-contain" onerror="this.style.display='none'">
                         </div>
 
-                        <h3 class="font-display text-base sm:text-2xl text-[#2F3AFF] uppercase tracking-wide">
+                        <h3 class="font-display text-base sm:text-2xl text-[#2F3AFF] tracking-wide">
                             Kami tidak menemukan kata kunci "{{ $query }}"
                         </h3>
                         <p class="font-sans text-xs sm:text-sm font-semibold text-[#2F3AFF]/70 mt-1.5">
@@ -169,13 +169,10 @@
             @endif
         </section>
 
-        {{-- ============================================================ --}}
-        {{-- SECTION "HASIL KREATOR" — tetap max-w-7xl seperti semula --}}
-        {{-- ============================================================ --}}
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full my-4 flex-1">
 
             <section class="space-y-8 pt-6 border-t border-[#2F3AFF]/15">
-                <h2 class="font-display text-2xl sm:text-4xl text-[#2F3AFF] uppercase tracking-wide">
+                <h2 class="font-display text-2xl sm:text-4xl text-[#2F3AFF] tracking-wide">
                     Hasil kreator pencarian '{{ $query }}'
                 </h2>
 
@@ -201,14 +198,14 @@
                                         @if ($cImage)
                                             <img src="{{ asset('storage/' . $cImage) }}" alt="{{ $cName }}" class="w-full h-full object-cover">
                                         @else
-                                            <span class="text-[#D9FC28] font-display text-2xl sm:text-3xl font-bold uppercase tracking-wider">
+                                            <span class="text-[#D9FC28] font-display text-2xl sm:text-3xl font-bold tracking-wider">
                                                 {{ strtoupper(substr($cName, 0, 2)) }}
                                             </span>
                                         @endif
                                     </a>
 
                                     <div class="flex-1 min-w-0 space-y-1">
-                                    <h3 class="font-display text-xl sm:text-3xl text-[#2F3AFF] uppercase truncate leading-none">
+                                    <h3 class="font-display text-xl sm:text-3xl text-[#2F3AFF] truncate leading-none">
                                         {{ $creator->name }}
                                     </h3>
                                     <p class="font-sans text-xs sm:text-sm text-[#2F3AFF] font-medium truncate">
@@ -223,16 +220,16 @@
                                     <div class="pt-1">
                                         @auth
                                             @if (auth()->id() === $creator->user_id)
-                                                <a href="{{ route('profile.show') }}" class="inline-block px-4 py-1 bg-[#2F3AFF] text-white font-display text-xs sm:text-sm uppercase hover:bg-[#FC00BB] transition">
+                                                <a href="{{ route('profile.show') }}" class="inline-block px-4 py-1 bg-[#2F3AFF] text-white font-display text-xs sm:text-sm hover:bg-[#FC00BB] transition">
                                                     Profil Saya
                                                 </a>
                                             @else
-                                                <button wire:click="toggleFollow({{ $creator->id }})" class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm uppercase active:translate-y-0.5 transition-all cursor-pointer">
+                                                <button wire:click="toggleFollow({{ $creator->id }})" class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm active:translate-y-0.5 transition-all cursor-pointer">
                                                     {{ $creator->isFollowedBy(auth()->id()) ? '✓ Mengikuti' : 'Ikuti' }}
                                                 </button>
                                             @endif
                                         @else
-                                            <button wire:click="toggleFollow({{ $creator->id }})" class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm uppercase active:translate-y-0.5 transition-all cursor-pointer">
+                                            <button wire:click="toggleFollow({{ $creator->id }})" class="px-4 py-1 bg-[#D9FC28] hover:bg-[#FC00BB] text-[#2F3AFF] hover:text-[#D9FC28] font-display text-xs sm:text-sm active:translate-y-0.5 transition-all cursor-pointer">
                                                 Ikuti
                                             </button>
                                         @endauth
@@ -245,10 +242,10 @@
                                     @foreach ($creatorWorks as $cWork)
                                         <div class="relative w-full aspect-[4/3] bg-gray-100 border-2 border-[#FC00BB] group">
                                             
-                                            <div class="absolute -top-1.5 -left-1.5 w-3 h-3 bg-[#D9FC28] border border-[#2F3AFF] z-20 pointer-events-none"></div>
-                                            <div class="absolute -top-1.5 -right-1.5 w-3 h-3 bg-[#D9FC28] border border-[#2F3AFF] z-20 pointer-events-none"></div>
-                                            <div class="absolute -bottom-1.5 -left-1.5 w-3 h-3 bg-[#D9FC28] border border-[#2F3AFF] z-20 pointer-events-none"></div>
-                                            <div class="absolute -bottom-1.5 -right-1.5 w-3 h-3 bg-[#D9FC28] border border-[#2F3AFF] z-20 pointer-events-none"></div>
+                                            <div class="absolute -top-1.5 -left-1.5 w-3 h-3 bg-[#D9FC28] border-2 border-[#FC00BB] z-20 pointer-events-none"></div>
+                                            <div class="absolute -top-1.5 -right-1.5 w-3 h-3 bg-[#D9FC28] border-2 border-[#FC00BB] z-20 pointer-events-none"></div>
+                                            <div class="absolute -bottom-1.5 -left-1.5 w-3 h-3 bg-[#D9FC28] border-2 border-[#FC00BB] z-20 pointer-events-none"></div>
+                                            <div class="absolute -bottom-1.5 -right-1.5 w-3 h-3 bg-[#D9FC28] border-2 border-[#FC00BB] z-20 pointer-events-none"></div>
 
                                             <a href="{{ route('work.show', $cWork->slug ?? $cWork->id) }}" class="block w-full h-full overflow-hidden">
                                                 @if ($cWork->cover_image)
@@ -269,7 +266,7 @@
                         <div class="text-center mt-6 sm:mt-8">
                             <button wire:click="loadMoreWorks" 
                                     type="button" 
-                                    class="inline-flex items-center gap-1 font-display text-xs sm:text-base text-[#2F3AFF] hover:text-[#FC00BB] uppercase tracking-wider transition cursor-pointer font-extrabold hover:underline">
+                                    class="inline-flex items-center gap-1 font-display text-xs sm:text-base text-[#2F3AFF] hover:text-[#FC00BB] tracking-wider transition cursor-pointer font-extrabold hover:underline">
                                 <span wire:loading.remove wire:target="loadMoreWorks">LIHAT LAINNYA →</span>
                                 <span wire:loading wire:target="loadMoreWorks" class="animate-pulse">MEMUAT KARYA...</span>
                             </button>
@@ -283,7 +280,7 @@
                                 <img src="{{ asset('images/emote-sedih.png') }}" alt="Sedih" class="w-full h-full object-contain" onerror="this.style.display='none'">
                             </div>
 
-                            <h3 class="font-display text-base sm:text-2xl text-[#2F3AFF] uppercase tracking-wide">
+                            <h3 class="font-display text-base sm:text-2xl text-[#2F3AFF] tracking-wide">
                                 Kami tidak menemukan kreator "{{ $query }}"
                             </h3>
                             <p class="font-sans text-xs sm:text-sm font-semibold text-[#2F3AFF]/70 mt-1.5">
@@ -298,7 +295,7 @@
 
     @else
         <div class="text-center py-20">
-            <h3 class="font-display text-lg sm:text-xl text-[#2F3AFF] uppercase tracking-wide">Ketikkan minimal 2 karakter untuk mencari karya atau kreator.</h3>
+            <h3 class="font-display text-lg sm:text-xl text-[#2F3AFF] tracking-wide">Ketikkan minimal 2 karakter untuk mencari karya atau kreator.</h3>
         </div>
     @endif
 
