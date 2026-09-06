@@ -34,15 +34,9 @@
 
 | Nama | Peran | GitHub |
 |------|-------|--------|
-<<<<<<< HEAD
 | **Muhammad Daffa Syarif Syaddad** | UI/UX Designer & Team Leader | [GitHub](https://github.com/[username1]) |
 | **Raditya Meyka Harry Sandhiva** | Frontend Developer | [GitHub](https://github.com/King-Rackka) |
 | **Muhammad Fahreza Prasetya Ramadhan** | Backend Developer | [GitHub](https://github.com/fexartifico) |
-=======
-| **[Muhammad Daffa Syarif Syaddad]** | UI/UX Designer & Team Leader | [GitHub](https://github.com/[username1]) |
-| **[Raditya Meyka Harry Sandhiva]** | Frontend Developer | [GitHub](https://github.com/King-Rackka) |
-| **[Muhammad Fahreza Prasetya Ramadhan]** | Backend Developer | [GitHub](https://github.com/fexartifico) |
->>>>>>> 140313e29f35fa43efbff5c20f881e833080b457
 
 ---
 
