@@ -9,7 +9,7 @@ class Work extends Model
     protected $fillable = [
         'creator_id', 'community_id', 'title', 'slug', 'description',
         'category', 'year', 'location', 'story', 'process', 'status',
-        'cover_image', 'is_featured', 'published_at', 'target_quantity','tags'
+        'cover_image', 'is_featured', 'published_at', 'target_quantity','tags','allow_comments',
     ];
 
     protected $casts = [
@@ -17,6 +17,7 @@ class Work extends Model
         'published_at' => 'datetime',
         'tags' => 'array',
         'target_quantity' => 'decimal:2',
+        'allow_comments' => 'boolean',
     ];
 
     public function creator()

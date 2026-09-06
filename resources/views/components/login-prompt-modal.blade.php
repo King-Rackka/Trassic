@@ -18,10 +18,6 @@
         <div class="absolute -bottom-2 -left-2 w-3.5 h-3.5 bg-[#D9FC28] border-2 border-[#2F3AFF] z-30 pointer-events-none"></div>
         <div class="absolute -bottom-2 -right-2 w-3.5 h-3.5 bg-[#D9FC28] border-2 border-[#2F3AFF] z-30 pointer-events-none"></div>
 
-        <span class="inline-block bg-[#D9FC28] text-[#2F3AFF] border-2 border-[#2F3AFF] font-display text-[10px] uppercase px-3 py-1 mb-3 tracking-widest">
-            Akses Terbatas 
-        </span>
-
         <h3 class="font-display text-2xl text-[#2F3AFF] uppercase leading-tight mb-2">
             Eits, Belum Login!
         </h3>

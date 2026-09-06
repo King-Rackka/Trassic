@@ -148,7 +148,6 @@
                         </div>
 
                         <div class="border-2 border-[#FC00BB] bg-[#F8F9FA] p-3 sm:p-6 shadow-[6px_6px_0px_#2F3AFF] font-sans">
-                            <h4 class="font-display text-xl sm:text-2xl text-[#2F3AFF] mb-3">Detail</h4>
                             
                             <table class="w-full text-[10px] sm:text-sm text-[#2F3AFF] font-bold border-separate border-spacing-y-2">
                                 <tbody>

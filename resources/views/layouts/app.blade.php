@@ -105,7 +105,7 @@
     <div class="w-full flex items-stretch justify-between h-16">
 
         <div class="w-full lg:w-1/2 flex items-center justify-between gap-2 sm:gap-4 px-3 sm:px-6 lg:px-8 bg-white shrink-0 min-w-0">
-            <a href="{{ url('/') }}" class="shrink-0">
+            <a href="{{ auth()->check() ? route('dashboard') : url('/') }}" class="shrink-0">
                 <img src="{{ asset('images/logo.png') }}" alt="Trassic" class="h-7 sm:h-8 object-contain" onerror="this.src='https://via.placeholder.com/120x35/2F3AFF/ffffff?text=Trassic'">
             </a>
 
@@ -138,7 +138,11 @@
         <div class="hidden lg:flex w-1/2 bg-[#2F3AFF] px-6 lg:px-8 py-3.5 items-center justify-between shrink-0 gap-4 xl:gap-6">
             
             <nav class="flex items-center gap-4 xl:gap-6 text-white font-display text-xs xl:text-sm tracking-tight shrink-0">
-                <a href="{{ url('/') }}" class="{{ request()->is('/') ? 'text-[#D9FC28]' : '' }} hover:text-[#D9FC28] transition whitespace-nowrap">Beranda</a>
+                {{-- BERANDA LOGIC: DASHBOARD JIKA LOGIN, LANDING PAGE JIKA GUEST --}}
+                <a href="{{ auth()->check() ? route('dashboard') : url('/') }}" 
+                   class="{{ (auth()->check() ? request()->routeIs('dashboard') : request()->is('/')) ? 'text-[#D9FC28]' : '' }} hover:text-[#D9FC28] transition whitespace-nowrap">
+                    Beranda
+                </a>
                 <a href="{{ route('explore') }}" class="{{ request()->routeIs('explore') ? 'text-[#D9FC28]' : '' }} hover:text-[#D9FC28] transition whitespace-nowrap">Explore</a>
                 <a href="{{ Route::has('creators') ? route('creators') : '#' }}" class="{{ request()->routeIs('creators') ? 'text-[#D9FC28]' : '' }} hover:text-[#D9FC28] transition whitespace-nowrap">Creators</a>
                 <a href="{{ route('waste-impact') }}" class="{{ request()->routeIs('waste-impact') ? 'text-[#D9FC28]' : '' }} hover:text-[#D9FC28] transition">Waste &amp; Impact</a>
@@ -178,11 +182,7 @@
                              x-transition
                              class="absolute right-0 top-full mt-2 w-48 bg-white border-2 border-[#FC00BB] z-50 p-1.5 space-y-1 shadow-lg">
                             
-                            <a href="{{ route('dashboard') }}" class="flex items-center gap-2.5 px-2.5 py-2 text-[#2F3AFF] hover:bg-[#D9FC28] hover:text-black font-display text-xs tracking-wide transition-colors border border-transparent hover:border-black">
-                                <svg class="w-3.5 h-3.5 shrink-0 fill-current" viewBox="0 0 24 24"><path d="M4 11h6a1 1 0 001-1V4a1 1 0 00-1-1H4a1 1 0 00-1 1v6a1 1 0 001 1zm10 0h6a1 1 0 001-1V4a1 1 0 00-1-1h-6a1 1 0 00-1 1v6a1 1 0 001 1zM4 21h6a1 1 0 001-1v-6a1 1 0 00-1-1H4a1 1 0 00-1 1v6a1 1 0 001 1zm10 0h6a1 1 0 001-1v-6a1 1 0 00-1-1h-6a1 1 0 00-1 1v6a1 1 0 001 1z"/></svg>
-                                <span>Dashboard</span>
-                            </a>
-
+                            {{-- MENU PROFILE SAYA --}}
                             <a href="{{ Route::has('profile.show') ? route('profile.show') : '#' }}" 
                                class="flex items-center gap-2.5 px-2.5 py-2 text-[#2F3AFF] hover:bg-[#D9FC28] hover:text-black font-display text-xs tracking-wide transition-colors border border-transparent hover:border-black">
                                 <svg class="w-3.5 h-3.5 shrink-0 stroke-current fill-none" stroke-width="2.5" viewBox="0 0 24 24">
@@ -193,6 +193,7 @@
 
                             <div class="border-t border-gray-100 my-1"></div>
 
+                            {{-- MENU LOGOUT --}}
                             <form method="POST" action="{{ route('logout') }}" class="w-full">
                                 @csrf
                                 <button type="submit" class="w-full flex items-center gap-2.5 px-2.5 py-2 text-[#FC00BB] hover:bg-[#FC00BB] hover:text-white font-display text-xs tracking-wide transition-colors border border-transparent hover:border-black cursor-pointer">
@@ -208,6 +209,7 @@
         </div>
     </div>
 
+    {{-- DROPDOWN MENU MOBILE --}}
     <div x-show="mobileMenuOpen"
          x-cloak
          x-transition:enter="transition ease-out duration-200"
@@ -220,7 +222,10 @@
          class="absolute top-full left-0 w-full bg-[#2F3AFF] border-b-4 border-indigo-950 p-6 flex flex-col gap-6 lg:hidden z-50 shadow-xl text-center">
         
         <nav class="flex flex-col gap-4 text-white font-display text-lg tracking-wider items-center justify-center">
-            <a href="{{ url('/') }}" class="{{ request()->is('/') ? 'text-[#D9FC28]' : '' }} hover:text-[#D9FC28] transition">Beranda</a>
+            <a href="{{ auth()->check() ? route('dashboard') : url('/') }}" 
+               class="{{ (auth()->check() ? request()->routeIs('dashboard') : request()->is('/')) ? 'text-[#D9FC28]' : '' }} hover:text-[#D9FC28] transition">
+                Beranda
+            </a>
             <a href="{{ route('explore') }}" class="{{ request()->routeIs('explore') ? 'text-[#D9FC28]' : '' }} hover:text-[#D9FC28] transition">Explore</a>
             <a href="{{ Route::has('creators') ? route('creators') : '#' }}" class="{{ request()->routeIs('creators') ? 'text-[#D9FC28]' : '' }} hover:text-[#D9FC28] transition">Creators</a>
             <a href="{{ route('waste-impact') }}" class="{{ request()->routeIs('waste-impact') ? 'text-[#D9FC28]' : '' }} hover:text-[#D9FC28] transition">Waste &amp; Impact</a>
@@ -232,11 +237,6 @@
                 <a href="{{ route('login') }}" class="w-full text-center bg-[#D9FC28] text-[#2F3AFF] py-2.5 text-base font-bold hover:bg-opacity-90 transition">Login</a>
                 <a href="{{ route('register') }}" class="w-full text-center bg-[#FC00BB] text-[#D9FC28] py-2.5 text-base font-bold hover:bg-opacity-90 transition">Register</a>
             @else
-                <a href="{{ route('dashboard') }}" class="flex items-center justify-center gap-2.5 bg-white text-[#2F3AFF] py-2.5 text-base font-display border-2 border-[#FC00BB]">
-                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M4 11h6a1 1 0 001-1V4a1 1 0 00-1-1H4a1 1 0 00-1 1v6a1 1 0 001 1zm10 0h6a1 1 0 001-1V4a1 1 0 00-1-1h-6a1 1 0 00-1 1v6a1 1 0 001 1zM4 21h6a1 1 0 001-1v-6a1 1 0 00-1-1H4a1 1 0 00-1 1v6a1 1 0 001 1zm10 0h6a1 1 0 001-1v-6a1 1 0 00-1-1h-6a1 1 0 00-1 1v6a1 1 0 001 1z"/></svg>
-                    <span>Dashboard</span>
-                </a>
-
                 <a href="{{ Route::has('profile.show') ? route('profile.show') : '#' }}" class="flex items-center justify-center gap-2.5 bg-white text-[#2F3AFF] py-2.5 text-base font-display border-2 border-[#FC00BB]">
                     <svg class="w-5 h-5 stroke-current fill-none" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                     <span>Profile Saya</span>
@@ -281,7 +281,7 @@
                 </div>
 
                 <nav class="flex flex-wrap items-center justify-center gap-x-6 lg:gap-x-8 gap-y-3 text-[#2F3AFF] font-display text-base lg:text-xl tracking-wide">
-                    <a href="{{ url('/') }}" class="hover:text-[#FC00BB] transition whitespace-nowrap">Beranda</a>
+                    <a href="{{ auth()->check() ? route('dashboard') : url('/') }}" class="hover:text-[#FC00BB] transition whitespace-nowrap">Beranda</a>
                     <a href="{{ route('explore') }}" class="hover:text-[#FC00BB] transition whitespace-nowrap">Explore</a>
                     <a href="{{ Route::has('waste-impact') ? route('waste-impact') : '#' }}" class="hover:text-[#FC00BB] transition whitespace-nowrap">Waste &amp; Impact</a>
                     <a href="{{ Route::has('creators') ? route('creators') : '#' }}" class="hover:text-[#FC00BB] transition whitespace-nowrap">Creators</a>
@@ -293,7 +293,7 @@
                         <a href="{{ route('login') }}" class="bg-[#D9FC28] text-[#2F3AFF] px-3 xl:px-4 py-1 text-xs xl:text-sm hover:bg-opacity-90 transition whitespace-nowrap">Login</a>
                         <a href="{{ route('register') }}" class="bg-[#FC00BB] text-[#D9FC28] px-3 xl:px-4 py-1 text-xs xl:text-sm hover:bg-opacity-90 transition whitespace-nowrap">Register</a>
                     @else
-                        <a href="{{ route('dashboard') }}" class="bg-[#D9FC28] text-[#2F3AFF] px-3 xl:px-4 py-1 text-base lg:text-lg hover:bg-opacity-90 transition">Dashboard</a>
+                        <a href="{{ Route::has('profile.show') ? route('profile.show') : '#' }}" class="bg-[#D9FC28] text-[#2F3AFF] px-3 xl:px-4 py-1 text-base lg:text-lg hover:bg-opacity-90 transition">Profile Saya</a>
                     @endguest
                 </div>
 

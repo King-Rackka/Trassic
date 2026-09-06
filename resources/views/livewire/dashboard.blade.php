@@ -25,6 +25,7 @@
     </style>
 
 
+
     <div class="w-full flex justify-between items-start pointer-events-none z-10 pt-0">
         <img src="{{ asset('images/vector/vector_sayap_atas.png') }}" alt="Vector Wing Top Left" class="h-6 sm:h-12 object-contain">
         <img src="{{ asset('images/vector/vector_sayap_atas.png') }}" alt="Vector Wing Top Right" class="h-6 sm:h-12 object-contain -scale-x-100">
@@ -121,7 +122,7 @@
     {{-- ============================================================ --}}
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20 sm:space-y-28 w-full my-4 flex-1">
 
-        <section class="w-full text-center space-y-12 sm:space-y-16 mt-16 sm:mt-20">
+        <section class="w-full text-center space-y-12 sm:space-y-16">
             <h2 class="font-display text-3xl sm:text-5xl lg:text-6xl text-[#2F3AFF] tracking-normal">
                 Kreator dengan kontribusi tertinggi
             </h2>

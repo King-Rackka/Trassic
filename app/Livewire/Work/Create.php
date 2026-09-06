@@ -209,6 +209,7 @@ class Create extends Component
         'cover_image'     => $imagePaths[0],
         'description'     => $this->description,
         'target_quantity' => $totalWeightInKg,
+        'allow_comments'  => $this->allowComments,
         'status'          => 'published',
         'published_at'    => now(),
     ]);

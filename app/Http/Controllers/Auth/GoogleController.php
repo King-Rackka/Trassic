@@ -48,6 +48,8 @@ class GoogleController extends Controller
 
         Auth::login($user);
 
+        session()->flash('show_welcome_animation', true);
+
         return redirect()->intended('/dashboard'); 
     }
 }

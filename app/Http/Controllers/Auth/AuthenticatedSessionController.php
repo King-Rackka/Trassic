@@ -31,6 +31,8 @@ class AuthenticatedSessionController extends Controller
             return redirect($request->input('redirect'));
         }
 
+        session()->flash('show_welcome_animation', true);
+
         return redirect()->intended(route('dashboard', absolute: false));
     }
 

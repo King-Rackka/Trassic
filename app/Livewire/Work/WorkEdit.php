@@ -281,6 +281,7 @@ class WorkEdit extends Component
             'description'    => $this->description,
             'category'       => count($this->selectedTags) ? implode(', ', $this->selectedTags) : ($this->work->category ?? 'Art & Craft'),
             'cover_image'    => $coverImage,
+            'allow_comments' => $this->allowComments,
         ]);
 
         // 3. Sinkronisasi Tabel Relasi images

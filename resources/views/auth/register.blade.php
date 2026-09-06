@@ -1,3 +1,5 @@
+<x-transition-stripes />
+
 <x-app-layout :fullscreen="true">
     <x-slot:title>Register - Trassic</x-slot:title>
 

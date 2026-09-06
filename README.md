@@ -34,7 +34,7 @@
 
 | Nama | Peran | GitHub |
 |------|-------|--------|
-| **Muhammad Daffa Syarif Syaddad** | UI/UX Designer & Team Leader | [GitHub](https://github.com/[username1]) |
+| **Muhammad Daffa Syarif Syaddad** | UI/UX Designer & Team Leader | [GitHub](https://github.com/Dappsyr11) |
 | **Raditya Meyka Harry Sandhiva** | Frontend Developer | [GitHub](https://github.com/King-Rackka) |
 | **Muhammad Fahreza Prasetya Ramadhan** | Backend Developer | [GitHub](https://github.com/fexartifico) |
 
@@ -82,7 +82,9 @@ TRASSIC hadir sebagai galeri digital yang menjembatani kreator daur ulang dengan
 
 ### Live Demo
 
-🔗 **[Kunjungi Website](https://[URL_DEMO])**
+[![Watch Demo](https://img.youtube.com/vi/TsXVvM7i60I/maxresdefault.jpg)](https://youtu.be/TsXVvM7i60I)
+
+📹 **[Tonton Video Demo di YouTube](https://youtu.be/TsXVvM7i60I)**
 
 ### Screenshot Aplikasi
 

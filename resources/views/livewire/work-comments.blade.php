@@ -4,33 +4,42 @@
         Komentar
     </h2>
 
-    {{-- FORM INPUT KOMENTAR UTAMA --}}
-    <div class="mb-8">
-        <div class="relative">
-            <textarea
-                wire:model="newComment"
-                rows="3"
-                placeholder="{{ auth()->check() ? 'Tulis komentar kamu...' : 'Login untuk berkomentar...' }}"
-                @unless(auth()->check()) onclick="$dispatch('show-login-prompt')" readonly @endunless
-                class="w-full border-2 border-black bg-white p-3 sm:p-4 text-sm font-sans text-gray-900 focus:outline-none focus:border-[#ff007a] shadow-[3px_3px_0px_rgba(0,0,0,1)] resize-none"
-            ></textarea>
-            @error('newComment') 
-                <p class="text-[#ff007a] font-sans text-xs font-bold mt-1">{{ $message }}</p> 
-            @enderror
-        </div>
-
-        @auth
-            <div class="flex justify-end mt-2">
-                <button type="button"
-                        wire:click="postComment"
-                        wire:loading.attr="disabled"
-                        class="bg-[#254bfe] hover:bg-[#1a3ad1] text-white font-display text-xs uppercase px-5 py-2 border-2 border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] active:translate-y-0.5 transition">
-                    <span wire:loading.remove wire:target="postComment">Kirim</span>
-                    <span wire:loading wire:target="postComment">Mengirim...</span>
-                </button>
+    {{-- ⬅️ TAMBAHAN: FORM INPUT KOMENTAR UTAMA hanya tampil kalau allowComments true --}}
+    @if ($allowComments)
+        <div class="mb-8">
+            <div class="relative">
+                <textarea
+                    wire:model="newComment"
+                    rows="3"
+                    placeholder="{{ auth()->check() ? 'Tulis komentar kamu...' : 'Login untuk berkomentar...' }}"
+                    @unless(auth()->check()) onclick="$dispatch('show-login-prompt')" readonly @endunless
+                    class="w-full border-2 border-black bg-white p-3 sm:p-4 text-sm font-sans text-gray-900 focus:outline-none focus:border-[#ff007a] shadow-[3px_3px_0px_rgba(0,0,0,1)] resize-none"
+                ></textarea>
+                @error('newComment') 
+                    <p class="text-[#ff007a] font-sans text-xs font-bold mt-1">{{ $message }}</p> 
+                @enderror
             </div>
-        @endauth
-    </div>
+
+            @auth
+                <div class="flex justify-end mt-2">
+                    <button type="button"
+                            wire:click="postComment"
+                            wire:loading.attr="disabled"
+                            class="bg-[#254bfe] hover:bg-[#1a3ad1] text-white font-display text-xs uppercase px-5 py-2 border-2 border-black shadow-[2px_2px_0px_rgba(0,0,0,1)] active:translate-y-0.5 transition">
+                        <span wire:loading.remove wire:target="postComment">Kirim</span>
+                        <span wire:loading wire:target="postComment">Mengirim...</span>
+                    </button>
+                </div>
+            @endauth
+        </div>
+    @else
+        {{-- ⬅️ TAMBAHAN: pesan pengganti kalau komentar dinonaktifkan --}}
+        <div class="mb-8 bg-gray-50 border-2 border-gray-200 rounded-lg p-4 text-center">
+            <p class="font-sans text-sm text-gray-500 font-medium">
+                💬 Komentar dinonaktifkan oleh kreator untuk karya ini.
+            </p>
+        </div>
+    @endif
 
     {{-- DAFTAR KOMENTAR --}}
     <div class="space-y-6">
@@ -113,14 +122,17 @@
 
                         {{-- Action Buttons --}}
                         <div class="flex items-center gap-4 mt-1.5 ml-1 text-xs sm:text-sm font-bold text-[#254bfe]">
-                            <button type="button" 
-                                    wire:click="startReply({{ $comment->id }})" 
-                                    class="flex items-center gap-1.5 hover:text-[#ff007a] transition">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
-                                </svg>
-                                <span>Balas</span>
-                            </button>
+                            {{-- ⬅️ TAMBAHAN: tombol Balas hanya tampil kalau allowComments true --}}
+                            @if ($allowComments)
+                                <button type="button" 
+                                        wire:click="startReply({{ $comment->id }})" 
+                                        class="flex items-center gap-1.5 hover:text-[#ff007a] transition">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+                                    </svg>
+                                    <span>Balas</span>
+                                </button>
+                            @endif
 
                             @php
                                 $isLiked = auth()->check() && $comment->isLikedBy(auth()->id());
@@ -143,7 +155,7 @@
                         </div>
 
                         {{-- Form Balas --}}
-                        @if ($replyingTo === $comment->id)
+                        @if ($allowComments && $replyingTo === $comment->id)
                             <div class="mt-3 p-3 bg-white border-2 border-black shadow-[2px_2px_0px_rgba(0,0,0,1)]">
                                 <textarea
                                     wire:model="replyText"
@@ -245,14 +257,17 @@
                                     </div>
 
                                     <div class="flex items-center gap-4 mt-1 ml-1 text-xs font-bold text-[#254bfe]">
-                                        <button type="button" 
-                                                wire:click="startReply({{ $comment->id }})" 
-                                                class="flex items-center gap-1 hover:text-[#ff007a] transition">
-                                            <svg class="w-3.5 h-3.5 fill-none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
-                                            </svg>
-                                            <span>Balas</span>
-                                        </button>
+                                        {{-- ⬅️ TAMBAHAN: tombol Balas pada reply juga ikut disembunyikan --}}
+                                        @if ($allowComments)
+                                            <button type="button" 
+                                                    wire:click="startReply({{ $comment->id }})" 
+                                                    class="flex items-center gap-1 hover:text-[#ff007a] transition">
+                                                <svg class="w-3.5 h-3.5 fill-none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+                                                </svg>
+                                                <span>Balas</span>
+                                            </button>
+                                        @endif
 
                                         @php
                                             $isReplyLiked = auth()->check() && $reply->isLikedBy(auth()->id());
@@ -287,9 +302,6 @@
         @endforelse
     </div>
 
-    {{-- ======================================================== --}}
-    {{-- MODAL KONFIRMASI HAPUS KOMENTAR (PERSIS GAYA EDIT KARYA) --}}
-    {{-- ======================================================== --}}
     <div x-show="showDeleteModal" 
          x-cloak
          class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs transition-opacity"

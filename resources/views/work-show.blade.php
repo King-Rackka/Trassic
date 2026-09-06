@@ -466,7 +466,15 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
 
             <div class="lg:col-span-2">
-                <livewire:work-comments :work="$work" />
+                @if ($work->allow_comments)
+                    <livewire:work-comments :work="$work" />
+                @else
+                    <div class="bg-white border-2 border-[#2F3AFF]/20 rounded-xl p-6 text-center">
+                        <p class="font-sans text-sm text-gray-500 font-medium">
+                            Komentar dinonaktifkan oleh kreator untuk karya ini.
+                        </p>
+                    </div>
+                @endif
             </div>
 
             @if (isset($similarWorks) && $similarWorks->count() > 0)

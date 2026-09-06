@@ -108,7 +108,6 @@ class WorkComments extends Component
 
         $comment = Comment::findOrFail($commentId);
 
-        // Validasi hak akses: hanya pemilik komentar atau pemilik karya yang boleh menghapus
         $isCommentOwner = $comment->user_id === Auth::id();
         $isWorkOwner = $this->work->user_id === Auth::id();
 
@@ -116,19 +115,16 @@ class WorkComments extends Component
             abort(403, 'Anda tidak memiliki izin untuk menghapus komentar ini.');
         }
 
-        // Hapus juga balasan di dalamnya jika ada (jika relasi database belum cascade delete)
         if ($comment->parent_id === null) {
             Comment::where('parent_id', $comment->id)->delete();
         }
 
-        // Hapus like terkait dan komentarnya
         CommentLike::where('comment_id', $comment->id)->delete();
         $comment->delete();
     }
 
     public function render()
     {
-        // Ambil hanya komentar utama (parent_id null) beserta relasinya
         $comments = $this->work->comments()
             ->whereNull('parent_id')
             ->with(['user.creatorProfile', 'replies.user.creatorProfile'])
@@ -139,6 +135,7 @@ class WorkComments extends Component
         return view('livewire.work-comments', [
             'comments' => $comments,
             'currentUserId' => Auth::id(),
+            'allowComments' => $this->work->allow_comments,
         ]);
     }
 }
