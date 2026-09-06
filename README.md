@@ -3,13 +3,13 @@
   # TRASSIC
   ### Waste. Reworked. — Galeri Digital untuk Karya Daur Ulang Indonesia
   
-  [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_Site-success?style=for-the-badge)](https://[URL_DEMO])
-  [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://[URL_REPO])
+  [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_Site-success?style=for-the-badge)](https://trassic.radityameyka.my.id/)
+  [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/King-Rackka/Trassic)
   [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
   
   **Submission for ITECHNO CUP 2026 - Web Development**
   
-  **By [Nama Tim Kalian]**
+  **By FENDI RAJA ELANG**
   
 </div>
 
@@ -34,9 +34,9 @@
 
 | Nama | Peran | GitHub |
 |------|-------|--------|
-| **[Nama Lengkap 1]** | Project Lead & Full Stack Developer | [GitHub](https://github.com/[username1]) |
-| **[Nama Lengkap 2]** | Frontend Developer | [GitHub](https://github.com/[username2]) |
-| **[Nama Lengkap 3]** | Backend Developer | [GitHub](https://github.com/[username3]) |
+| **Muhammad Daffa Syarif Syaddad** | UI/UX Designer & Team Leader | [GitHub](https://github.com/[username1]) |
+| **Raditya Meyka Harry Sandhiva** | Frontend Developer | [GitHub](https://github.com/King-Rackka) |
+| **Muhammad Fahreza Prasetya Ramadhan** | Backend Developer | [GitHub](https://github.com/fexartifico) |
 
 ---
 
@@ -44,7 +44,7 @@
 
 ### Latar Belakang
 
-Indonesia menghasilkan jutaan ton sampah tiap tahun, dan sebagian besar tidak terkelola dengan baik. Di sisi lain, sudah banyak pengrajin, UMKM, dan komunitas — seperti pelaku usaha daur ulang plastik sachet di Semarang, pengolah tutup botol HDPE di Depok, hingga pengrajin kardus dan tekstil di berbagai daerah — yang lebih dulu mengubah limbah menjadi karya bernilai jual. Namun kontribusi mereka jarang terdokumentasi secara transparan dan sulit ditemukan oleh masyarakat luas.
+Indonesia menghasilkan jutaan ton sampah setiap tahun, dan sebagian besar masih tidak terkelola dengan baik. Di sisi lain, banyak pengrajin, UMKM, dan komunitas yang telah lebih dulu mengubah limbah menjadi karya bernilai jual, namun kontribusi mereka jarang terdokumentasi secara transparan dan sulit ditemukan oleh masyarakat luas.
 
 ### Solusi yang Ditawarkan
 
@@ -87,21 +87,15 @@ TRASSIC hadir sebagai galeri digital yang menjembatani kreator daur ulang dengan
 ### Screenshot Aplikasi
 
 <div align="center">
-  <img src="[URL_SCREENSHOT_1]" alt="Homepage" width="800"/>
+  <img src="docs/screenshots/homepage.png" alt="Homepage" width="800"/>
   <p><em>Homepage - Rekomendasi harian & karya dengan like terbanyak</em></p>
   
-  <img src="[URL_SCREENSHOT_2]" alt="Explore" width="800"/>
+  <img src="docs/screenshots/explore.png" alt="Explore" width="800"/>
   <p><em>Explore - Filter karya berdasarkan jenis sampah</em></p>
   
-  <img src="[URL_SCREENSHOT_3]" alt="Waste Impact" width="800"/>
+  <img src="docs/screenshots/waste.png" alt="Waste Impact" width="800"/>
   <p><em>Waste & Impact - Dokumentasi transparan total sampah terpakai</em></p>
 </div>
-
-### Video Demo
-
-📹 **[Link Video Demo](https://[URL_VIDEO])**
-
----
 
 ## 🛠️ Teknologi
 
@@ -109,13 +103,14 @@ TRASSIC hadir sebagai galeri digital yang menjembatani kreator daur ulang dengan
 
 #### Backend & Frontend (Monolith)
 ```
-Framework    : Laravel 12
-Komponen UI  : Livewire 3 (reactive component tanpa API terpisah)
+Framework    : Laravel 13
+Komponen UI  : Livewire 4 (reactive component tanpa API terpisah)
 Interaksi    : Alpine.js
 Styling      : Tailwind CSS
 Database     : MySQL
 Auth         : Laravel Breeze + Laravel Socialite (Google OAuth)
 Storage      : Laravel Filesystem (public disk)
+Build Tool : Vite
 ```
 
 ### Alasan Pemilihan Teknologi
@@ -125,20 +120,31 @@ Storage      : Laravel Filesystem (public disk)
 | **Laravel + Livewire** | Memungkinkan fitur reaktif (filter real-time, like/follow tanpa reload, form multi-langkah) tanpa perlu membangun REST API terpisah, mempercepat development untuk tim kecil dengan deadline ketat |
 | **Tailwind CSS** | Fleksibel untuk membangun design system custom (warna, tipografi, komponen kartu bergaya sticker/poster) tanpa terikat pada tema bawaan framework UI |
 | **MySQL** | Relasi data antar-entitas (Work ↔ WasteDNA ↔ Creator ↔ Community) bersifat relasional dan terstruktur, cocok dengan model data tabel dibanding basis data dokumen |
+| **React Three Fiber** | Membangun elemen visual identitas brand (kartu member 3D interaktif) yang lebih ekspresif dibanding elemen 2D biasa, sambil tetap embeddable di dalam halaman Blade/Livewire lewat integrasi Vite |
 
 ### Dependencies Utama
 
 ```json
 {
   "require": {
-    "laravel/framework": "^12.0",
-    "livewire/livewire": "^3.0",
-    "laravel/socialite": "^5.0"
+    "laravel/framework": "^13.0",
+    "livewire/livewire": "^4.0",
+    "laravel/socialite": "^5.0",
+    "laravel/breeze": "^2.0"
   },
   "devDependencies": {
-    "tailwindcss": "^3.0",
-    "alpinejs": "^3.0",
-    "vite": "^5.0"
+    "tailwindcss": "^3.1.0",
+    "alpinejs": "^3.4.2",
+    "vite": "^8.0.0"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "three": "^0.185.1",
+    "@react-three/fiber": "^9.7.0",
+    "@react-three/drei": "^10.7.8",
+    "@react-three/rapier": "^2.2.0",
+    "gsap": "^3.15.0"
   }
 }
 ```
@@ -149,7 +155,7 @@ Storage      : Laravel Filesystem (public disk)
 
 ### Database Schema
 
-Entitas utama: `Work` (karya) — `WasteDna` (rincian material sampah, mendukung multi-material per karya) — `CreatorProfile` (profil publik kreator) — `Community` — `Appreciation` — `Follow`. Diagram ERD lengkap tersedia di `database/migrations/`.
+Entitas utama: `Work` (karya) — `WasteDna` (rincian material sampah, mendukung multi-material per karya) — `CreatorProfile` (profil publik kreator)  — `Appreciation` — `Follow`. Diagram ERD lengkap tersedia di `database/migrations/`.
 
 ### Folder Structure
 
@@ -208,6 +214,12 @@ npm install
 cp .env.example .env
 php artisan key:generate
 ```
+
+Untuk mendapatkan `GOOGLE_CLIENT_ID` dan `GOOGLE_CLIENT_SECRET`:
+1. Buka [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+2. Buat OAuth 2.0 Client ID baru (atau gunakan yang sudah ada)
+3. Tambahkan `http://localhost:8000/auth/google/callback` ke Authorized redirect URIs
+4. Copy Client ID dan Client Secret ke `.env`
 
 Isi konfigurasi berikut di `.env`:
 

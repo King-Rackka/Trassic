@@ -53,11 +53,11 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        Auth::login($user);
+        Auth::guard('web')->logout();
 
-        if ($request->filled('redirect')) {
-            return redirect($request->input('redirect'));
-        }
-        return redirect(route('dashboard', absolute: false));
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login')->with('status', 'Registrasi berhasil! Silakan login.');
     }
 }

@@ -24,7 +24,7 @@
         }
     </style>
 
-    {{-- PITA SAYAP VEKTOR ATAS --}}
+
     <div class="w-full flex justify-between items-start pointer-events-none z-10 pt-0">
         <img src="{{ asset('images/vector/vector_sayap_atas.png') }}" alt="Vector Wing Top Left" class="h-6 sm:h-12 object-contain">
         <img src="{{ asset('images/vector/vector_sayap_atas.png') }}" alt="Vector Wing Top Right" class="h-6 sm:h-12 object-contain -scale-x-100">

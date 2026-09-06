@@ -135,7 +135,6 @@
             </button>
         </div>
 
-
         <div class="hidden lg:flex w-1/2 bg-[#2F3AFF] px-6 lg:px-8 py-3.5 items-center justify-between shrink-0 gap-4 xl:gap-6">
             
             <nav class="flex items-center gap-4 xl:gap-6 text-white font-display text-xs xl:text-sm tracking-tight shrink-0">
@@ -209,7 +208,6 @@
         </div>
     </div>
 
-    {{-- DROPDOWN MENU MOBILE --}}
     <div x-show="mobileMenuOpen"
          x-cloak
          x-transition:enter="transition ease-out duration-200"
@@ -256,6 +254,19 @@
     </div>
 </header>
 
+    @if (session('status'))
+        <div class="fixed top-20 right-4 z-50 max-w-md bg-[#D9FC28] border-2 border-[#FC00BB] p-4 flex items-center justify-between gap-3 font-sans text-xs sm:text-sm text-[#2F3AFF]"
+             x-data="{ show: true }" 
+             x-show="show" 
+             x-init="setTimeout(() => show = false, 5000)">
+            <div class="flex items-center gap-2">
+                <span class="text-lg">✓</span>
+                <span>{{ session('status') }}</span>
+            </div>
+            <button @click="show = false" class="text-black hover:text-[#FC00BB] font-black text-lg cursor-pointer">&times;</button>
+        </div>
+    @endif
+
     <main class="flex-1 flex flex-col lg:flex-row min-h-0 pt-16 {{ ($fullscreen ?? false) ? 'overflow-hidden' : '' }}">
         {{ $slot }}
     </main>
@@ -266,7 +277,7 @@
 
                 <div class="flex flex-col gap-2 items-center md:items-start text-center md:text-left">
                     <img src="{{ asset('images/logo.png') }}" alt="Trassic" class="h-10 lg:h-12 object-contain w-fit" onerror="this.src='https://via.placeholder.com/120x35/2F3AFF/ffffff?text=Trassic'">
-                    <p class="text-sm lg:text-base font-semibold text-[#2F3AFF]">©{{ date('Y') }}, by FENDI RAJA ELANG</p>
+                    <p class="text-sm lg:text-base font-semibold text-[#2F3AFF]">©{{ date('Y') }}, by TRASSIC Team</p>
                 </div>
 
                 <nav class="flex flex-wrap items-center justify-center gap-x-6 lg:gap-x-8 gap-y-3 text-[#2F3AFF] font-display text-base lg:text-xl tracking-wide">
