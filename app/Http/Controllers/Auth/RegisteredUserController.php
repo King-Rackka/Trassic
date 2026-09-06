@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use App\Models\CreatorProfile;
+use Illuminate\Support\Str;
 
 class RegisteredUserController extends Controller
 {
@@ -37,10 +39,17 @@ class RegisteredUserController extends Controller
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+		    'name' => $request->name,
+		    'email' => $request->email,
+		    'password' => Hash::make($request->password),
+		]);
+		
+		CreatorProfile::create([
+		    'user_id' => $user->id,
+		    'name' => $user->name,
+		    'slug' => Str::slug($user->name) . '-' . $user->id,
+		    'type' => 'individual',
+		]);
 
         event(new Registered($user));
 

@@ -76,6 +76,21 @@ class CreatorProfile extends Model
             ?? ($this->social_links['instagram'] ?? $this->social_links['ig'] ?? null);
     }
 
+    public function formattedWhatsappNumber()
+    {
+        if (!$this->phone) {
+            return null;
+        }
+
+        $phone = preg_replace('/[^0-9]/', '', $this->phone);
+
+        if (str_starts_with($phone, '0')) {
+            $phone = '62' . substr($phone, 1);
+        }
+
+        return $phone;
+    }
+
     public function scopeSearch($query, $keyword)
     {
         return $query->where('name', 'like', "%{$keyword}%")

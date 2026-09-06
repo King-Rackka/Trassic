@@ -1,7 +1,7 @@
 <div class="w-full bg-grid-pattern min-h-screen py-6 sm:py-8 font-sans" x-data="{ showConfirmModal: false }">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="max-w-7xl mx-auto px-6 sm:px-12 lg:px-[40px]">
+    <div class="max-w-7xl mx-auto px-6 sm:px-12">
 
-        {{-- BREADCRUMB --}}
         <nav class="text-left pt-4 sm:pt-6 mb-4 sm:mb-6">
             <p class="text-xs sm:text-sm font-semibold uppercase tracking-widest flex items-center gap-2">
                 <a href="{{ route('profile.show') }}" class="text-gray-500 hover:text-[#2F3AFF] hover:underline">Profile</a> 
@@ -17,11 +17,10 @@
 
         <form wire:submit.prevent="update" class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
 
-            {{-- KIRI: PREVIEW GAMBAR & MANAGEMENT FOTO --}}
             <div class="lg:sticky lg:top-6 w-full">
                 <div class="bg-[#F8F8F8] border-4 border-[#FC00BB] p-6 shadow-[8px_8px_0px_0px_#2F3AFF] relative w-full flex flex-col items-center">
                     
-                    <div class="w-full flex items-center justify-between font-sans text-xs text-[#2F3AFF] font-bold uppercase mb-6">
+                    <div class="w-full flex items-center justify-between font-sans text-xs text-[#2F3AFF] font-bold mb-6">
                         <span>{{ count($existingImages) + count($newImages) }}/10 files</span>
 
                         @if ((count($existingImages) + count($newImages)) > 0)
@@ -47,7 +46,7 @@
                                 <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
                                 <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
                             </svg>
-                            <span class="font-display text-xs text-[#D9FC28] uppercase tracking-widest text-center">
+                            <span class="font-display text-xs text-[#D9FC28] tracking-widest text-center">
                                 Mengunggah Foto...
                             </span>
                         </div>
@@ -55,13 +54,13 @@
                         @if ($this->currentPreviewUrl)
                             <img src="{{ $this->currentPreviewUrl }}" class="w-full h-full object-cover">
                             
-                            <div class="absolute top-2 left-2 bg-[#D9FC28] text-[#2F3AFF] border border-[#2F3AFF] text-[10px] font-extrabold px-2 py-0.5 uppercase z-20">
+                            <div class="absolute top-2 left-2 bg-[#D9FC28] text-[#2F3AFF] border border-[#2F3AFF] text-[10px] font-extrabold px-2 py-0.5 z-20">
                                 Foto Utama
                             </div>
                         @else
                             <label class="cursor-pointer flex flex-col items-center justify-center w-full h-full text-gray-400 hover:text-[#FC00BB] transition p-4">
                                 <span class="text-3xl font-light mb-1">+</span>
-                                <span class="font-sans text-[11px] uppercase font-bold tracking-wider text-center">TAMBAH FOTO</span>
+                                <span class="font-sans text-[11px] font-bold tracking-wider text-center">TAMBAH FOTO</span>
                                 <input type="file" wire:model="newImages" multiple class="hidden" accept="image/*">
                             </label>
                         @endif
@@ -83,7 +82,7 @@
                             <div wire:click="setPreview('new', {{ $nIndex }})" 
                                 class="relative w-16 h-16 sm:w-20 sm:h-20 border-2 cursor-pointer overflow-hidden transition-all {{ $activeType === 'new' && $activeIndex === $nIndex ? 'border-[#FC00BB] ring-2 ring-[#FC00BB]' : 'border-black hover:border-[#FC00BB]' }}">
                                 <img src="{{ $nImg->temporaryUrl() }}" class="w-full h-full object-cover">
-                                <span class="absolute bottom-0 left-0 bg-[#D9FC28] text-[#2F3AFF] text-[8px] font-bold px-1 uppercase">Baru</span>
+                                <span class="absolute bottom-0 left-0 bg-[#D9FC28] text-[#2F3AFF] text-[8px] font-bold px-1 ">Baru</span>
                                 <button type="button" 
                                         wire:click.stop="removeNewImage({{ $nIndex }})" 
                                         class="absolute top-0 right-0 bg-[#FC00BB] text-white text-[10px] px-1.5 py-0.5 font-bold hover:bg-red-600 z-10 cursor-pointer">✕</button>
@@ -108,11 +107,11 @@
             <div class="w-full space-y-6">
 
                 <div class="space-y-4">
-                    <h2 class="font-display text-2xl sm:text-3xl text-[#2F3AFF] uppercase font-normal">Informasi Utama</h2>
+                    <h2 class="font-display text-2xl sm:text-3xl text-[#2F3AFF] font-normal">Informasi Utama</h2>
 
                     {{-- JUDUL KARYA --}}
                     <div>
-                        <label class="block font-sans text-xs uppercase text-[#2F3AFF] font-bold tracking-wider mb-1">JUDUL KARYA</label>
+                        <label class="block font-sans text-xs text-[#2F3AFF] font-bold tracking-wider mb-1">JUDUL KARYA</label>
                         <div class="relative">
                             <input type="text" 
                                    wire:model.live="title" 
@@ -126,9 +125,8 @@
                         @error('title') <span class="text-xs text-red-600 font-medium">{{ $message }}</span> @enderror
                     </div>
 
-                    {{-- TAGS (CHIPS + DROPDOWN LIST PERSIS GAMBAR) --}}
                     <div class="relative" x-data="{ isOpen: false }">
-                        <label class="block font-sans text-xs uppercase text-[#2F3AFF] font-bold tracking-wider mb-1">TAGS</label>
+                        <label class="block font-sans text-xs text-[#2F3AFF] font-bold tracking-wider mb-1">TAGS</label>
 
                         <div @click="isOpen = true; $refs.tagInput.focus()"
                              class="w-full bg-[#F8F8F8] border-2 border-[#FC00BB] rounded-tl-2xl rounded-br-2xl rounded-tr-none rounded-bl-none p-2 flex flex-wrap items-center gap-2 min-h-[46px] relative cursor-text focus-within:ring-2 focus-within:ring-[#2F3AFF]/30">
@@ -189,7 +187,7 @@
 
                     @if (!empty($availableSuggestions))
                         <div>
-                            <label class="block font-sans text-xs uppercase text-[#2F3AFF] font-bold tracking-wider mb-1.5">SUGGESTED TAGS</label>
+                            <label class="block font-sans text-xs text-[#2F3AFF] font-bold tracking-wider mb-1.5">SUGGESTED TAGS</label>
                             <div class="flex flex-wrap gap-2">
                                 @foreach ($availableSuggestions as $sTag)
                                     <button type="button" 
@@ -204,7 +202,7 @@
 
                     {{-- DESKRIPSI KARYA --}}
                     <div>
-                        <label class="block font-sans text-xs uppercase text-[#2F3AFF] font-bold tracking-wider mb-1">DESKRIPSI KARYA</label>
+                        <label class="block font-sans text-xs text-[#2F3AFF] font-bold tracking-wider mb-1">DESKRIPSI KARYA</label>
                         <textarea wire:model="description" 
                                   rows="4" 
                                   placeholder="Tuliskan deskripsi lengkap karya..." 
@@ -223,10 +221,10 @@
                                  setTimeout(() => { this.tilting = false }, 220);
                              }
                          }">
-                        <span class="font-sans text-xs uppercase text-[#2F3AFF] font-bold tracking-wider">IZINKAN KOMENTAR</span>
+                        <span class="font-sans text-xs text-[#2F3AFF] font-bold tracking-wider">IZINKAN KOMENTAR</span>
                         
                         <div class="flex items-center gap-3">
-                            <span class="font-sans text-xs uppercase font-bold tracking-wider min-w-[28px] text-right select-none transition-colors"
+                            <span class="font-sans text-xs text-[#2F3AFF] font-bold tracking-wider min-w-[28px] text-right select-none transition-colors"
                                   :class="on ? 'text-[#FC00BB]' : 'text-[#2F3AFF]'"
                                   x-text="on ? 'ON' : 'OFF'">
                                 {{ $allowComments ? 'ON' : 'OFF' }}
@@ -254,11 +252,11 @@
                 {{-- DETAIL SAMPAH --}}
                 <div class="space-y-5">
                     <div class="flex items-center justify-between flex-wrap gap-2">
-                        <h2 class="font-display text-2xl sm:text-3xl text-[#2F3AFF] uppercase font-normal">Detail penggunaan sampah</h2>
+                        <h2 class="font-display text-2xl sm:text-3xl text-[#2F3AFF] font-normal">Detail penggunaan sampah</h2>
                         
                         <button type="button" 
                                 wire:click="addWasteCategory" 
-                                class="px-4 py-2 bg-[#FC00BB] hover:bg-[#2F3AFF] text-[#D9FC28] hover:text-white font-sans text-xs font-semibold uppercase transition-colors cursor-pointer">
+                                class="px-4 py-2 bg-[#FC00BB] hover:bg-[#2F3AFF] text-[#D9FC28] hover:text-white font-sans text-xs font-semibold transition-colors cursor-pointer">
                             + Tambah Kategori
                         </button>
                     </div>
@@ -277,7 +275,7 @@
 
                             {{-- JENIS SAMPAH --}}
                             <div>
-                                <label class="block font-sans text-xs uppercase text-[#2F3AFF] font-bold tracking-wider mb-1">JENIS SAMPAH</label>
+                                <label class="block font-sans text-xs text-[#2F3AFF] font-bold tracking-wider mb-1">JENIS SAMPAH</label>
                                 <input type="text" 
                                        wire:model="wasteDetails.{{ $wIndex }}.waste_type" 
                                        placeholder="Contoh: Plastik Botol" 
@@ -286,7 +284,7 @@
 
                             {{-- SUMBER SAMPAH --}}
                             <div>
-                                <label class="block font-sans text-xs uppercase text-[#2F3AFF] font-bold tracking-wider mb-1">SUMBER SAMPAH</label>
+                                <label class="block font-sans text-xs text-[#2F3AFF] font-bold tracking-wider mb-1">SUMBER SAMPAH</label>
                                 <input type="text" 
                                        wire:model="wasteDetails.{{ $wIndex }}.waste_source" 
                                        placeholder="Contoh: Limbah Rumah Tangga" 
@@ -295,7 +293,7 @@
 
                             {{-- TOTAL BERAT SAMPAH (Tinggi Rata h-11 & Bebas Panah Dobel) --}}
                             <div>
-                                <label class="block font-sans text-xs uppercase text-[#2F3AFF] font-bold tracking-wider mb-1">TOTAL BERAT SAMPAH</label>
+                                <label class="block font-sans text-xs text-[#2F3AFF] font-bold tracking-wider mb-1">TOTAL BERAT SAMPAH</label>
                                 <div class="flex items-center gap-2">
                                     <input type="number" 
                                            step="any"
@@ -306,7 +304,7 @@
                                     <div class="relative shrink-0 h-11">
                                         <select wire:model="wasteDetails.{{ $wIndex }}.unit" 
                                                 class="h-11 appearance-none bg-none bg-[#F8F8F8] border-2 border-[#FC00BB] rounded-br-2xl rounded-tl-none rounded-tr-none rounded-bl-none pl-4 pr-9 text-xs font-bold text-[#2F3AFF] focus:outline-none cursor-pointer min-w-[95px]">
-                                            <option value="gram">gram</option>
+                                            <option value="g">gram</option>
                                             <option value="kg">kg</option>
                                         </select>
 
@@ -321,13 +319,13 @@
 
                             {{-- BAHAN PENDUKUNG --}}
                             <div>
-                                <label class="block font-sans text-xs uppercase text-[#2F3AFF] font-bold tracking-wider mb-2">BAHAN PENDUKUNG</label>
+                                <label class="block font-sans text-xs text-[#2F3AFF] font-bold tracking-wider mb-2">BAHAN PENDUKUNG</label>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                     @for ($m = 0; $m < 4; $m++)
                                         <div class="relative flex items-center">
                                             <span class="absolute left-3 text-xs font-bold text-[#2F3AFF]">{{ $m + 1 }}</span>
                                             <input type="text" 
-                                                   wire:model="wasteDetails.{{ $wIndex }}.support_materials.{{ $m }}" 
+                                                   wire:model="wasteDetails.{{ $wIndex }}.supporting_materials.{{ $m }}" 
                                                    placeholder="Contoh: Lem, Cat" 
                                                    class="w-full bg-[#F8F8F8] border-2 border-[#FC00BB] rounded-tl-xl rounded-br-xl rounded-tr-none rounded-bl-none pl-7 pr-3 py-2 text-xs text-[#2F3AFF] placeholder-gray-400 focus:outline-none">
                                         </div>
@@ -343,7 +341,7 @@
                     {{-- Ubah type="submit" menjadi type="button" dengan @click --}}
                     <button type="button" 
                             @click="showConfirmModal = true"
-                            class="flex-1 py-3 bg-[#FC00BB] hover:bg-[#2F3AFF] text-[#D9FC28] hover:text-white font-sans text-sm font-semibold uppercase tracking-wide transition-colors flex items-center justify-center gap-2 shadow-sm cursor-pointer">
+                            class="flex-1 py-3 bg-[#FC00BB] hover:bg-[#2F3AFF] text-[#D9FC28] hover:text-white font-sans text-sm font-semibold tracking-wide transition-colors flex items-center justify-center gap-2 shadow-sm cursor-pointer">
                         <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                             <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
                         </svg>
@@ -351,7 +349,7 @@
                     </button>
 
                     <a href="{{ route('profile.show') }}" 
-                    class="py-3 px-6 border-2 border-gray-400 text-gray-600 hover:bg-gray-100 font-sans text-sm font-semibold uppercase tracking-wide transition-colors text-center">
+                    class="py-3 px-6 border-2 border-gray-400 text-gray-600 hover:bg-gray-100 font-sans text-sm font-semibold tracking-wide transition-colors text-center">
                         Batal
                     </a>
                 </div>
@@ -407,7 +405,7 @@
                         wire:click="update" 
                         @click="showConfirmModal = false"
                         wire:loading.attr="disabled"
-                        class="w-full py-3 bg-[#D9FC28] hover:bg-[#bce018] text-[#2F3AFF] font-sans text-sm font-bold tracking-wider uppercase transition-colors flex items-center justify-center cursor-pointer shadow-sm">
+                        class="w-full py-3 bg-[#D9FC28] hover:bg-[#bce018] text-[#2F3AFF] font-sans text-sm font-bold tracking-wider transition-colors flex items-center justify-center cursor-pointer shadow-sm">
                     <span wire:loading.remove wire:target="update">Ya</span>
                     <span wire:loading wire:target="update">Menyimpan...</span>
                 </button>
@@ -415,11 +413,12 @@
                 {{-- Tombol TIDAK (Pink #FC00BB) --}}
                 <button type="button" 
                         @click="showConfirmModal = false"
-                        class="w-full py-3 bg-[#FC00BB] hover:bg-[#d8009f] text-white font-sans text-sm font-bold tracking-wider uppercase transition-colors flex items-center justify-center cursor-pointer shadow-sm">
+                        class="w-full py-3 bg-[#FC00BB] hover:bg-[#d8009f] text-white font-sans text-sm font-bold tracking-wider transition-colors flex items-center justify-center cursor-pointer shadow-sm">
                     Tidak
                 </button>
             </div>
 
         </div>
     </div>
+</div>
 </div>

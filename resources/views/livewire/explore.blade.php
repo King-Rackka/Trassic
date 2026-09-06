@@ -7,7 +7,6 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-        /* Memastikan judul tidak dipaksa kapital oleh font atau helper lain */
         .normal-case-title {
             text-transform: none !important;
         }

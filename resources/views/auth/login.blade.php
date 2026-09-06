@@ -35,7 +35,7 @@
 
             <div class="max-w-md w-full mx-auto space-y-3 xl:space-y-4 my-auto">
 
-                <h1 class="text-3xl sm:text-4xl xl:text-4xl font-display text-[#D9FC28] uppercase tracking-wider text-center mb-3 sm:mb-5">
+                <h1 class="text-3xl sm:text-4xl xl:text-4xl font-display text-[#D9FC28] tracking-wider text-center mb-3 sm:mb-5">
                     Masuk
                 </h1>
 
@@ -73,7 +73,7 @@
 
                     {{-- Input Email --}}
                     <div class="space-y-1">
-                        <label class="text-white text-xs font-extrabold uppercase tracking-wide block">
+                        <label class="text-white text-xs font-extrabold tracking-wide block">
                             EMAIL
                         </label>
                         <input type="email" name="email"
@@ -84,7 +84,7 @@
                     </div>
 
                     <div class="space-y-1">
-                        <label class="text-white text-xs font-extrabold uppercase tracking-wide block">
+                        <label class="text-white text-xs font-extrabold tracking-wide block">
                             PASSWORD
                         </label>
                         <div class="relative">
@@ -117,7 +117,7 @@
 
                     {{-- Submit Button --}}
                     <button type="submit"
-                            class="w-full bg-[#D9FC28] text-[#2F3AFF] font-display text-base sm:text-lg py-2.5 hover:bg-[#cbf21d] transition uppercase tracking-wider mt-2">
+                            class="w-full bg-[#D9FC28] text-[#2F3AFF] font-display text-base sm:text-lg py-2.5 hover:bg-[#cbf21d] transition tracking-wider mt-2">
                         MASUK
                     </button>
 

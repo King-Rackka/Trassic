@@ -34,4 +34,7 @@ class WorkController extends Controller
     {
         return view('work-create');
     }
+
+    
+
 }

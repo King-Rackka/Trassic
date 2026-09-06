@@ -57,7 +57,8 @@ class Show extends Component
         ['user_id' => $user->id],
         [
             'name' => $user->name,
-            'slug' => \Illuminate\Support\Str::slug($user->name . '-' . $user->id),
+            'slug' => \Illuminate\Support\Str::slug($user->name) . '-' . $user->id,
+            'type' => 'individual',
         ]
     );
 
@@ -74,7 +75,9 @@ class Show extends Component
             $q->where('user_id', $user->id);
         });
     } elseif ($this->activeFilter === 'dilaporkan') {
-        $worksQuery->where('creator_id', $creator->id)->where('status', 'reported');
+        $worksQuery->whereHas('reports', function ($q) use ($user) {
+            $q->where('reporter_id', $user->id);
+        });
     }
 
     $works = $worksQuery->latest()->paginate(10);
@@ -90,7 +93,6 @@ class Show extends Component
         'postsCount' => $postsCount,
         'followersCount' => $followersCount,
         'followingCount' => $followingCount,
-        'activeFilter' => $this->activeFilter,   // ini juga hilang, dibutuhkan blade untuk @entangle
     ]);
 }
 

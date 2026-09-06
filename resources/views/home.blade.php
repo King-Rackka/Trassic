@@ -198,10 +198,134 @@
                 <img src="{{ asset('images/vector/Vector (1).png') }}" alt="Vector Bottom" class="w-full max-w-[1440px] h-auto object-cover scale-[1.03] -translate-y-[30px] sm:-translate-y-[40px]">
             </div>
 
-        </section>   
+        </section>
+
+        <section class="w-full py-16 sm:py-24 px-0 bg-grid-pattern relative overflow-hidden">
+
+    <style>
+        .waste-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+        @media (min-width: 640px) {
+            .waste-cards-grid {
+                gap: 2rem;
+            }
+        }
+        /* Ruang aman ekstra di kiri-kanan grid biar card tidak ketiban ikon tong sampah biru */
+        .waste-grid-wrapper {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+        @media (min-width: 640px) {
+            .waste-grid-wrapper {
+                padding-left: 3rem;
+                padding-right: 3rem;
+            }
+        }
+        @media (min-width: 1024px) {
+            .waste-grid-wrapper {
+                padding-left: 140px;
+                padding-right: 140px;
+            }
+        }
+    </style>
+
+    {{-- Ikon Sampah Biru Menempel Pas di Tepi Kiri-Bawah dan Kanan-Atas Layar --}}
+    <div class="absolute top-0 right-0 z-20 pointer-events-none">
+        <img src="{{ asset('images/vector-sampah-biru.png') }}" alt="Vector Sampah Kanan" class="w-36 sm:w-56 h-auto object-contain transform translate-x-4 -translate-y-4 scale-x-[-1] drop-shadow-md">
+    </div>
+    <div class="absolute bottom-0 left-0 z-20 pointer-events-none">
+        <img src="{{ asset('images/vector-sampah-biru.png') }}" alt="Vector Sampah Kiri" class="w-36 sm:w-56 h-auto object-contain transform -translate-x-4 translate-y-4 drop-shadow-md">
+    </div>
+
+    {{-- Judul: tetap max-w-7xl biar center rapi seperti semula --}}
+    <div class="max-w-7xl mx-auto px-6 sm:px-12 lg:px-[80px] relative z-10">
+        <h2 class="text-3xl sm:text-5xl font-display text-[#2F3AFF] text-center mb-12 sm:mb-16 uppercase tracking-wide">
+            Dari sampah, bisa jadi apa?
+        </h2>
+    </div>
+
+    {{-- Grid: full width tapi punya padding ekstra biar tidak nabrak ikon --}}
+    <div class="w-full waste-grid-wrapper relative z-10">
+        <div class="waste-cards-grid">
+            
+            {{-- Card 1: Plastik --}}
+            <div class="bg-[#F8F8F8] border-2 border-[#2F3AFF] p-6 sm:p-8 rounded-tl-[36px] rounded-br-[36px] shadow-[4px_4px_0px_0px_#FC00BB] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_#2F3AFF] transition-all duration-300 flex flex-col justify-between cursor-pointer group">
+                <div>
+                    <h3 class="font-display text-2xl sm:text-3xl text-[#2F3AFF] uppercase mb-3 text-center group-hover:text-[#FC00BB] transition-colors">Plastik</h3>
+                    <p class="text-xs sm:text-sm font-medium text-gray-700 leading-relaxed text-center">
+                        Ringan, tahan lama, dan ada di mana-mana. Tapi bagaimana kalau kita berhenti menganggapnya sekali pakai?
+                    </p>
+                </div>
+            </div>
+
+            {{-- Card 2: Tekstil --}}
+            <div class="bg-[#F8F8F8] border-2 border-[#2F3AFF] p-6 sm:p-8 rounded-tl-[36px] rounded-br-[36px] shadow-[4px_4px_0px_0px_#FC00BB] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_#2F3AFF] transition-all duration-300 flex flex-col justify-between cursor-pointer group">
+                <div>
+                    <h3 class="font-display text-2xl sm:text-3xl text-[#2F3AFF] uppercase mb-3 text-center group-hover:text-[#FC00BB] transition-colors">Tekstil</h3>
+                    <p class="text-xs sm:text-sm font-medium text-gray-700 leading-relaxed text-center">
+                        Baju lama dan sisa kain bisa berubah menjadi sesuatu yang sama sekali berbeda.
+                    </p>
+                </div>
+            </div>
+
+            {{-- Card 3: Kaca --}}
+            <div class="bg-[#F8F8F8] border-2 border-[#2F3AFF] p-6 sm:p-8 rounded-tl-[36px] rounded-br-[36px] shadow-[4px_4px_0px_0px_#FC00BB] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_#2F3AFF] transition-all duration-300 flex flex-col justify-between cursor-pointer group">
+                <div>
+                    <h3 class="font-display text-2xl sm:text-3xl text-[#2F3AFF] uppercase mb-3 text-center group-hover:text-[#FC00BB] transition-colors">Kaca</h3>
+                    <p class="text-xs sm:text-sm font-medium text-gray-700 leading-relaxed text-center">
+                        Botol pecah dan kaca bekas bisa menemukan bentuk baru lewat proses kreatif.
+                    </p>
+                </div>
+            </div>
+
+            {{-- Card 4: Logam --}}
+            <div class="bg-[#F8F8F8] border-2 border-[#2F3AFF] p-6 sm:p-8 rounded-tl-[36px] rounded-br-[36px] shadow-[4px_4px_0px_0px_#FC00BB] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_#2F3AFF] transition-all duration-300 flex flex-col justify-between cursor-pointer group">
+                <div>
+                    <h3 class="font-display text-2xl sm:text-3xl text-[#2F3AFF] uppercase mb-3 text-center group-hover:text-[#FC00BB] transition-colors">Logam</h3>
+                    <p class="text-xs sm:text-sm font-medium text-gray-700 leading-relaxed text-center">
+                        Besi tua bisa jadi benda fungsional, patung, furnitur, dan masih banyak lagi.
+                    </p>
+                </div>
+            </div>
+
+            {{-- Card 5: Kertas --}}
+            <div class="bg-[#F8F8F8] border-2 border-[#2F3AFF] p-6 sm:p-8 rounded-tl-[36px] rounded-br-[36px] shadow-[4px_4px_0px_0px_#FC00BB] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_#2F3AFF] transition-all duration-300 flex flex-col justify-between cursor-pointer group">
+                <div>
+                    <h3 class="font-display text-2xl sm:text-3xl text-[#2F3AFF] uppercase mb-3 text-center group-hover:text-[#FC00BB] transition-colors">Kertas</h3>
+                    <p class="text-xs sm:text-sm font-medium text-gray-700 leading-relaxed text-center">
+                        Kertas bekas bukan akhir cerita — ia bahan mentah yang menunggu bentuk baru.
+                    </p>
+                </div>
+            </div>
+
+            {{-- Card 6: Elektronik --}}
+            <div class="bg-[#F8F8F8] border-2 border-[#2F3AFF] p-6 sm:p-8 rounded-tl-[36px] rounded-br-3xl shadow-[4px_4px_0px_0px_#FC00BB] hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_#2F3AFF] transition-all duration-300 flex flex-col justify-between cursor-pointer group">
+                <div>
+                    <h3 class="font-display text-2xl sm:text-3xl text-[#2F3AFF] uppercase mb-3 text-center group-hover:text-[#FC00BB] transition-colors">Elektronik</h3>
+                    <p class="text-xs sm:text-sm font-medium text-gray-700 leading-relaxed text-center">
+                        Papan sirkuit dan perangkat rusak menyimpan potensi lebih dari yang kita kira.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    {{-- Link "Pelajari lebih banyak": tetap max-w-7xl biar align dengan judul --}}
+    <div class="max-w-7xl mx-auto px-6 sm:px-12 lg:px-[80px] relative z-10">
+        <div class="text-right mt-8 sm:mt-10">
+            <a href="{{ route('waste-explorer') }}" class="font-display text-xs sm:text-sm text-[#2F3AFF] hover:text-[#FC00BB] uppercase tracking-wider inline-flex items-center gap-1 transition">
+                Pelajari lebih banyak di waste &amp; impact &rarr;
+            </a>
+        </div>
+    </div>
+</section>
 
         {{-- Section 5: CTA / Karya (Dengan gap kiri kanan konsisten px-[80px]) --}}
-        <section class="w-full my-10 sm:my-16 px-6 sm:px-12 lg:px-[80px]">
+        <section class="w-full  my-10 sm:my-16 px-6 sm:px-12 lg:px-[80px]">
             <div class="w-full bg-[#D9FC28] rounded-2xl sm:rounded-[32px] p-6 sm:p-10 lg:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="shrink-0 text-left">
                     <h2 class="font-display text-3xl sm:text-5xl lg:text-6xl text-[#2F3AFF] leading-tight tracking-normal">

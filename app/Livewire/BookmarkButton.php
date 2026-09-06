@@ -18,7 +18,7 @@ class BookmarkButton extends Component
         $this->isBookmarked = $isBookmarked;
     }
 
-    public function toggle()
+    public function toggleBookmark()
     {
         if (!Auth::check()) {
             $this->dispatch('show-login-prompt');

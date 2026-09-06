@@ -20,7 +20,7 @@
         .rimesa-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 24px; 
+            gap: 24px;
         }
     </style>
 
@@ -30,97 +30,96 @@
         <img src="{{ asset('images/vector/vector_sayap_atas.png') }}" alt="Vector Wing Top Right" class="h-6 sm:h-12 object-contain -scale-x-100">
     </div>
 
-    <div class="dasshboard max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20 sm:space-y-28 w-full my-4 flex-1">
+    <section class="space-y-8 w-full my-4">
+        <div class="text-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="font-display text-3xl sm:text-5xl lg:text-6xl text-[#2F3AFF] tracking-normal">
+                Rekomendasi harian
+            </h2>
+        </div>
 
-        <section class="space-y-8">
-            <div class="text-center">
-                <h2 class="font-display text-3xl sm:text-5xl lg:text-6xl text-[#2F3AFF] tracking-normal">
-                    Rekomendasi harian
-                </h2>
-            </div>
-
-            {{-- Filter Kategori --}}
-            <div class="rimesa-container flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar">
-                <button wire:click="setCategory('')" 
+        {{-- Filter Kategori --}}
+        <div class="rimesa-container flex items-center justify-start sm:justify-center gap-2 overflow-x-auto pb-4 mb-8 no-scrollbar">
+            <button wire:click="setCategory('')" 
+                    class="px-3.5 py-1.5 sm:px-5 sm:py-2 border-2 text-xs sm:text-sm font-display whitespace-nowrap transition-all duration-200 cursor-pointer
+                    {{ $wasteType === '' ? 'bg-[#FC00BB] text-[#D9FC28] border-[#FC00BB]' : 'bg-[#2F3AFF] text-white border-[#FC00BB] hover:bg-[#D9FC28] hover:text-[#2F3AFF]' }}">
+                Semua
+            </button>
+            @foreach ($categories as $cat)
+                <button wire:click="setCategory('{{ $cat }}')" 
                         class="px-3.5 py-1.5 sm:px-5 sm:py-2 border-2 text-xs sm:text-sm font-display whitespace-nowrap transition-all duration-200 cursor-pointer
-                        {{ $wasteType === '' ? 'bg-[#FC00BB] text-[#D9FC28] border-[#FC00BB]' : 'bg-[#2F3AFF] text-white border-[#FC00BB] hover:bg-[#D9FC28] hover:text-[#2F3AFF]' }}">
-                    Semua
+                        {{ $wasteType === $cat ? 'bg-[#FC00BB] text-[#D9FC28] border-[#FC00BB]' : 'bg-[#2F3AFF] text-white border-[#FC00BB] hover:bg-[#D9FC28] hover:text-[#2F3AFF]' }}">
+                    {{ $cat }}
                 </button>
-                @foreach ($categories as $cat)
-                    <button wire:click="setCategory('{{ $cat }}')" 
-                            class="px-3.5 py-1.5 sm:px-5 sm:py-2 border-2 text-xs sm:text-sm font-display whitespace-nowrap transition-all duration-200 cursor-pointer
-                            {{ $wasteType === $cat ? 'bg-[#FC00BB] text-[#D9FC28] border-[#FC00BB]' : 'bg-[#2F3AFF] text-white border-[#FC00BB] hover:bg-[#D9FC28] hover:text-[#2F3AFF]' }}">
-                        {{ $cat }}
-                    </button>
-                @endforeach
-            </div>
+            @endforeach
+        </div>
 
-            {{-- Grid Karya (5 Kolom) --}}
-            <div class="rimesa-container rimesa-grid items-stretch" wire:loading.class="opacity-60">
-                @forelse ($dailyRecommendations as $work)
-                    <div class="group relative flex flex-col justify-between transition-transform duration-200 hover:-translate-y-2 p-1 w-full h-full">
-                        
-                        <a href="{{ route('work.show', $work->slug ?? $work->id) }}" class="block w-full">
-                            <div class="relative w-full aspect-square bg-gray-900 border-2 border-[#FC00BB] shrink-0">
-                                
-                                {{-- 4 Kotak Kuning Lime di Sudut Bingkai --}}
-                                <div class="absolute -top-1.5 -left-1.5 w-3 h-3 bg-[#D9FC28] border border-[#2F3AFF] z-30 pointer-events-none"></div>
-                                <div class="absolute -top-1.5 -right-1.5 w-3 h-3 bg-[#D9FC28] border border-[#2F3AFF] z-30 pointer-events-none"></div>
-                                <div class="absolute -bottom-1.5 -left-1.5 w-3 h-3 bg-[#D9FC28] border border-[#2F3AFF] z-30 pointer-events-none"></div>
-                                <div class="absolute -bottom-1.5 -right-1.5 w-3 h-3 bg-[#D9FC28] border border-[#2F3AFF] z-30 pointer-events-none"></div>
+        <div class="rimesa-container rimesa-grid items-stretch" wire:loading.class="opacity-60">
+            @forelse ($dailyRecommendations as $work)
+                <div class="group relative flex flex-col justify-between transition-transform duration-200 hover:-translate-y-2 p-1 w-full h-full">
+                    
+                    <a href="{{ route('work.show', $work->slug ?? $work->id) }}" class="block w-full">
+                        <div class="relative w-full aspect-square bg-gray-900 border-2 border-[#FC00BB] shrink-0">
+                            
+                            <div class="absolute -top-1.5 -left-1.5 w-3 h-3 bg-[#D9FC28] border-2 border-[#FC00BB] z-30 pointer-events-none"></div>
+                            <div class="absolute -top-1.5 -right-1.5 w-3 h-3 bg-[#D9FC28] border-2 border-[#FC00BB] z-30 pointer-events-none"></div>
+                            <div class="absolute -bottom-1.5 -left-1.5 w-3 h-3 bg-[#D9FC28] border-2 border-[#FC00BB] z-30 pointer-events-none"></div>
+                            <div class="absolute -bottom-1.5 -right-1.5 w-3 h-3 bg-[#D9FC28] border-2 border-[#FC00BB] z-30 pointer-events-none"></div>
 
-                                {{-- Badge Sampah Terpakai --}}
-                                @if (isset($work->wasteDna) && $work->wasteDna->sum('quantity') > 0)
-                                    <div class="absolute top-2 left-2 z-30 bg-[#D9FC28] text-[#2F3AFF] border border-[#2F3AFF] font-sans text-[7px] sm:text-[10px] font-extrabold px-1.5 sm:px-2 py-0.5 tracking-tight">
-                                        {{ $work->wasteDna->sum('quantity') }}kg sampah terpakai
-                                    </div>
-                                @endif
-
-                                {{-- Gambar Cover --}}
-                                <div class="w-full h-full overflow-hidden flex items-center justify-center">
-                                    @if ($work->cover_image)
-                                        <img src="{{ asset('storage/' . $work->cover_image) }}" alt="{{ $work->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                                    @else
-                                        <div class="w-full h-full flex items-center justify-center text-gray-400 text-xs font-bold font-sans">No Image</div>
-                                    @endif
+                            @if (isset($work->wasteDna) && $work->wasteDna->sum('quantity') > 0)
+                                <div class="absolute top-2 left-2 z-30 bg-[#D9FC28] text-[#2F3AFF] border border-[#2F3AFF] font-sans text-[7px] sm:text-[10px] font-extrabold px-1.5 sm:px-2 py-0.5 tracking-tight">
+                                    {{ $work->wasteDna->sum('quantity') }}kg sampah terpakai
                                 </div>
-                            </div>
-                        </a>
+                            @endif
 
-                        <div class="mt-2.5 sm:mt-3 flex flex-col justify-between flex-grow text-center w-full">
-                            <h4 class="font-display text-xs sm:text-base text-[#2F3AFF] leading-tight tracking-wide line-clamp-2-custom min-h-[2rem] sm:min-h-[2.5rem]" title="{{ $work->title }}">
-                                {{ $work->title }}
-                            </h4>
-
-                            <div class="mt-2 pt-1 border-t border-[#2F3AFF]/10">
-                                <p class="font-sans text-[9px] sm:text-xs font-medium text-[#2F3AFF] truncate">
-                                    {{ $work->creator->name ?? 'RIMESA 2026' }}
-                                </p>
-
-                                @php $isLiked = auth()->check() ? $work->isAppreciatedBy(auth()->id()) : false; @endphp
-                                <button wire:click.prevent="toggleLike({{ $work->id }})" class="font-sans text-[10px] sm:text-xs font-semibold {{ $isLiked ? 'text-[#FC00BB]' : 'text-[#2F3AFF]' }} mt-0.5 flex items-center justify-center gap-1 mx-auto hover:opacity-80 transition cursor-pointer">
-                                    <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 {{ $isLiked ? 'fill-[#FC00BB]' : 'fill-[#2F3AFF]' }}" viewBox="0 0 24 24">
-                                        <path d="M2 20h2V8H2v12zm20-9c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L13.17 2 7.58 7.59C7.22 7.95 7 8.45 7 9v9c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
-                                    </svg>
-                                    <span>{{ number_format($work->appreciations_count ?? 0) }} likes</span>
-                                </button>
+                            <div class="w-full h-full overflow-hidden flex items-center justify-center">
+                                @if ($work->cover_image)
+                                    <img src="{{ asset('storage/' . $work->cover_image) }}" alt="{{ $work->title }}" loading="lazy" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center text-gray-400 text-xs font-bold font-sans">No Image</div>
+                                @endif
                             </div>
                         </div>
+                    </a>
 
-                    </div>
-                @empty
-                    <div class="col-span-full text-center py-16 text-[#2F3AFF]">
-                        <p class="font-display text-lg sm:text-xl tracking-wider">Belum ada rekomendasi karya.</p>
-                    </div>
-                @endforelse
-            </div>
+                    <div class="mt-2.5 sm:mt-3 flex flex-col justify-between flex-grow text-center w-full">
+                        <h4 class="font-display text-xs sm:text-base text-[#2F3AFF] leading-tight tracking-wide line-clamp-2-custom min-h-[2rem] sm:min-h-[2.5rem]" title="{{ $work->title }}">
+                            {{ $work->title }}
+                        </h4>
 
-            <div class="text-center pt-4">
-                <a href="{{ route('explore.more', ['category' => $wasteType]) }}" class="inline-block text-[#2F3AFF] hover:text-[#FC00BB] font-display text-sm sm:text-xl transition tracking-wider underline underline-offset-4">
-                    Lihat lebih banyak →
-                </a>
-            </div>
-        </section>
+                        <div class="mt-2 pt-1 border-t border-[#2F3AFF]/10">
+                            <p class="font-sans text-[9px] sm:text-xs font-medium text-[#2F3AFF] truncate">
+                                {{ $work->creator->name ?? 'RIMESA 2026' }}
+                            </p>
+
+                            @php $isLiked = auth()->check() ? $work->isAppreciatedBy(auth()->id()) : false; @endphp
+                            <button wire:click.prevent="toggleLike({{ $work->id }})" class="font-sans text-[10px] sm:text-xs font-semibold {{ $isLiked ? 'text-[#FC00BB]' : 'text-[#2F3AFF]' }} mt-0.5 flex items-center justify-center gap-1 mx-auto hover:opacity-80 transition cursor-pointer">
+                                <svg class="w-3 h-3 sm:w-3.5 sm:h-3.5 {{ $isLiked ? 'fill-[#FC00BB]' : 'fill-[#2F3AFF]' }}" viewBox="0 0 24 24">
+                                    <path d="M2 20h2V8H2v12zm20-9c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L13.17 2 7.58 7.59C7.22 7.95 7 8.45 7 9v9c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+                                </svg>
+                                <span>{{ number_format($work->appreciations_count ?? 0) }} likes</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            @empty
+                <div class="col-span-full text-center py-16 text-[#2F3AFF]">
+                    <p class="font-display text-lg sm:text-xl tracking-wider">Belum ada rekomendasi karya.</p>
+                </div>
+            @endforelse
+        </div>
+
+        <div class="text-center pt-4">
+            <a href="{{ route('explore.more', ['category' => $wasteType]) }}" class="inline-block text-[#2F3AFF] hover:text-[#FC00BB] font-display text-sm sm:text-xl transition tracking-wider underline underline-offset-4">
+                Lihat lebih banyak →
+            </a>
+        </div>
+    </section>
+
+    {{-- ============================================================ --}}
+    {{-- SECTION-SECTION LAIN — tetap dibatasi max-w-7xl seperti semula --}}
+    {{-- ============================================================ --}}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-20 sm:space-y-28 w-full my-4 flex-1">
 
         <section class="w-full text-center space-y-12 sm:space-y-16">
             <h2 class="font-display text-3xl sm:text-5xl lg:text-6xl text-[#2F3AFF] tracking-normal">
@@ -131,7 +130,6 @@
                 @foreach ($topWorksWeekly as $i => $work)
                     <div class="group relative flex flex-col items-center cursor-pointer w-full max-w-[300px] sm:max-w-[330px] mx-auto">
                         
-                        {{-- Kartu Miring Lapis 3 (Pink -> Lime -> White Frame) --}}
                         <div class="relative w-full aspect-square flex items-center justify-center p-3 mb-5">
                             <div class="absolute inset-1.5 bg-[#FC00BB] transform -rotate-3 group-hover:-rotate-8 group-hover:-translate-x-2 transition-all duration-300 ease-out origin-bottom-left"></div>
                             <div class="absolute inset-1.5 bg-[#D9FC28] transform rotate-2 group-hover:rotate-6 transition-all duration-300 ease-out origin-bottom-right"></div>
@@ -149,7 +147,6 @@
                             </div>
                         </div>
 
-                        {{-- Teks Detail Karya --}}
                         <div class="text-center w-full space-y-1.5 mt-2">
                             <p class="font-sans text-xs sm:text-sm font-semibold text-[#2F3AFF] tracking-wider">
                                 {{ $work->creator->name ?? 'RIMESA 2026' }}
@@ -277,7 +274,6 @@
 
                     <div class="flex flex-col {{ $isEven ? 'lg:flex-row-reverse' : 'lg:flex-row' }} items-center justify-between gap-8 lg:gap-14">
                         
-                        {{-- Frame Foto Utama + Animasi Melayang + Badge Ranking + Banner Nama --}}
                         <div class="w-full lg:w-1/2 relative flex justify-center">
                             
                             <div class="group relative w-full max-w-md aspect-[4/3] bg-gray-900 border-8 border-[#FC00BB] 
@@ -295,12 +291,10 @@
                                     @endif   
                                 </a>
 
-                                {{-- BADGE RANKING (#1, #2, DSN) --}}
                                 <div class="absolute -top-6 {{ $isEven ? '-right-6' : '-left-6' }} z-30 w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#D9FC28] border-4 border-[#FC00BB] flex items-center justify-center transform {{ $isEven ? 'rotate-[6deg]' : '-rotate-[6deg]' }}">
                                     <span class="font-display text-2xl sm:text-3xl text-[#2F3AFF]">#{{ $rank }}</span>
                                 </div>
 
-                                {{-- BADGE BANNER NAMA KREATOR --}}
                                 <div class="absolute -bottom-4 {{ $isEven ? '-left-3 sm:-left-5' : '-right-3 sm:-right-5' }} z-30 
                                             w-max max-w-full inline-flex items-center justify-center 
                                             bg-[#D9FC28] bg-[url('{{ asset('images/garis-kuning.png') }}')] bg-cover bg-center 
@@ -314,7 +308,6 @@
                             </div>
                         </div>
 
-                        {{-- Info Kreator & Grid 4 Karya --}}
                         <div class="w-full lg:w-1/2 space-y-3 sm:space-y-4">
                             <div class="flex flex-wrap items-center justify-between gap-2 pb-1 sm:pb-2">
                                 <div>
@@ -336,7 +329,6 @@
                                 </button>
                             </div>
 
-                            {{-- Grid 4 Preview Karya --}}
                             <div class="grid grid-cols-2 gap-3 sm:gap-4 pt-1">
                                 @forelse ($creator->preview_works as $work)
                                     <a href="{{ route('work.show', $work->slug ?? $work->id) }}" class="group relative aspect-[4/3] bg-gray-900 border-2 border-[#FC00BB] block">
@@ -369,47 +361,47 @@
 
     </div>
 
-        <section class="w-full my-10 sm:my-16 px-2 sm:px-6">
-            <div class="w-full bg-[#D9FC28] rounded-2xl sm:rounded-[32px] p-6 sm:p-10 lg:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                <div class="shrink-0 text-left">
-                    <h2 class="font-display text-3xl sm:text-5xl lg:text-6xl text-[#2F3AFF] leading-tight tracking-normal">
-                        Mulai tambah<br>karyamu disini!
-                    </h2>
-                </div>
-
-                <div class="flex-1 text-center px-4 hidden md:block">
-                    <p class="font-sans text-xs sm:text-sm lg:text-base font-bold text-[#2F3AFF] leading-snug">
-                        NICE Recycle<br>
-                        Gallery Art Here
-                    </p>
-                </div>
-
-                <div class="shrink-0 flex items-center gap-4">
-                    <p class="font-sans text-xs font-bold text-[#2F3AFF] leading-snug md:hidden text-right">
-                        NICE Recycle<br>
-                        Gallery Art Here
-                    </p>
-
-                    @auth
-                        <a href="{{ route('works.create') }}" 
-                        class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-xl sm:rounded-2xl border-2 sm:border-3 border-[#2F3AFF] flex items-center justify-center text-[#D9FC28] bg-[#FC00BB] hover:bg-[#2F3AFF] hover:text-white transition-all duration-200 cursor-pointer">
-                            <svg class="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24">
-                                <line x1="7" y1="17" x2="17" y2="7"></line>
-                                <polyline points="7 7 17 7 17 17"></polyline>
-                            </svg>
-                        </a>
-                    @else
-                        <button type="button" 
-                                @click="$dispatch('show-login-prompt')" 
-                                class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-xl sm:rounded-2xl border-2 sm:border-3 border-[#2F3AFF] flex items-center justify-center text-[#2F3AFF] hover:bg-[#2F3AFF] hover:text-white transition-all duration-200 cursor-pointer">
-                            <svg class="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24">
-                                <line x1="7" y1="17" x2="17" y2="7"></line>
-                                <polyline points="7 7 17 7 17 17"></polyline>
-                            </svg>
-                        </button>
-                    @endauth
-                </div>
+    <section class="w-full my-10 sm:my-16 px-2 sm:px-6">
+        <div class="w-full bg-[#D9FC28] rounded-2xl sm:rounded-[32px] p-6 sm:p-10 lg:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="shrink-0 text-left">
+                <h2 class="font-display text-3xl sm:text-5xl lg:text-6xl text-[#2F3AFF] leading-tight tracking-normal">
+                    Mulai tambah<br>karyamu disini!
+                </h2>
             </div>
+
+            <div class="flex-1 text-center px-4 hidden md:block">
+                <p class="font-sans text-xs sm:text-sm lg:text-base font-bold text-[#2F3AFF] leading-snug">
+                    NICE Recycle<br>
+                    Gallery Art Here
+                </p>
+            </div>
+
+            <div class="shrink-0 flex items-center gap-4">
+                <p class="font-sans text-xs font-bold text-[#2F3AFF] leading-snug md:hidden text-right">
+                    NICE Recycle<br>
+                    Gallery Art Here
+                </p>
+
+                @auth
+                    <a href="{{ route('works.create') }}" 
+                    class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-xl sm:rounded-2xl border-2 sm:border-3 border-[#2F3AFF] flex items-center justify-center text-[#D9FC28] bg-[#FC00BB] hover:bg-[#2F3AFF] hover:text-white transition-all duration-200 cursor-pointer">
+                        <svg class="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24">
+                            <line x1="7" y1="17" x2="17" y2="7"></line>
+                            <polyline points="7 7 17 7 17 17"></polyline>
+                        </svg>
+                    </a>
+                @else
+                    <button type="button" 
+                            @click="$dispatch('show-login-prompt')" 
+                            class="w-16 h-16 sm:w-20 sm:h-20 lg:w-24 lg:h-24 rounded-xl sm:rounded-2xl border-2 sm:border-3 border-[#2F3AFF] flex items-center justify-center text-[#2F3AFF] hover:bg-[#2F3AFF] hover:text-white transition-all duration-200 cursor-pointer">
+                        <svg class="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 fill-none stroke-current" stroke-width="2.5" viewBox="0 0 24 24">
+                            <line x1="7" y1="17" x2="17" y2="7"></line>
+                            <polyline points="7 7 17 7 17 17"></polyline>
+                        </svg>
+                    </button>
+                @endauth
+            </div>
+        </div>
     </section>
 
     {{-- PITA SAYAP VEKTOR BAWAH --}}

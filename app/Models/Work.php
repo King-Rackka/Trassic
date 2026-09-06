@@ -56,7 +56,7 @@ class Work extends Model
 
     public function reports()
     {
-        return $this->hasMany(Report::class);
+        return $this->hasMany(Report::class, 'work_id');
     }
 
     public function comments()

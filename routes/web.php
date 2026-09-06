@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\GoogleController;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Work\Create as WorkCreate;
 use App\Livewire\Work\WorkEdit;
+use App\Livewire\WorkShow;
 
 
 Route::get('/auth/google', [GoogleController::class, 'redirect'])->name('auth.google');
@@ -24,6 +25,9 @@ Route::get('/explore/karya-lainnya', function () {
     return view('explore-more');
 })->name('explore.more');
 
+Route::get('/waste-impact', function () {
+    return view('waste-impact');
+})->name('waste-impact');
 
 Route::get('/search', function () {
     return view('search');
@@ -33,8 +37,7 @@ Route::get('/about', function () {
     return view('about');
 })->name('about');
 
-Route::get('/work/{work:slug}', [WorkController::class, 'show'])->name('work.show');
-
+Route::get('/work/{work:slug}', WorkShow::class)->name('work.show');
 
 Route::middleware('auth')->group(function () {
     Route::get('/works/create', WorkCreate::class)->name('works.create');
@@ -42,7 +45,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/works/{id}', [WorkController::class, 'show'])->name('works.show');
-
 
 Route::get('/creators', function () {
     return view('creators');

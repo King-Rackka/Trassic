@@ -84,7 +84,7 @@
                 {{-- NOTIFIKASI MOBILE: TEKS CLEAN DI BAWAH PREVIEW --}}
                 <p x-show="isFormFilled && !acceptedTerms"
                    x-transition
-                   class="absolute bottom-4 left-0 right-0 text-center font-display text-[11px] text-[#2F3AFF] uppercase tracking-wider z-40 pointer-events-none px-4">
+                   class="absolute bottom-4 left-0 right-0 text-center font-display text-[11px] text-[#2F3AFF] tracking-wider z-40 pointer-events-none px-4">
                     Klik ID Card 3D untuk menyetujui syarat!
                 </p>
             </div>
@@ -103,7 +103,7 @@
                 {{-- NOTIFIKASI DESKTOP: TEKS CLEAN MELAYANG RATA TENGAH TANPA GARIS --}}
                 <p x-show="isFormFilled && !acceptedTerms"
                    x-transition
-                   class="absolute bottom-6 left-0 right-0 text-center font-display text-xs sm:text-sm text-[#2F3AFF] uppercase tracking-wider z-30 pointer-events-none px-4">
+                   class="absolute bottom-6 left-0 right-0 text-center font-display text-xs sm:text-sm text-[#2F3AFF] tracking-wider z-30 pointer-events-none px-4">
                     Klik ID Card 3D untuk menyetujui syarat!
                 </p>
             </div>
@@ -114,7 +114,7 @@
                 {{-- TOMBOL KOTAK PREVIEW LANYARD (KHUSUS MOBILE) --}}
                 <div class="lg:hidden w-full max-w-md flex justify-between items-center mb-2">
                     <template x-if="isFormFilled && !acceptedTerms">
-                        <span class="text-[10px] font-display text-[#FC00BB] bg-[#D9FC28] px-2 py-1 uppercase">
+                        <span class="text-[10px] font-display text-[#FC00BB] bg-[#D9FC28] px-2 py-1 ">
                             Setujui Syarat ID Card!
                         </span>
                     </template>
@@ -134,7 +134,7 @@
                 <div class="max-w-md w-full mx-auto space-y-4 sm:space-y-5 my-auto">
                     
                     {{-- JUDUL UTAMA --}}
-                    <h1 class="text-2xl sm:text-3xl xl:text-4xl font-display text-[#D9FC28] uppercase tracking-normal text-center mb-2 sm:mb-4">
+                    <h1 class="text-2xl sm:text-3xl xl:text-4xl font-display text-[#D9FC28] tracking-normal text-center mb-2 sm:mb-4">
                         Bergabung dengan kami
                     </h1>
 
@@ -145,11 +145,11 @@
 
                         {{-- NAMA PENGGUNA --}}
                         <div class="space-y-1.5">
-                            <label class="text-white text-xs font-extrabold uppercase tracking-wide block">
+                            <label class="text-white text-xs font-extrabold tracking-wide block">
                                 NAMA PENGGUNA
                             </label>
                             <input type="text" name="name" x-model="name" @input="updateLanyard()" maxlength="14"
-                                   placeholder="Contoh: Raditya Meyka"
+                                   placeholder="Masukkan Nama Lengkap"
                                    class="w-full rounded-tl-2xl rounded-br-2xl border-2 border-[#FC00BB] px-4 py-3 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#D9FC28] bg-[#f7f7f7] text-xs sm:text-sm font-medium outline-none transition-all"
                                    required autofocus>
                             @error('name') <p class="text-[#D9FC28] text-xs mt-1 font-semibold">{{ $message }}</p> @enderror
@@ -157,11 +157,11 @@
 
                         {{-- EMAIL --}}
                         <div class="space-y-1.5">
-                            <label class="text-white text-xs font-extrabold uppercase tracking-wide block">
+                            <label class="text-white text-xs font-extrabold tracking-wide block">
                                 EMAIL
                             </label>
                             <input type="email" name="email" x-model="email"
-                                   placeholder="Contoh: radityameyka5@gmail.com"
+                                   placeholder="Masukkan Email"
                                    class="w-full rounded-tl-2xl rounded-br-2xl border-2 border-[#FC00BB] px-4 py-3 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#D9FC28] bg-[#f7f7f7] text-xs sm:text-sm font-medium outline-none transition-all"
                                    required>
                             @error('email') <p class="text-[#D9FC28] text-xs mt-1 font-semibold">{{ $message }}</p> @enderror
@@ -169,7 +169,7 @@
 
                         {{-- PASSWORD --}}
                         <div class="space-y-1.5">
-                            <label class="text-white text-xs font-extrabold uppercase tracking-wide block">
+                            <label class="text-white text-xs font-extrabold tracking-wide block">
                                 PASSWORD
                             </label>
                             <div class="relative">
@@ -194,12 +194,12 @@
 
                         {{-- KONFIRMASI PASSWORD --}}
                         <div class="space-y-1.5">
-                            <label class="text-white text-xs font-extrabold uppercase tracking-wide block">
+                            <label class="text-white text-xs font-extrabold tracking-wide block">
                                 KONFIRMASI PASSWORD
                             </label>
                             <div class="relative">
                                 <input :type="showConfirmPassword ? 'text' : 'password'" name="password_confirmation" x-model="passwordConfirmation"
-                                       placeholder="Masukkan Password"
+                                       placeholder="Ketik ulang password yang sama"
                                        class="w-full rounded-tl-2xl rounded-br-2xl border-2 border-[#FC00BB] px-4 py-3 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-[#D9FC28] bg-[#f7f7f7] text-xs sm:text-sm font-medium pr-11 outline-none transition-all"
                                        required>
                                 <button type="button" x-on:click="showConfirmPassword = !showConfirmPassword"
@@ -217,7 +217,7 @@
                         </div>
 
                         <button type="submit"
-                                class="w-full bg-[#D9FC28] text-[#2F3AFF] font-display text-base sm:text-lg py-3 hover:bg-[#cbf21d] transition uppercase tracking-wider mt-6 sm:mt-8 ">
+                                class="w-full bg-[#D9FC28] text-[#2F3AFF] font-display text-base sm:text-lg py-3 hover:bg-[#cbf21d] transition tracking-wider mt-6 sm:mt-8 ">
                             Daftar
                         </button>
 

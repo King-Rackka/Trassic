@@ -88,7 +88,7 @@ class WorkEdit extends Component
             $type   = $w->waste_type ?? $w->material ?? '';
             $source = $w->source ?? '';
             $weight = $w->quantity ?? '';
-            $unit   = $w->unit ?? 'gram';
+            $unit   = $w->unit ?? 'g';
 
             $this->wasteDetails[] = [
                 'id' => $w->id,

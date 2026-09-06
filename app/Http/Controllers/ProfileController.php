@@ -28,8 +28,8 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
 {
     $user = $request->user();
-    
-    $user->fill($request->validated());
+
+    $user->fill($request->safe()->only(['name', 'email']));
 
     if ($user->isDirty('email')) {
         $user->email_verified_at = null;
@@ -42,7 +42,7 @@ class ProfileController extends Controller
         ['name' => $user->name]
     );
 
-    $data = $request->only(['bio', 'creator_type', 'phone', 'location']);
+    $data = $request->safe()->only(['bio', 'creator_type', 'phone', 'location']);
 
     $existingLinks = $creator->social_links ?? [];
     $data['social_links'] = [
@@ -54,7 +54,6 @@ class ProfileController extends Controller
         $data['profile_image'] = $request->file('profile_image')->store('creators', 'public');
     }
 
-    // Handle Upload Cover Image
     if ($request->hasFile('cover_image')) {
         $data['cover_image'] = $request->file('cover_image')->store('creators', 'public');
     }

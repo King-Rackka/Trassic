@@ -49,10 +49,27 @@ class Create extends Component
 
     public function updatedImages()
     {
+        // Dedupe berdasarkan nama file + ukuran
+        $seen = [];
+        $unique = [];
+
+        foreach ($this->images as $img) {
+            // getClientOriginalName() & getSize() tersedia di TemporaryUploadedFile
+            $key = $img->getClientOriginalName() . '-' . $img->getSize();
+
+            if (!isset($seen[$key])) {
+                $seen[$key] = true;
+                $unique[] = $img;
+            }
+        }
+
+        $this->images = $unique;
+
         if (count($this->images) > 10) {
             $this->images = array_slice($this->images, 0, 10);
             session()->flash('error', 'Maksimal upload 10 foto.');
         }
+
         $this->activeImageIndex = max(0, count($this->images) - 1);
     }
 
@@ -141,7 +158,7 @@ class Create extends Component
             'waste_type' => '',
             'waste_source' => '',
             'weight' => '',
-            'unit' => 'gram',
+            'unit' => 'g',
             'support_materials' => ['', '', '', '']
         ];
     }
@@ -183,16 +200,15 @@ class Create extends Component
         $totalWeightInKg += (float) $weightInKg;
     }
 
-    // 3. Simpan Data Ke Tabel `works`
     $work = Work::create([
         'creator_id'      => $creator->id,
         'title'           => $this->title,
         'slug'            => Str::slug($this->title) . '-' . Str::random(5),
-        'category'        => !empty($this->category) ? $this->category : 'Daur Ulang',
+        'category'        => count($this->selectedTags) ? implode(', ', $this->selectedTags) : 'Daur Ulang', // GANTI
         'year'            => $this->year ?? date('Y'),
         'cover_image'     => $imagePaths[0],
         'description'     => $this->description,
-        'target_quantity' => $totalWeightInKg, // Total target dalam KG
+        'target_quantity' => $totalWeightInKg,
         'status'          => 'published',
         'published_at'    => now(),
     ]);
@@ -221,7 +237,7 @@ class Create extends Component
                 'source'               => $detail['waste_source'],
                 'quantity'             => $detail['weight'], // Simpan angka asli yang diketik user
                 'unit'                 => $unit,            // Simpan 'g' atau 'kg'
-                'supporting_materials' => json_encode($supportMaterials),
+                'supporting_materials' => $supportMaterials,
             ]);
         }
     }
