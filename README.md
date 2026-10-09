@@ -3,7 +3,7 @@
   # TRASSIC
   ### Waste. Reworked. — Galeri Digital untuk Karya Daur Ulang Indonesia
   
-  [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_Site-success?style=for-the-badge)](https://trassic.radityameyka.my.id/)
+  [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-Visit_Site-success?style=for-the-badge)](https://trassic.my.id/)
   [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/King-Rackka/Trassic)
   [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
   
